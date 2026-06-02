@@ -88,8 +88,7 @@
   #intro-overlay.whiteout .video-overlay,
   #intro-overlay.whiteout .video-vignette { opacity: 0; }
   #intro-overlay.whiteout #intro-content,
-  #intro-overlay.whiteout .scroll-hint,
-  #intro-overlay.whiteout .sound-toggle { opacity: 0; transition: opacity 0.6s ease; }
+  #intro-overlay.whiteout .scroll-hint { opacity: 0; transition: opacity 0.6s ease; }
 
   /* Intro content */
   #intro-content {
@@ -159,30 +158,7 @@
   }
 
   /* Sound toggle */
-  .sound-toggle {
-    position: absolute;
-    top: 28px;
-    right: 32px;
-    z-index: 20;
-    background: rgba(45,58,46,0.5);
-    border: 1px solid rgba(184,212,206,0.3);
-    color: var(--driftwood);
-    font-family: 'Montserrat', sans-serif;
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding: 8px 14px;
-    cursor: pointer;
-    transition: background 150ms, color 150ms;
-    opacity: 0;
-    animation: introReveal 0.8s ease-out 1.5s forwards;
-  }
 
-  .sound-toggle:hover {
-    background: rgba(184,212,206,0.15);
-    color: var(--mist-white);
-  }
 
   /* Scroll prompt */
   .scroll-hint {
@@ -1478,9 +1454,6 @@
   <div class="video-overlay"></div>
   <div class="video-vignette"></div>
 
-  <!-- Sound toggle (unmutes / mutes) -->
-  <button class="sound-toggle" id="sound-toggle" onclick="toggleSound(event)">🔇 Sound Off</button>
-
   <!-- Centred brand content -->
   <div id="intro-content">
     <div class="logo-ring">
@@ -1700,15 +1673,6 @@
   document.body.classList.add('on-intro');
 
   const introVideo = document.getElementById('intro-video');
-
-  // ─── Sound toggle ───
-  function toggleSound(e) {
-    e.stopPropagation(); // don't trigger the transition
-    const video = document.getElementById('intro-video');
-    const btn   = document.getElementById('sound-toggle');
-    video.muted = !video.muted;
-    btn.textContent = video.muted ? '🔇 Sound Off' : '🔊 Sound On';
-  }
 
   // ─── Transition ───
   // 'fromWhiteout' is true when the clip reached its natural ending: the footage
