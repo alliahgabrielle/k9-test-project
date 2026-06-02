@@ -1,0 +1,44 @@
+# Coastal Cathedral — Combined Direction Brief
+
+## Concept
+Where the seawall meets the old-growth grove. The hybrid direction blends **Coastal Fog**'s airy, misty palette with **Mossy Cathedral**'s grounded forest depth — capturing the Pacific Northwest's defining edge, where cedars descend to the tideline. Cinematic, atmospheric, deeply West Coast.
+
+## Tagline / Positioning
+*"Grounded in the grove. Open to the shore."*
+
+## Combined Color Palette
+| Name | HEX | Role |
+|---|---|---|
+| Deep Cedar | #2D3A2E | Primary dark — forest foundation |
+| Moss | #5B6B4A | Secondary — earth, living |
+| Cedar Bark | #6B4A3A | Warm anchor — rooted |
+| Sea Glass | #B8D4CE | Accent — tide, spaciousness |
+| Mist White | #F0EDE8 | Background — breath |
+| Driftwood | #C4B5A2 | Neutral bridge — tactile |
+
+Dark forest tones ground the system; coastal mist and sea-glass lift it. The bridge color (Driftwood) belongs to both worlds.
+
+## Typography (locked)
+- Headers: THE SEASONS BOLD, ALL CAPS, 80pt
+- Subheaders: Montserrat Medium, 40pt
+- Body: Montserrat Regular, 25pt
+
+## Cinematic Visual Direction
+- Forest and shore in dialogue — every image carries both worlds or shows the moment of transition
+- Atmospheric, painterly, layered depth
+- Overcast natural light, hazy compression
+- Real moments at the edge between environments
+- Negative space honored
+- No bright color, no staging, no obedience-poster energy
+
+## Three Brand Guides to Deliver (4 sheets each, 12 total, 16:9)
+For each direction:
+1. **Cover & Logo System** — title sheet, hero photograph, 3 logo lockup variants
+2. **Color & Typography** — extended palette with HEX + usage, three-tier type hierarchy
+3. **Visual Language** — 6-image photography direction grid with captions
+4. **Applications** — 4–6 photorealistic mockups (business card, tote, bandana, signage, social tile, mug)
+
+**Guides:**
+- A. COASTAL FOG (standalone) — light/airy palette only
+- B. MOSSY CATHEDRAL (standalone) — deep forest palette only
+- C. COASTAL CATHEDRAL (combined) — blended palette, the hybrid system
