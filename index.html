@@ -1,1831 +1,2134 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Impackful K9 — Calm is a skill.</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --deep-cedar: #2D3A2E;
-    --moss: #5B6B4A;
-    --cedar-bark: #6B4A3A;
-    --sea-glass: #B8D4CE;
-    --mist-white: #F0EDE8;
-    --driftwood: #C4B5A2;
-    scroll-behavior: smooth;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Impackful K9 — Calm is a skill.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep-cedar: #2D3A2E;
+      --moss: #5B6B4A;
+      --cedar-bark: #6B4A3A;
+      --sea-glass: #B8D4CE;
+      --mist-white: #F0EDE8;
+      --driftwood: #C4B5A2;
+      scroll-behavior: smooth;
+    }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* ── Semantic tokens for theme toggle ── */
+    [data-theme="light"] {
+      --hero-grad: linear-gradient(to right,
+          #F0EDE8 0%, #F0EDE8 16%,
+          rgba(240, 237, 232, 0.94) 26%, rgba(240, 237, 232, 0.65) 36%,
+          rgba(240, 237, 232, 0.12) 50%, transparent 62%);
+      --hero-light: 1;
+      /* flag for JS */
+    }
 
-  body {
-    background: var(--deep-cedar);
-    font-family: 'Montserrat', sans-serif;
-    overflow-x: hidden;
-    cursor: default;
-  }
+    [data-theme="dark"] {
+      --hero-grad: linear-gradient(to right,
+          #2D3A2E 0%, #2D3A2E 15%,
+          rgba(45, 58, 46, 0.9) 25%, rgba(45, 58, 46, 0.7) 40%,
+          rgba(45, 58, 46, 0.3) 60%, transparent 85%);
+    }
 
-  /* Hide trail rail while on intro */
-  body.on-intro #trail-rail {
-    opacity: 0;
-    pointer-events: none;
-  }
-  #trail-rail {
-    transition: opacity 0.6s ease;
-  }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  /* ─── INTRO OVERLAY ─── */
-  #intro-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-    background: #0d1a0e;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
+    body {
+      background: var(--deep-cedar);
+      font-family: 'Montserrat', sans-serif;
+      overflow-x: hidden;
+      cursor: default;
+    }
 
-  /* ─── VIDEO BACKGROUND ─── */
-  #intro-video {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    z-index: 1;
-  }
+    /* Hide trail rail while on intro */
+    body.on-intro #trail-rail {
+      opacity: 0;
+      pointer-events: none;
+    }
 
-  /* Dark overlay on top of video so text stays readable.
+    #trail-rail {
+      transition: opacity 0.6s ease;
+    }
+
+    /* ─── INTRO OVERLAY ─── */
+    #intro-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: #0d1a0e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    /* ─── VIDEO BACKGROUND ─── */
+    #intro-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: 1;
+    }
+
+    /* Dark overlay on top of video so text stays readable.
      It fades out as the clip approaches its bright ending so the
      footage can bloom into the light-burst transition cleanly. */
-  .video-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    background: linear-gradient(
-      to top,
-      rgba(13, 26, 14, 0.75) 0%,
-      rgba(13, 26, 14, 0.35) 50%,
-      rgba(13, 26, 14, 0.45) 100%
-    );
-    transition: opacity 1.2s ease;
-  }
+    .video-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: linear-gradient(to top,
+          rgba(13, 26, 14, 0.75) 0%,
+          rgba(13, 26, 14, 0.35) 50%,
+          rgba(13, 26, 14, 0.45) 100%);
+      transition: opacity 1.2s ease;
+    }
 
-  /* Subtle vignette (also fades for the ending) */
-  .video-vignette {
-    position: absolute;
-    inset: 0;
-    z-index: 3;
-    background: radial-gradient(ellipse 90% 90% at 50% 50%, transparent 50%, rgba(13, 26, 14, 0.55) 100%);
-    transition: opacity 1.2s ease;
-  }
+    /* Subtle vignette (also fades for the ending) */
+    .video-vignette {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      background: radial-gradient(ellipse 90% 90% at 50% 50%, transparent 50%, rgba(13, 26, 14, 0.55) 100%);
+      transition: opacity 1.2s ease;
+    }
 
-  /* When the clip is about to white-out, drop the overlays so the
+    /* When the clip is about to white-out, drop the overlays so the
      real footage glows through and the seam disappears. */
-  #intro-overlay.whiteout .video-overlay,
-  #intro-overlay.whiteout .video-vignette { opacity: 0; }
-  #intro-overlay.whiteout #intro-content,
-  #intro-overlay.whiteout .scroll-hint { opacity: 0; transition: opacity 0.6s ease; }
+    #intro-overlay.whiteout .video-overlay,
+    #intro-overlay.whiteout .video-vignette {
+      opacity: 0;
+    }
 
-  /* Intro content */
-  #intro-content {
-    position: relative;
-    z-index: 10;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    opacity: 0;
-    animation: introReveal 1s ease-out 0.5s forwards;
-  }
+    #intro-overlay.whiteout #intro-content,
+    #intro-overlay.whiteout .scroll-hint {
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
 
-  @keyframes introReveal {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+    /* Intro content */
+    #intro-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      opacity: 0;
+      animation: introReveal 1s ease-out 0.5s forwards;
+    }
 
-  .logo-ring {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: logoFloat 4s ease-in-out infinite;
-  }
+    @keyframes introReveal {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
 
-  @keyframes logoFloat {
-    0%, 100% { transform: translateY(0); }
-    50%       { transform: translateY(-8px); }
-  }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-  .logo-ring img {
-    width: 120px;
-    height: 120px;
-    object-fit: contain;
-    animation: logoGlow 4s ease-in-out infinite;
-  }
+    .logo-ring {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: logoFloat 4s ease-in-out infinite;
+    }
 
-  @keyframes logoGlow {
-    0%, 100% { filter: drop-shadow(0 0 0 rgba(184,212,206,0.15)); }
-    50%       { filter: drop-shadow(0 0 15px rgba(184,212,206,0.3)); }
-  }
+    @keyframes logoFloat {
 
-  .logo-inner {
-    display: none;
-  }
+      0%,
+      100% {
+        transform: translateY(0);
+      }
 
-  .intro-tagline {
-    font-size: clamp(32px, 5vw, 52px);
-    font-weight: 300;
-    letter-spacing: 0.12em;
-    color: var(--mist-white);
-    line-height: 1.1;
-    text-transform: uppercase;
-    text-shadow: 0 2px 24px rgba(0,0,0,0.4);
-  }
+      50% {
+        transform: translateY(-8px);
+      }
+    }
 
-  .intro-sub {
-    font-size: 13px;
-    font-weight: 400;
-    letter-spacing: 0.25em;
-    color: var(--driftwood);
-    text-transform: uppercase;
-    opacity: 0;
-    animation: introReveal 1s ease-out 1.2s forwards;
-    text-shadow: 0 1px 12px rgba(0,0,0,0.5);
-  }
+    .logo-ring img {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      animation: logoGlow 4s ease-in-out infinite;
+    }
 
-  /* Scroll prompt */
-  .scroll-hint {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    opacity: 0;
-    animation: introReveal 1s ease-out 2s forwards;
-    cursor: pointer;
-    z-index: 20;
-  }
+    @keyframes logoGlow {
 
-  .scroll-hint span {
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    color: var(--sea-glass);
-    text-transform: uppercase;
-    font-weight: 500;
-    text-shadow: 0 1px 8px rgba(0,0,0,0.5);
-  }
+      0%,
+      100% {
+        filter: drop-shadow(0 0 0 rgba(184, 212, 206, 0.15));
+      }
 
-  .scroll-line {
-    width: 1px;
-    height: 40px;
-    background: linear-gradient(to bottom, var(--sea-glass), transparent);
-    animation: scrollPulse 2s ease-in-out infinite;
-  }
+      50% {
+        filter: drop-shadow(0 0 15px rgba(184, 212, 206, 0.3));
+      }
+    }
 
-  @keyframes scrollPulse {
-    0%, 100% { opacity: 0.4; transform: scaleY(1); }
-    50%       { opacity: 1;   transform: scaleY(1.1); }
-  }
+    .logo-inner {
+      display: none;
+    }
 
-  /* ─── LIGHT BURST TRANSITION ─── */
-  /* Tuned to continue the clip's own ending: at ~7.8s the footage blows
+    .intro-tagline {
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: var(--mist-white);
+      line-height: 1.1;
+      text-transform: uppercase;
+      text-shadow: 0 2px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .intro-sub {
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      color: var(--driftwood);
+      text-transform: uppercase;
+      opacity: 0;
+      animation: introReveal 1s ease-out 1.2s forwards;
+      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Scroll prompt */
+    .scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: introReveal 1s ease-out 2s forwards;
+      cursor: pointer;
+      z-index: 20;
+    }
+
+    .scroll-hint span {
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      color: var(--sea-glass);
+      text-transform: uppercase;
+      font-weight: 500;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--sea-glass), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+
+      0%,
+      100% {
+        opacity: 0.4;
+        transform: scaleY(1);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scaleY(1.1);
+      }
+    }
+
+    /* ─── LIGHT BURST TRANSITION ─── */
+    /* Tuned to continue the clip's own ending: at ~7.8s the footage blows
      out to a white center (#F8F7F9) with golden-amber edges (#EDBE85).
      The burst opens in those exact tones so there's no visible seam,
      then blooms outward and resolves toward the brand sea-glass. */
-  #light-burst {
-    position: fixed;
-    inset: 0;
-    z-index: 999;
-    pointer-events: none;
-    opacity: 0;
-  }
+    #light-burst {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      pointer-events: none;
+      opacity: 0;
+    }
 
-  #light-burst.active {
-    animation: lightBurstAnim 2.1s cubic-bezier(0.33, 0, 0.2, 1) forwards;
-  }
+    #light-burst.active {
+      animation: lightBurstAnim 2.1s cubic-bezier(0.33, 0, 0.2, 1) forwards;
+    }
 
-  @keyframes lightBurstAnim {
-    /* 0–8%: match the final footage frame exactly (white core, golden edge) */
-    0%   { opacity: 0; background: radial-gradient(ellipse 130% 115% at 50% 44%, rgba(248,247,249,1) 0%, rgba(245,238,232,1) 42%, rgba(237,190,133,1) 100%); }
-    8%   { opacity: 1; background: radial-gradient(ellipse 130% 115% at 50% 44%, rgba(248,247,249,1) 0%, rgba(245,238,232,1) 42%, rgba(237,190,133,1) 100%); }
-    /* bloom: warm core swells, golden halo pushes outward like stepping into the light */
-    42%  { opacity: 1; background: radial-gradient(ellipse 95% 95% at 50% 46%, rgba(249,247,248,0.98) 0%, rgba(246,237,228,0.88) 38%, rgba(232,196,150,0.5) 72%, transparent 100%); }
-    /* hand off to the brand — a whisper of sea-glass as it dissipates */
-    74%  { opacity: 1; background: radial-gradient(ellipse 170% 160% at 50% 48%, rgba(247,243,238,0.9) 0%, rgba(222,224,206,0.5) 40%, rgba(184,212,206,0.28) 72%, transparent 92%); }
-    100% { opacity: 0; background: radial-gradient(ellipse 240% 240% at 50% 50%, rgba(240,237,232,0) 0%, transparent 100%); }
-  }
+    @keyframes lightBurstAnim {
 
-  /* ─── MAIN SITE ─── */
-  #main-site {
-    opacity: 0;
-    transition: opacity 0.6s ease;
-  }
+      /* 0–8%: match the final footage frame exactly (white core, golden edge) */
+      0% {
+        opacity: 0;
+        background: radial-gradient(ellipse 130% 115% at 50% 44%, rgba(248, 247, 249, 1) 0%, rgba(245, 238, 232, 1) 42%, rgba(237, 190, 133, 1) 100%);
+      }
 
-  #main-site.visible {
-    opacity: 1;
-  }
+      8% {
+        opacity: 1;
+        background: radial-gradient(ellipse 130% 115% at 50% 44%, rgba(248, 247, 249, 1) 0%, rgba(245, 238, 232, 1) 42%, rgba(237, 190, 133, 1) 100%);
+      }
 
-  /* ─── TRAIL PROGRESS RAIL ─── */
-  /* A vertical "trail" pinned to the right edge. Seven minimalist
+      /* bloom: warm core swells, golden halo pushes outward like stepping into the light */
+      42% {
+        opacity: 1;
+        background: radial-gradient(ellipse 95% 95% at 50% 46%, rgba(249, 247, 248, 0.98) 0%, rgba(246, 237, 228, 0.88) 38%, rgba(232, 196, 150, 0.5) 72%, transparent 100%);
+      }
+
+      /* hand off to the brand — a whisper of sea-glass as it dissipates */
+      74% {
+        opacity: 1;
+        background: radial-gradient(ellipse 170% 160% at 50% 48%, rgba(247, 243, 238, 0.9) 0%, rgba(222, 224, 206, 0.5) 40%, rgba(184, 212, 206, 0.28) 72%, transparent 92%);
+      }
+
+      100% {
+        opacity: 0;
+        background: radial-gradient(ellipse 240% 240% at 50% 50%, rgba(240, 237, 232, 0) 0%, transparent 100%);
+      }
+    }
+
+    /* ─── MAIN SITE ─── */
+    #main-site {
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    #main-site.visible {
+      opacity: 1;
+    }
+
+    /* ─── TRAIL PROGRESS RAIL ─── */
+    /* A vertical "trail" pinned to the right edge. Seven minimalist
      line-icons (drawn in the brand asset style) sit on a connecting
      line that fills as you scroll. The icon for the active section
      lights up in sea-glass. On mobile it becomes a horizontal capsule
      pinned to the bottom of the screen. */
-  #trail-rail {
-    position: fixed;
-    right: 22px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 200;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 22px;
-    padding: 22px 12px;
-    border-radius: 100px;
-    background: rgba(20, 30, 21, 0.45);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(184, 212, 206, 0.14);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
-  }
-
-  /* The connecting trail line behind the icons */
-  .rail-track {
-    position: absolute;
-    top: 24px;
-    bottom: 24px;
-    left: 50%;
-    width: 2px;
-    transform: translateX(-50%);
-    background: rgba(196, 181, 162, 0.22);
-    border-radius: 2px;
-    overflow: hidden;
-  }
-
-  .rail-fill {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 0;
-    background: linear-gradient(to bottom, var(--sea-glass), #8fb6ae);
-    border-radius: 2px;
-    transition: height 0.12s linear, width 0.12s linear;
-  }
-
-  .rail-node {
-    position: relative;
-    z-index: 1;
-    width: 34px;
-    height: 34px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--driftwood);
-    opacity: 0.55;
-    border-radius: 50%;
-    background: transparent;
-    cursor: pointer;
-    text-decoration: none;
-    transition: color 350ms ease, opacity 350ms ease, transform 350ms ease, filter 350ms ease;
-  }
-
-  .rail-node svg { width: 21px; height: 21px; display: block; }
-
-  .rail-node.passed { color: var(--sea-glass); opacity: 0.8; }
-
-  .rail-node.active {
-    color: var(--sea-glass);
-    opacity: 1;
-    transform: scale(1.18);
-    filter: drop-shadow(0 0 8px rgba(184,212,206,0.55));
-  }
-
-  .rail-node:hover { color: var(--mist-white); opacity: 1; }
-
-  /* Hover label, shown to the LEFT of the rail (rail lives on the right) */
-  .rail-label {
-    position: absolute;
-    right: 46px;
-    top: 50%;
-    transform: translateY(-50%) translateX(6px);
-    white-space: nowrap;
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--mist-white);
-    background: rgba(20, 30, 21, 0.9);
-    border: 1px solid rgba(184,212,206,0.18);
-    padding: 6px 10px;
-    border-radius: 4px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 250ms ease, transform 250ms ease;
-  }
-
-  .rail-node:hover .rail-label {
-    opacity: 1;
-    transform: translateY(-50%) translateX(0);
-  }
-
-  /* ─── NAVIGATION ─── */
-  nav#nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 24px 48px;
-    transition: background 200ms ease, padding 200ms ease;
-  }
-
-  nav#nav.scrolled {
-    background: var(--deep-cedar);
-    padding: 16px 48px;
-  }
-
-  .nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 0;
-  }
-
-  .nav-logo img {
-    width: 50px;
-    height: 50px;
-    object-fit: contain;
-  }
-
-  .nav-logo-ring,
-  .nav-logo-text {
-    display: none;
-  }
-
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 36px;
-    list-style: none;
-  }
-
-  .nav-links a {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.2em;
-    color: var(--driftwood);
-    text-decoration: none;
-    text-transform: uppercase;
-    transition: color 300ms ease, transform 300ms ease;
-    display: inline-block;
-  }
-
-  .nav-links a:hover {
-    color: var(--mist-white);
-    transform: translateY(-2px);
-  }
-
-  .nav-links a.active { color: var(--sea-glass); }
-
-  .nav-book {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    color: var(--mist-white);
-    text-decoration: none;
-    text-transform: uppercase;
-    border: 1.5px solid var(--sea-glass);
-    padding: 10px 20px;
-    transition: background 300ms ease, color 300ms ease, transform 300ms ease, box-shadow 300ms ease;
-  }
-
-  .nav-book:hover {
-    background: rgba(184,212,206,0.15);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(184,212,206,0.15);
-  }
-
-  /* ─── HERO SECTION ─── */
-  #hero {
-    height: 100vh;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 0 80px;
-    overflow: hidden;
-  }
-
-  .hero-image {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    transition: filter 500ms ease;
-  }
-
-  /* On light gradients boost contrast + saturation so the photo pops */
-  #hero.hero-light .hero-image {
-    filter: contrast(1.1) saturate(1.18) brightness(1.03);
-  }
-
-  /* Depth vignette — frames the photo edges when on a light gradient */
-  .hero-depth {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 500ms ease;
-    background:
-      radial-gradient(ellipse 55% 100% at 100% 50%, rgba(0,0,0,0.22) 0%, transparent 65%),
-      linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, transparent 22%, transparent 72%, rgba(0,0,0,0.14) 100%);
-  }
-  #hero.hero-light .hero-depth { opacity: 1; }
-
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    animation: none;
-    z-index: 1;
-    transition: background 500ms ease;
-  }
-
-  /* ── Gradient variants (switched by JS) ── */
-  .hero-bg.grad-cedar {
-    background: linear-gradient(to right,
-      #2D3A2E 0%, #2D3A2E 15%,
-      rgba(45,58,46,0.9) 25%, rgba(45,58,46,0.7) 40%,
-      rgba(45,58,46,0.3) 60%, transparent 85%);
-  }
-  .hero-bg.grad-bark {
-    background: linear-gradient(to right,
-      #6B4A3A 0%, #6B4A3A 15%,
-      rgba(107,74,58,0.9) 25%, rgba(107,74,58,0.7) 40%,
-      rgba(107,74,58,0.3) 60%, transparent 85%);
-  }
-  .hero-bg.grad-seaglass {
-    background: linear-gradient(to right,
-      #B8D4CE 0%, #B8D4CE 15%,
-      rgba(184,212,206,0.92) 25%, rgba(184,212,206,0.75) 40%,
-      rgba(184,212,206,0.35) 60%, transparent 85%);
-  }
-  .hero-bg.grad-mist {
-    background: linear-gradient(to right,
-      #F0EDE8 0%, #F0EDE8 16%,
-      rgba(240,237,232,0.94) 26%, rgba(240,237,232,0.65) 36%,
-      rgba(240,237,232,0.12) 50%, transparent 62%);
-  }
-  .hero-bg.grad-drift {
-    background: linear-gradient(to right,
-      #C4B5A2 0%, #C4B5A2 15%,
-      rgba(196,181,162,0.92) 25%, rgba(196,181,162,0.75) 40%,
-      rgba(196,181,162,0.35) 60%, transparent 85%);
-  }
-
-  /* ── Light-gradient text overrides ── */
-  #hero.hero-light .hero-headline { color: var(--deep-cedar); }
-  #hero.hero-light .hero-sub      { color: rgba(45,58,46,0.7); }
-  #hero.hero-light .eyebrow       { color: var(--moss); }
-  #hero.hero-light .btn-ghost {
-    color: var(--deep-cedar);
-    border-color: rgba(45,58,46,0.45);
-  }
-  #hero.hero-light .btn-ghost:hover {
-    background: rgba(45,58,46,0.08);
-    box-shadow: 0 10px 28px rgba(45,58,46,0.15);
-  }
-
-  /* ── Gradient Picker ── */
-  #gradient-picker {
-    position: absolute;
-    bottom: 36px;
-    left: 80px;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: rgba(13,26,14,0.38);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(240,237,232,0.14);
-    border-radius: 100px;
-    padding: 9px 16px 9px 14px;
-    transition: background 400ms ease, border-color 400ms ease;
-  }
-  #hero.hero-light #gradient-picker {
-    background: rgba(240,237,232,0.55);
-    border-color: rgba(45,58,46,0.18);
-  }
-  .picker-heading {
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.26em;
-    text-transform: uppercase;
-    color: rgba(240,237,232,0.55);
-    white-space: nowrap;
-    padding-right: 4px;
-    transition: color 300ms ease;
-  }
-  #hero.hero-light .picker-heading { color: rgba(45,58,46,0.5); }
-  .picker-divider {
-    width: 1px; height: 16px;
-    background: rgba(240,237,232,0.18);
-    transition: background 300ms ease;
-  }
-  #hero.hero-light .picker-divider { background: rgba(45,58,46,0.18); }
-  .picker-swatches { display: flex; gap: 7px; align-items: center; }
-  .picker-swatch {
-    width: 22px; height: 22px; border-radius: 50%;
-    cursor: pointer; border: 2px solid transparent;
-    outline: 2px solid transparent; outline-offset: 2px;
-    transition: transform 180ms ease, outline-color 180ms ease, border-color 180ms ease;
-    position: relative;
-  }
-  .picker-swatch:hover { transform: scale(1.2); }
-  .picker-swatch.active {
-    outline-color: rgba(240,237,232,0.9);
-    transform: scale(1.12);
-  }
-  #hero.hero-light .picker-swatch.active { outline-color: rgba(45,58,46,0.7); }
-  /* tooltip */
-  .picker-swatch::after {
-    content: attr(data-label);
-    position: absolute;
-    bottom: calc(100% + 10px);
-    left: 50%;
-    transform: translateX(-50%) translateY(4px);
-    white-space: nowrap;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 9px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
-    color: var(--mist-white);
-    background: rgba(13,26,14,0.88);
-    border: 1px solid rgba(184,212,206,0.18);
-    padding: 5px 10px; border-radius: 4px;
-    opacity: 0; pointer-events: none;
-    transition: opacity 180ms ease, transform 180ms ease;
-  }
-  .picker-swatch:hover::after { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-  .hero-fog {
-    display: none;
-  }
-
-  .hero-overlay {
-    display: none;
-  }
-
-  .hero-content {
-    position: relative;
-    z-index: 2;
-    max-width: 600px;
-    animation: contentSlideIn 1s ease-out 0.8s both;
-  }
-
-  @keyframes contentSlideIn {
-    from {
-      opacity: 0;
-      transform: translateX(-60px);
+    #trail-rail {
+      position: fixed;
+      right: 22px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 22px;
+      padding: 22px 12px;
+      border-radius: 100px;
+      background: rgba(20, 30, 21, 0.45);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(184, 212, 206, 0.14);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
     }
-    to {
+
+    /* The connecting trail line behind the icons */
+    .rail-track {
+      position: absolute;
+      top: 24px;
+      bottom: 24px;
+      left: 50%;
+      width: 2px;
+      transform: translateX(-50%);
+      background: rgba(196, 181, 162, 0.22);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .rail-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 0;
+      background: linear-gradient(to bottom, var(--sea-glass), #8fb6ae);
+      border-radius: 2px;
+      transition: height 0.12s linear, width 0.12s linear;
+    }
+
+    .rail-node {
+      position: relative;
+      z-index: 1;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--driftwood);
+      opacity: 0.55;
+      border-radius: 50%;
+      background: transparent;
+      cursor: pointer;
+      text-decoration: none;
+      transition: color 350ms ease, opacity 350ms ease, transform 350ms ease, filter 350ms ease;
+    }
+
+    .rail-node svg {
+      width: 21px;
+      height: 21px;
+      display: block;
+    }
+
+    .rail-node.passed {
+      color: var(--sea-glass);
+      opacity: 0.8;
+    }
+
+    .rail-node.active {
+      color: var(--sea-glass);
+      opacity: 1;
+      transform: scale(1.18);
+      filter: drop-shadow(0 0 8px rgba(184, 212, 206, 0.55));
+    }
+
+    .rail-node:hover {
+      color: var(--mist-white);
+      opacity: 1;
+    }
+
+    /* Hover label, shown to the LEFT of the rail (rail lives on the right) */
+    .rail-label {
+      position: absolute;
+      right: 46px;
+      top: 50%;
+      transform: translateY(-50%) translateX(6px);
+      white-space: nowrap;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--mist-white);
+      background: rgba(20, 30, 21, 0.9);
+      border: 1px solid rgba(184, 212, 206, 0.18);
+      padding: 6px 10px;
+      border-radius: 4px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 250ms ease, transform 250ms ease;
+    }
+
+    .rail-node:hover .rail-label {
+      opacity: 1;
+      transform: translateY(-50%) translateX(0);
+    }
+
+    /* ─── NAVIGATION ─── */
+    nav#nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 48px;
+      transition: background 200ms ease, padding 200ms ease;
+    }
+
+    nav#nav.scrolled {
+      background: var(--deep-cedar);
+      padding: 16px 48px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .nav-logo img {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+    }
+
+    .nav-logo-ring,
+    .nav-logo-text {
+      display: none;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      color: var(--driftwood);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 300ms ease, transform 300ms ease;
+      display: inline-block;
+    }
+
+    .nav-links a:hover {
+      color: var(--mist-white);
+      transform: translateY(-2px);
+    }
+
+    .nav-links a.active {
+      color: var(--sea-glass);
+    }
+
+    /* ─── HERO SECTION ─── */
+    #hero {
+      height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0 80px;
+      overflow: hidden;
+    }
+
+    .hero-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: filter 500ms ease;
+    }
+
+    /* On light gradients boost contrast + saturation so the photo pops */
+    #hero.hero-light .hero-image {
+      filter: contrast(1.1) saturate(1.18) brightness(1.03);
+    }
+
+    /* Depth vignette — frames the photo edges when on a light gradient */
+    .hero-depth {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 500ms ease;
+      background:
+        radial-gradient(ellipse 55% 100% at 100% 50%, rgba(0, 0, 0, 0.22) 0%, transparent 65%),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, transparent 22%, transparent 72%, rgba(0, 0, 0, 0.14) 100%);
+    }
+
+    #hero.hero-light .hero-depth {
+      opacity: 1;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      animation: none;
+      z-index: 1;
+      transition: background 500ms ease;
+    }
+
+    /* ── Gradient variants (switched by JS) ── */
+    .hero-bg.grad-cedar {
+      background: linear-gradient(to right,
+          #2D3A2E 0%, #2D3A2E 15%,
+          rgba(45, 58, 46, 0.9) 25%, rgba(45, 58, 46, 0.7) 40%,
+          rgba(45, 58, 46, 0.3) 60%, transparent 85%);
+    }
+
+    .hero-bg.grad-bark {
+      background: linear-gradient(to right,
+          #6B4A3A 0%, #6B4A3A 15%,
+          rgba(107, 74, 58, 0.9) 25%, rgba(107, 74, 58, 0.7) 40%,
+          rgba(107, 74, 58, 0.3) 60%, transparent 85%);
+    }
+
+    .hero-bg.grad-seaglass {
+      background: linear-gradient(to right,
+          #B8D4CE 0%, #B8D4CE 15%,
+          rgba(184, 212, 206, 0.92) 25%, rgba(184, 212, 206, 0.75) 40%,
+          rgba(184, 212, 206, 0.35) 60%, transparent 85%);
+    }
+
+    .hero-bg.grad-mist {
+      background: linear-gradient(to right,
+          #F0EDE8 0%, #F0EDE8 16%,
+          rgba(240, 237, 232, 0.94) 26%, rgba(240, 237, 232, 0.65) 36%,
+          rgba(240, 237, 232, 0.12) 50%, transparent 62%);
+    }
+
+    .hero-bg.grad-drift {
+      background: linear-gradient(to right,
+          #C4B5A2 0%, #C4B5A2 15%,
+          rgba(196, 181, 162, 0.92) 25%, rgba(196, 181, 162, 0.75) 40%,
+          rgba(196, 181, 162, 0.35) 60%, transparent 85%);
+    }
+
+    /* ── Light-gradient text overrides ── */
+    #hero.hero-light .hero-headline {
+      color: var(--deep-cedar);
+    }
+
+    #hero.hero-light .hero-sub {
+      color: rgba(45, 58, 46, 0.7);
+    }
+
+    #hero.hero-light .eyebrow {
+      color: var(--moss);
+    }
+
+    #hero.hero-light .btn-ghost {
+      color: var(--deep-cedar);
+      border-color: rgba(45, 58, 46, 0.45);
+    }
+
+    #hero.hero-light .btn-ghost:hover {
+      background: rgba(45, 58, 46, 0.08);
+      box-shadow: 0 10px 28px rgba(45, 58, 46, 0.15);
+    }
+
+    #hero.hero-light #gradient-picker {
+      background: rgba(240, 237, 232, 0.55);
+      border-color: rgba(45, 58, 46, 0.18);
+    }
+
+    .picker-heading {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: rgba(240, 237, 232, 0.55);
+      white-space: nowrap;
+      padding-right: 4px;
+      transition: color 300ms ease;
+    }
+
+    #hero.hero-light .picker-heading {
+      color: rgba(45, 58, 46, 0.5);
+    }
+
+    .picker-divider {
+      width: 1px;
+      height: 16px;
+      background: rgba(240, 237, 232, 0.18);
+      transition: background 300ms ease;
+    }
+
+    #hero.hero-light .picker-divider {
+      background: rgba(45, 58, 46, 0.18);
+    }
+
+    .picker-swatches {
+      display: flex;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .picker-swatch {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      outline: 2px solid transparent;
+      outline-offset: 2px;
+      transition: transform 180ms ease, outline-color 180ms ease, border-color 180ms ease;
+      position: relative;
+    }
+
+    .picker-swatch:hover {
+      transform: scale(1.2);
+    }
+
+    .picker-swatch.active {
+      outline-color: rgba(240, 237, 232, 0.9);
+      transform: scale(1.12);
+    }
+
+    #hero.hero-light .picker-swatch.active {
+      outline-color: rgba(45, 58, 46, 0.7);
+    }
+
+    /* tooltip */
+    .picker-swatch::after {
+      content: attr(data-label);
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      white-space: nowrap;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--mist-white);
+      background: rgba(13, 26, 14, 0.88);
+      border: 1px solid rgba(184, 212, 206, 0.18);
+      padding: 5px 10px;
+      border-radius: 4px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .picker-swatch:hover::after {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .hero-fog {
+      display: none;
+    }
+
+    .hero-overlay {
+      display: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+      animation: contentSlideIn 1s ease-out 0.8s both;
+    }
+
+    @keyframes contentSlideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-60px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      color: var(--sea-glass);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: eyebrowSlide 0.8s ease-out 1.2s forwards;
+    }
+
+    @keyframes eyebrowSlide {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-headline {
+      font-size: clamp(40px, 5.5vw, 64px);
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      line-height: 1.05;
+      color: var(--mist-white);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: headlineSlide 0.8s ease-out 1.4s forwards;
+    }
+
+    @keyframes headlineSlide {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--driftwood);
+      line-height: 1.6;
+      margin-bottom: 40px;
+      max-width: 480px;
+      opacity: 0;
+      transform: translateY(25px);
+      animation: subSlide 0.8s ease-out 1.6s forwards;
+    }
+
+    @keyframes subSlide {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .btn-ghost {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--mist-white);
+      text-decoration: none;
+      border: 1.5px solid var(--sea-glass);
+      padding: 14px 32px;
+      opacity: 0;
+      transform: translateY(15px);
+      animation: ctaSlide 0.8s ease-out 1.8s forwards;
+      transition: all 300ms ease;
+    }
+
+    @keyframes ctaSlide {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .btn-ghost:hover {
+      background: rgba(184, 212, 206, 0.2);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(184, 212, 206, 0.15);
+    }
+
+    /* ─── SCROLL SECTION ANIMATIONS ─── */
+    [data-scroll],
+    [data-scroll-right] {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 700ms cubic-bezier(0.34, 1.56, 0.64, 1), transform 700ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    [data-scroll].revealed,
+    [data-scroll-right].revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    [data-scroll-right] {
+      transform: translateX(-40px);
+    }
+
+    [data-scroll-right].revealed {
+      transform: translateX(0);
+    }
+
+    /* Section entrance animations */
+    section {
+      opacity: 0;
+      animation: sectionFadeIn 0.8s ease-out forwards;
+    }
+
+    section:nth-of-type(1) {
+      animation-delay: 0s;
+    }
+
+    section:nth-of-type(2) {
+      animation-delay: 0.2s;
+    }
+
+    section:nth-of-type(3) {
+      animation-delay: 0.4s;
+    }
+
+    section:nth-of-type(4) {
+      animation-delay: 0.6s;
+    }
+
+    section:nth-of-type(5) {
+      animation-delay: 0.8s;
+    }
+
+    section:nth-of-type(6) {
+      animation-delay: 1s;
+    }
+
+    section:nth-of-type(7) {
+      animation-delay: 1.2s;
+    }
+
+    @keyframes sectionFadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .btn-filled {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--deep-cedar);
+      text-decoration: none;
+      background: var(--sea-glass);
+      padding: 14px 32px;
+      transition: background 300ms ease, transform 300ms ease, box-shadow 300ms ease;
+    }
+
+    .btn-filled:hover {
+      background: #a4c4be;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(184, 212, 206, 0.25);
+    }
+
+    /* ─── PHILOSOPHY SECTION ─── */
+    #philosophy {
+      display: grid;
+      grid-template-columns: 60% 40%;
+      min-height: 70vh;
+    }
+
+    .phil-photo {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 80% 80% at 40% 60%, #1a2e1c 0%, transparent 70%),
+        radial-gradient(ellipse 60% 50% at 70% 30%, #243a26 0%, transparent 60%),
+        linear-gradient(135deg, #0f1e10 0%, #2d3a2e 60%, #1c2a1d 100%);
+      min-height: 500px;
+    }
+
+    .phil-photo-fog {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 40% at 50% 70%, rgba(184, 212, 206, 0.07) 0%, transparent 60%);
+      animation: heroFog 9s ease-in-out infinite alternate;
+    }
+
+    .phil-silhouette {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      height: 80%;
+      background:
+        radial-gradient(ellipse 10% 60% at 45% 100%, #080f08 0%, transparent 80%),
+        radial-gradient(ellipse 6% 40% at 52% 100%, #0a1309 0%, transparent 70%);
+    }
+
+    .phil-text {
+      background: var(--deep-cedar);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 60px;
+      overflow: hidden;
+    }
+
+    .phil-text .eyebrow {
+      color: var(--sea-glass);
+      transition-delay: 0s;
+    }
+
+    .section-headline {
+      font-size: clamp(28px, 3vw, 40px);
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      line-height: 1.1;
+      text-transform: uppercase;
+      color: var(--mist-white);
+      margin-bottom: 24px;
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 400ms ease, transform 400ms ease;
+    }
+
+    .section-headline.revealed {
       opacity: 1;
       transform: translateX(0);
     }
-  }
 
-  .eyebrow {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    color: var(--sea-glass);
-    opacity: 0;
-    transform: translateY(20px);
-    animation: eyebrowSlide 0.8s ease-out 1.2s forwards;
-  }
-
-  @keyframes eyebrowSlide {
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .hero-headline {
-    font-size: clamp(40px, 5.5vw, 64px);
-    font-weight: 300;
-    letter-spacing: 0.06em;
-    line-height: 1.05;
-    color: var(--mist-white);
-    text-transform: uppercase;
-    margin-bottom: 24px;
-    opacity: 0;
-    transform: translateY(30px);
-    animation: headlineSlide 0.8s ease-out 1.4s forwards;
-  }
-
-  @keyframes headlineSlide {
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .hero-sub {
-    font-size: 18px;
-    font-weight: 300;
-    color: var(--driftwood);
-    line-height: 1.6;
-    margin-bottom: 40px;
-    max-width: 480px;
-    opacity: 0;
-    transform: translateY(25px);
-    animation: subSlide 0.8s ease-out 1.6s forwards;
-  }
-
-  @keyframes subSlide {
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .btn-ghost {
-    display: inline-block;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--mist-white);
-    text-decoration: none;
-    border: 1.5px solid var(--sea-glass);
-    padding: 14px 32px;
-    opacity: 0;
-    transform: translateY(15px);
-    animation: ctaSlide 0.8s ease-out 1.8s forwards;
-    transition: all 300ms ease;
-  }
-
-  @keyframes ctaSlide {
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .btn-ghost:hover {
-    background: rgba(184,212,206,0.2);
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(184,212,206,0.15);
-  }
-
-  /* ─── SCROLL SECTION ANIMATIONS ─── */
-  [data-scroll],
-  [data-scroll-right] {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 700ms cubic-bezier(0.34, 1.56, 0.64, 1), transform 700ms cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  [data-scroll].revealed,
-  [data-scroll-right].revealed {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  [data-scroll-right] {
-    transform: translateX(-40px);
-  }
-
-  [data-scroll-right].revealed {
-    transform: translateX(0);
-  }
-
-  /* Section entrance animations */
-  section {
-    opacity: 0;
-    animation: sectionFadeIn 0.8s ease-out forwards;
-  }
-
-  section:nth-of-type(1) { animation-delay: 0s; }
-  section:nth-of-type(2) { animation-delay: 0.2s; }
-  section:nth-of-type(3) { animation-delay: 0.4s; }
-  section:nth-of-type(4) { animation-delay: 0.6s; }
-  section:nth-of-type(5) { animation-delay: 0.8s; }
-  section:nth-of-type(6) { animation-delay: 1s; }
-  section:nth-of-type(7) { animation-delay: 1.2s; }
-
-  @keyframes sectionFadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  .btn-filled {
-    display: inline-block;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--deep-cedar);
-    text-decoration: none;
-    background: var(--sea-glass);
-    padding: 14px 32px;
-    transition: background 300ms ease, transform 300ms ease, box-shadow 300ms ease;
-  }
-
-  .btn-filled:hover {
-    background: #a4c4be;
-    transform: translateY(-3px);
-    box-shadow: 0 12px 35px rgba(184,212,206,0.25);
-  }
-
-  /* ─── PHILOSOPHY SECTION ─── */
-  #philosophy {
-    display: grid;
-    grid-template-columns: 60% 40%;
-    min-height: 70vh;
-  }
-
-  .phil-photo {
-    position: relative;
-    overflow: hidden;
-    background:
-      radial-gradient(ellipse 80% 80% at 40% 60%, #1a2e1c 0%, transparent 70%),
-      radial-gradient(ellipse 60% 50% at 70% 30%, #243a26 0%, transparent 60%),
-      linear-gradient(135deg, #0f1e10 0%, #2d3a2e 60%, #1c2a1d 100%);
-    min-height: 500px;
-  }
-
-  .phil-photo-fog {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 80% 40% at 50% 70%, rgba(184,212,206,0.07) 0%, transparent 60%);
-    animation: heroFog 9s ease-in-out infinite alternate;
-  }
-
-  .phil-silhouette {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    height: 80%;
-    background:
-      radial-gradient(ellipse 10% 60% at 45% 100%, #080f08 0%, transparent 80%),
-      radial-gradient(ellipse 6% 40% at 52% 100%, #0a1309 0%, transparent 70%);
-  }
-
-  .phil-text {
-    background: var(--deep-cedar);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 80px 60px;
-    overflow: hidden;
-  }
-
-  .phil-text .eyebrow {
-    color: var(--sea-glass);
-    transition-delay: 0s;
-  }
-
-  .section-headline {
-    font-size: clamp(28px, 3vw, 40px);
-    font-weight: 300;
-    letter-spacing: 0.06em;
-    line-height: 1.1;
-    text-transform: uppercase;
-    color: var(--mist-white);
-    margin-bottom: 24px;
-    opacity: 0;
-    transform: translateX(40px);
-    transition: opacity 400ms ease, transform 400ms ease;
-  }
-
-  .section-headline.revealed { opacity: 1; transform: translateX(0); }
-
-  .section-body {
-    font-size: 15px;
-    font-weight: 400;
-    color: rgba(240,237,232,0.85);
-    line-height: 1.8;
-    max-width: 65ch;
-    opacity: 0;
-    transform: translateX(40px);
-    transition: opacity 500ms ease 0.1s, transform 500ms ease 0.1s;
-  }
-
-  .section-body.revealed { opacity: 1; transform: translateX(0); }
-
-  /* ─── PROGRAMS ─── */
-  #programs {
-    background: var(--deep-cedar);
-    padding: 100px 80px;
-  }
-
-  .section-eyebrow-center {
-    text-align: center;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--driftwood);
-    margin-bottom: 60px;
-    opacity: 0;
-    transform: translateY(15px);
-    transition: opacity 400ms ease, transform 400ms ease;
-  }
-
-  .section-eyebrow-center.revealed { opacity: 1; transform: translateY(0); }
-
-  .programs-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
-  }
-
-  .program-card {
-    position: relative;
-    aspect-ratio: 3/4;
-    overflow: hidden;
-    cursor: pointer;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 400ms ease, transform 400ms ease, border-color 300ms ease, box-shadow 300ms ease;
-    border: 1px solid rgba(240,237,232,0.1);
-  }
-
-  .program-card.revealed { opacity: 1; transform: translateY(0); }
-
-  .program-card:hover {
-    border-color: rgba(240,237,232,0.3);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-    transform: translateY(-8px);
-  }
-
-  .program-card-bg-1 {
-    background:
-      radial-gradient(ellipse 70% 80% at 40% 60%, #1a2e1c 0%, transparent 65%),
-      radial-gradient(ellipse 50% 40% at 70% 20%, #3a5a3c 0%, transparent 55%),
-      linear-gradient(180deg, #1f2f20 0%, #2d3a2e 100%);
-  }
-
-  .program-card-bg-2 {
-    background:
-      radial-gradient(ellipse 80% 70% at 60% 50%, #243a26 0%, transparent 65%),
-      radial-gradient(ellipse 40% 50% at 20% 30%, #1a2819 0%, transparent 55%),
-      linear-gradient(200deg, #2d3a2e 0%, #1c2a1d 100%);
-  }
-
-  .program-card-bg-3 {
-    background:
-      radial-gradient(ellipse 60% 70% at 50% 70%, #1c3020 0%, transparent 65%),
-      radial-gradient(ellipse 70% 40% at 80% 20%, #3a5232 0%, transparent 55%),
-      linear-gradient(160deg, #243322 0%, #2d3a2e 100%);
-  }
-
-  .program-card-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(45,58,46,0.85) 0%, rgba(45,58,46,0.2) 50%, transparent 80%);
-    transition: background 200ms;
-  }
-
-  .program-card:hover .program-card-overlay {
-    background: linear-gradient(to top, rgba(45,58,46,0.92) 0%, rgba(45,58,46,0.3) 55%, transparent 85%);
-  }
-
-  .program-card-border {
-    position: absolute;
-    inset: 0;
-    border: 2px solid transparent;
-    transition: border-color 200ms;
-    pointer-events: none;
-  }
-
-  .program-card:hover .program-card-border {
-    border-color: rgba(184,212,206,0.5);
-  }
-
-  .program-card-content {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 32px;
-  }
-
-  .program-card-title {
-    font-size: 22px;
-    font-weight: 300;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--mist-white);
-    margin-bottom: 8px;
-  }
-
-  .program-card-desc {
-    font-size: 12px;
-    font-weight: 400;
-    color: var(--driftwood);
-    letter-spacing: 0.02em;
-    line-height: 1.6;
-  }
-
-  .programs-see-all {
-    text-align: center;
-    margin-top: 48px;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.2em;
-    color: var(--driftwood);
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: color 150ms;
-  }
-
-  .programs-see-all:hover { color: var(--mist-white); }
-
-  /* ─── MANIFESTO ─── */
-  #manifesto {
-    position: relative;
-    padding: 140px 80px;
-    text-align: center;
-    overflow: hidden;
-  }
-
-  .manifesto-bg {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 80% 100% at 50% 50%, #1a2e1c 0%, transparent 70%),
-      radial-gradient(ellipse 100% 60% at 20% 30%, #0f1e10 0%, transparent 60%),
-      radial-gradient(ellipse 70% 80% at 80% 70%, #1c2a1d 0%, transparent 65%),
-      linear-gradient(180deg, #1a2819 0%, #0d1a0e 100%);
-  }
-
-  .manifesto-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(45,58,46,0.65);
-  }
-
-  .manifesto-grain {
-    position: absolute;
-    inset: 0;
-    opacity: 0.03;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-size: 200px 200px;
-  }
-
-  .manifesto-content {
-    position: relative;
-    z-index: 2;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  .manifesto-quote {
-    font-size: clamp(24px, 3.5vw, 40px);
-    font-weight: 300;
-    letter-spacing: 0.07em;
-    line-height: 1.3;
-    text-transform: uppercase;
-    color: var(--mist-white);
-  }
-
-  .manifesto-line {
-    display: block;
-    opacity: 0;
-    transform: translateY(15px);
-    transition: opacity 350ms ease, transform 350ms ease;
-  }
-
-  .manifesto-line.revealed { opacity: 1; transform: translateY(0); }
-
-  /* ─── TESTIMONIALS ─── */
-  #testimonials {
-    background: var(--deep-cedar);
-    padding: 100px 80px;
-  }
-
-  .testimonials-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    margin-top: 60px;
-  }
-
-  .testimonial-card {
-    border: 1px solid rgba(240,237,232,0.1);
-    padding: 40px 32px;
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 500ms ease, transform 500ms ease, border-color 300ms ease, box-shadow 300ms ease, background 300ms ease;
-  }
-
-  .testimonial-card.revealed { opacity: 1; transform: translateY(0); }
-
-  .testimonial-card:hover {
-    border-color: rgba(184,212,206,0.3);
-    background: rgba(184,212,206,0.05);
-    box-shadow: 0 15px 40px rgba(184,212,206,0.1);
-    transform: translateY(-8px);
-  }
-
-  .testimonial-quote {
-    font-size: 15px;
-    font-weight: 400;
-    color: rgba(240,237,232,0.85);
-    line-height: 1.8;
-    margin-bottom: 24px;
-    font-style: italic;
-  }
-
-  .testimonial-attr {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--driftwood);
-    letter-spacing: 0.05em;
-  }
-
-  .testimonial-pill {
-    display: inline-block;
-    margin-top: 12px;
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--sea-glass);
-    border: 1px solid rgba(184,212,206,0.4);
-    padding: 4px 10px;
-    border-radius: 100px;
-  }
-
-  .stats-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 40px;
-    margin-top: 70px;
-    padding-top: 60px;
-    border-top: 1px solid rgba(91,107,74,0.3);
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 600ms ease, transform 600ms ease;
-  }
-
-  .stats-row.revealed {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .stat-item { text-align: center; }
-
-  .stat-number {
-    font-size: 48px;
-    font-weight: 300;
-    letter-spacing: 0.05em;
-    color: var(--mist-white);
-    line-height: 1;
-    margin-bottom: 8px;
-  }
-
-  .stat-label {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--driftwood);
-  }
-
-  .stat-dot {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: var(--driftwood);
-    opacity: 0.4;
-  }
-
-  /* ─── COMMUNITY ─── */
-  #community {
-    position: relative;
-    min-height: 80vh;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-  }
-
-  .community-bg {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 100% 80% at 20% 50%, #1a2e1c 0%, transparent 60%),
-      radial-gradient(ellipse 70% 100% at 70% 60%, #243a26 0%, transparent 65%),
-      radial-gradient(ellipse 50% 40% at 90% 20%, #3a5a3c 0%, transparent 55%),
-      linear-gradient(135deg, #0f1e10 0%, #2d3a2e 70%, #1c3020 100%);
-  }
-
-  .community-gradient {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to left, rgba(45,58,46,0.85) 0%, rgba(45,58,46,0.4) 50%, transparent 80%);
-  }
-
-  .community-content {
-    position: relative;
-    z-index: 2;
-    padding: 100px 80px;
-    margin-left: auto;
-    max-width: 600px;
-  }
-
-  .community-content .eyebrow { color: var(--sea-glass); }
-
-  .community-headline {
-    font-size: clamp(32px, 4vw, 48px);
-    font-weight: 300;
-    letter-spacing: 0.07em;
-    line-height: 1.1;
-    text-transform: uppercase;
-    color: var(--mist-white);
-    margin-bottom: 24px;
-    opacity: 0;
-    transform: translateX(40px);
-    transition: opacity 400ms ease 0.1s, transform 400ms ease 0.1s;
-  }
-
-  .community-headline.revealed { opacity: 1; transform: translateX(0); }
-
-  .community-body {
-    font-size: 15px;
-    color: rgba(240,237,232,0.85);
-    line-height: 1.8;
-    margin-bottom: 32px;
-    opacity: 0;
-    transform: translateX(40px);
-    transition: opacity 400ms ease 0.2s, transform 400ms ease 0.2s;
-  }
-
-  .community-body.revealed { opacity: 1; transform: translateX(0); }
-
-  .pills-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 36px;
-  }
-
-  .location-pill {
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--sea-glass);
-    border: 1px solid rgba(184,212,206,0.5);
-    padding: 6px 14px;
-    border-radius: 100px;
-    opacity: 0;
-    transform: translateX(20px);
-    transition: opacity 300ms ease, transform 300ms ease, background 300ms ease, border-color 300ms ease;
-    cursor: pointer;
-  }
-
-  .location-pill.revealed { opacity: 1; transform: translateX(0); }
-
-  .location-pill:hover {
-    background: rgba(184,212,206,0.15);
-    border-color: rgba(184,212,206,0.8);
-    transform: translateX(4px);
-  }
-
-  .community-cta {
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--sea-glass);
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 400ms ease 0.3s, transform 400ms ease 0.3s, color 300ms ease;
-  }
-
-  .community-cta.revealed {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .community-cta:hover {
-    color: var(--mist-white);
-    transform: translateX(6px);
-  }
-
-  /* ─── CTA CLOSER ─── */
-  #cta-closer {
-    position: relative;
-    height: 90vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-
-  .cta-bg {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 90% 100% at 50% 40%, #1a2e1c 0%, transparent 65%),
-      radial-gradient(ellipse 70% 70% at 80% 70%, #1c3020 0%, transparent 60%),
-      radial-gradient(ellipse 60% 80% at 10% 60%, #0d1a0e 0%, transparent 65%),
-      linear-gradient(180deg, #0a1509 0%, #1a2819 50%, #2d3a2e 100%);
-  }
-
-  .cta-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(45,58,46,0.55);
-  }
-
-  .cta-content {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    max-width: 680px;
-    padding: 0 40px;
-  }
-
-  .cta-headline {
-    font-size: clamp(36px, 5vw, 64px);
-    font-weight: 300;
-    letter-spacing: 0.07em;
-    line-height: 1.05;
-    text-transform: uppercase;
-    color: var(--mist-white);
-    margin-bottom: 24px;
-    opacity: 0;
-    transform: translateY(15px);
-    transition: opacity 500ms ease, transform 500ms ease;
-  }
-
-  .cta-headline.revealed { opacity: 1; transform: translateY(0); }
-
-  .cta-sub {
-    font-size: 15px;
-    font-weight: 400;
-    color: var(--driftwood);
-    line-height: 1.7;
-    margin-bottom: 44px;
-    opacity: 0;
-    transition: opacity 400ms ease 0.15s;
-  }
-
-  .cta-sub.revealed { opacity: 1; }
-
-  .cta-btn-wrap {
-    opacity: 0;
-    transform: scale(0.95);
-    transition: opacity 400ms ease 0.3s, transform 400ms ease 0.3s;
-  }
-
-  .cta-btn-wrap.revealed { opacity: 1; transform: scale(1); }
-
-  /* ─── FOOTER ─── */
-  footer {
-    background: var(--deep-cedar);
-    padding: 80px 80px 40px;
-  }
-
-  .footer-inner {
-    border-top: 1px solid rgba(91,107,74,0.3);
-    padding-top: 60px;
-  }
-
-  .footer-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 60px;
-  }
-
-  .footer-brand {}
-
-  .footer-logo-ring {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    border: 1px solid rgba(196,181,162,0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 16px;
-  }
-
-  .footer-logo-text {
-    font-size: 7px;
-    font-weight: 600;
-    letter-spacing: 2.5px;
-    color: var(--driftwood);
-    text-transform: uppercase;
-    text-align: center;
-    line-height: 1.5;
-  }
-
-  .footer-tagline {
-    font-size: 13px;
-    font-weight: 400;
-    color: var(--driftwood);
-    letter-spacing: 0.05em;
-  }
-
-  .footer-nav {
-    display: flex;
-    gap: 32px;
-  }
-
-  .footer-nav a {
-    font-size: 11px;
-    font-weight: 400;
-    color: var(--driftwood);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: color 300ms ease, transform 300ms ease;
-    display: inline-block;
-  }
-
-  .footer-nav a:hover {
-    color: var(--mist-white);
-    transform: translateX(3px);
-  }
-
-  .footer-bottom {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 32px;
-    border-top: 1px solid rgba(91,107,74,0.2);
-  }
-
-  .footer-copy {
-    font-size: 11px;
-    font-weight: 400;
-    color: rgba(196,181,162,0.5);
-    letter-spacing: 0.08em;
-  }
-
-  .footer-social {
-    display: flex;
-    gap: 20px;
-  }
-
-  .footer-social a {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--driftwood);
-    text-decoration: none;
-    transition: color 300ms ease, transform 300ms ease;
-    display: inline-block;
-  }
-
-  .footer-social a:hover {
-    color: var(--mist-white);
-    transform: translateY(-2px);
-  }
-
-  /* ─── RESPONSIVE ─── */
-  @media (max-width: 900px) {
-    nav#nav { padding: 20px 24px; }
-    .nav-links { display: none; }
-    #hero { padding: 0 32px 60px; }
-    .hero-image { display: none; }
-    #philosophy { grid-template-columns: 1fr; }
-    .phil-photo { min-height: 300px; }
-    #programs { padding: 80px 24px; }
-    .programs-grid { grid-template-columns: 1fr; gap: 2px; }
-    .program-card { aspect-ratio: 4/3; }
-    #manifesto { padding: 100px 32px; }
-    #testimonials { padding: 80px 24px; }
-    .testimonials-grid { grid-template-columns: 1fr; }
-    .stats-row { flex-wrap: wrap; gap: 32px; }
-    .community-content { padding: 80px 32px; max-width: 100%; }
-    footer { padding: 60px 24px 32px; }
-    .footer-top { flex-direction: column; gap: 40px; }
-    .footer-nav { flex-wrap: wrap; gap: 20px; }
-    .hero-headline { font-size: 38px; }
-    .section-headline { font-size: 28px; }
-
-    /* Trail rail moves to the BOTTOM as a horizontal capsule */
-    body { padding-bottom: 84px; }
-
-    #trail-rail {
-      top: auto;
-      bottom: 16px;
-      right: 50%;
-      left: auto;
-      transform: translateX(50%);
-      flex-direction: row;
-      gap: 16px;
-      padding: 12px 20px;
+    .section-body {
+      font-size: 15px;
+      font-weight: 400;
+      color: rgba(240, 237, 232, 0.85);
+      line-height: 1.8;
+      max-width: 65ch;
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 500ms ease 0.1s, transform 500ms ease 0.1s;
     }
-    .rail-track {
-      top: 50%;
-      bottom: auto;
-      left: 20px;
-      right: 20px;
-      width: auto;
-      height: 2px;
-      transform: translateY(-50%);
+
+    .section-body.revealed {
+      opacity: 1;
+      transform: translateX(0);
     }
-    .rail-fill {
-      top: 0;
+
+    /* ─── PROGRAMS ─── */
+    #programs {
+      background: var(--deep-cedar);
+      padding: 100px 80px;
+    }
+
+    .section-eyebrow-center {
+      text-align: center;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--driftwood);
+      margin-bottom: 60px;
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 400ms ease, transform 400ms ease;
+    }
+
+    .section-eyebrow-center.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .programs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .program-card {
+      position: relative;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 400ms ease, transform 400ms ease, border-color 300ms ease, box-shadow 300ms ease;
+      border: 1px solid rgba(240, 237, 232, 0.1);
+    }
+
+    .program-card.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .program-card:hover {
+      border-color: rgba(240, 237, 232, 0.3);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+      transform: translateY(-8px);
+    }
+
+    .program-card-bg-1 {
+      background:
+        radial-gradient(ellipse 70% 80% at 40% 60%, #1a2e1c 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 70% 20%, #3a5a3c 0%, transparent 55%),
+        linear-gradient(180deg, #1f2f20 0%, #2d3a2e 100%);
+    }
+
+    .program-card-bg-2 {
+      background:
+        radial-gradient(ellipse 80% 70% at 60% 50%, #243a26 0%, transparent 65%),
+        radial-gradient(ellipse 40% 50% at 20% 30%, #1a2819 0%, transparent 55%),
+        linear-gradient(200deg, #2d3a2e 0%, #1c2a1d 100%);
+    }
+
+    .program-card-bg-3 {
+      background:
+        radial-gradient(ellipse 60% 70% at 50% 70%, #1c3020 0%, transparent 65%),
+        radial-gradient(ellipse 70% 40% at 80% 20%, #3a5232 0%, transparent 55%),
+        linear-gradient(160deg, #243322 0%, #2d3a2e 100%);
+    }
+
+    .program-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(45, 58, 46, 0.85) 0%, rgba(45, 58, 46, 0.2) 50%, transparent 80%);
+      transition: background 200ms;
+    }
+
+    .program-card:hover .program-card-overlay {
+      background: linear-gradient(to top, rgba(45, 58, 46, 0.92) 0%, rgba(45, 58, 46, 0.3) 55%, transparent 85%);
+    }
+
+    .program-card-border {
+      position: absolute;
+      inset: 0;
+      border: 2px solid transparent;
+      transition: border-color 200ms;
+      pointer-events: none;
+    }
+
+    .program-card:hover .program-card-border {
+      border-color: rgba(184, 212, 206, 0.5);
+    }
+
+    .program-card-content {
+      position: absolute;
+      bottom: 0;
       left: 0;
-      width: 0;
-      height: 100%;
+      right: 0;
+      padding: 32px;
     }
-    .rail-node.active { transform: scale(1.15); }
-    .rail-label { display: none; }
-  }
-</style>
+
+    .program-card-title {
+      font-size: 22px;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mist-white);
+      margin-bottom: 8px;
+    }
+
+    .program-card-desc {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--driftwood);
+      letter-spacing: 0.02em;
+      line-height: 1.6;
+    }
+
+    .programs-see-all {
+      text-align: center;
+      margin-top: 48px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      color: var(--driftwood);
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: color 150ms;
+    }
+
+    .programs-see-all:hover {
+      color: var(--mist-white);
+    }
+
+    /* ─── MANIFESTO ─── */
+    #manifesto {
+      position: relative;
+      padding: 140px 80px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .manifesto-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 100% at 50% 50%, #1a2e1c 0%, transparent 70%),
+        radial-gradient(ellipse 100% 60% at 20% 30%, #0f1e10 0%, transparent 60%),
+        radial-gradient(ellipse 70% 80% at 80% 70%, #1c2a1d 0%, transparent 65%),
+        linear-gradient(180deg, #1a2819 0%, #0d1a0e 100%);
+    }
+
+    .manifesto-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(45, 58, 46, 0.65);
+    }
+
+    .manifesto-grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    .manifesto-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .manifesto-quote {
+      font-size: clamp(24px, 3.5vw, 40px);
+      font-weight: 300;
+      letter-spacing: 0.07em;
+      line-height: 1.3;
+      text-transform: uppercase;
+      color: var(--mist-white);
+    }
+
+    .manifesto-line {
+      display: block;
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 350ms ease, transform 350ms ease;
+    }
+
+    .manifesto-line.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── TESTIMONIALS ─── */
+    #testimonials {
+      background: var(--deep-cedar);
+      padding: 100px 80px;
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 60px;
+    }
+
+    .testimonial-card {
+      border: 1px solid rgba(240, 237, 232, 0.1);
+      padding: 40px 32px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 500ms ease, transform 500ms ease, border-color 300ms ease, box-shadow 300ms ease, background 300ms ease;
+    }
+
+    .testimonial-card.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .testimonial-card:hover {
+      border-color: rgba(184, 212, 206, 0.3);
+      background: rgba(184, 212, 206, 0.05);
+      box-shadow: 0 15px 40px rgba(184, 212, 206, 0.1);
+      transform: translateY(-8px);
+    }
+
+    .testimonial-quote {
+      font-size: 15px;
+      font-weight: 400;
+      color: rgba(240, 237, 232, 0.85);
+      line-height: 1.8;
+      margin-bottom: 24px;
+      font-style: italic;
+    }
+
+    .testimonial-attr {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--driftwood);
+      letter-spacing: 0.05em;
+    }
+
+    .testimonial-pill {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sea-glass);
+      border: 1px solid rgba(184, 212, 206, 0.4);
+      padding: 4px 10px;
+      border-radius: 100px;
+    }
+
+    .stats-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 70px;
+      padding-top: 60px;
+      border-top: 1px solid rgba(91, 107, 74, 0.3);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 600ms ease, transform 600ms ease;
+    }
+
+    .stats-row.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 48px;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: var(--mist-white);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--driftwood);
+    }
+
+    .stat-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--driftwood);
+      opacity: 0.4;
+    }
+
+    /* ─── COMMUNITY ─── */
+    #community {
+      position: relative;
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .community-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 100% 80% at 20% 50%, #1a2e1c 0%, transparent 60%),
+        radial-gradient(ellipse 70% 100% at 70% 60%, #243a26 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 90% 20%, #3a5a3c 0%, transparent 55%),
+        linear-gradient(135deg, #0f1e10 0%, #2d3a2e 70%, #1c3020 100%);
+    }
+
+    .community-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to left, rgba(45, 58, 46, 0.85) 0%, rgba(45, 58, 46, 0.4) 50%, transparent 80%);
+    }
+
+    .community-content {
+      position: relative;
+      z-index: 2;
+      padding: 100px 80px;
+      margin-left: auto;
+      max-width: 600px;
+    }
+
+    .community-content .eyebrow {
+      color: var(--sea-glass);
+    }
+
+    .community-headline {
+      font-size: clamp(32px, 4vw, 48px);
+      font-weight: 300;
+      letter-spacing: 0.07em;
+      line-height: 1.1;
+      text-transform: uppercase;
+      color: var(--mist-white);
+      margin-bottom: 24px;
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 400ms ease 0.1s, transform 400ms ease 0.1s;
+    }
+
+    .community-headline.revealed {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .community-body {
+      font-size: 15px;
+      color: rgba(240, 237, 232, 0.85);
+      line-height: 1.8;
+      margin-bottom: 32px;
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 400ms ease 0.2s, transform 400ms ease 0.2s;
+    }
+
+    .community-body.revealed {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .pills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 36px;
+    }
+
+    .location-pill {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sea-glass);
+      border: 1px solid rgba(184, 212, 206, 0.5);
+      padding: 6px 14px;
+      border-radius: 100px;
+      opacity: 0;
+      transform: translateX(20px);
+      transition: opacity 300ms ease, transform 300ms ease, background 300ms ease, border-color 300ms ease;
+      cursor: pointer;
+    }
+
+    .location-pill.revealed {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .location-pill:hover {
+      background: rgba(184, 212, 206, 0.15);
+      border-color: rgba(184, 212, 206, 0.8);
+      transform: translateX(4px);
+    }
+
+    .community-cta {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sea-glass);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 400ms ease 0.3s, transform 400ms ease 0.3s, color 300ms ease;
+    }
+
+    .community-cta.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .community-cta:hover {
+      color: var(--mist-white);
+      transform: translateX(6px);
+    }
+
+    /* ─── CTA CLOSER ─── */
+    #cta-closer {
+      position: relative;
+      height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .cta-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 90% 100% at 50% 40%, #1a2e1c 0%, transparent 65%),
+        radial-gradient(ellipse 70% 70% at 80% 70%, #1c3020 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 10% 60%, #0d1a0e 0%, transparent 65%),
+        linear-gradient(180deg, #0a1509 0%, #1a2819 50%, #2d3a2e 100%);
+    }
+
+    .cta-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(45, 58, 46, 0.55);
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 680px;
+      padding: 0 40px;
+    }
+
+    .cta-headline {
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 300;
+      letter-spacing: 0.07em;
+      line-height: 1.05;
+      text-transform: uppercase;
+      color: var(--mist-white);
+      margin-bottom: 24px;
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 500ms ease, transform 500ms ease;
+    }
+
+    .cta-headline.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .cta-sub {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--driftwood);
+      line-height: 1.7;
+      margin-bottom: 44px;
+      opacity: 0;
+      transition: opacity 400ms ease 0.15s;
+    }
+
+    .cta-sub.revealed {
+      opacity: 1;
+    }
+
+    .cta-btn-wrap {
+      opacity: 0;
+      transform: scale(0.95);
+      transition: opacity 400ms ease 0.3s, transform 400ms ease 0.3s;
+    }
+
+    .cta-btn-wrap.revealed {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--deep-cedar);
+      padding: 80px 80px 40px;
+    }
+
+    .footer-inner {
+      border-top: 1px solid rgba(91, 107, 74, 0.3);
+      padding-top: 60px;
+    }
+
+    .footer-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 60px;
+    }
+
+    .footer-brand {}
+
+    .footer-logo-ring {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: 1px solid rgba(196, 181, 162, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .footer-logo-text {
+      font-size: 7px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      color: var(--driftwood);
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .footer-tagline {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--driftwood);
+      letter-spacing: 0.05em;
+    }
+
+    .footer-nav {
+      display: flex;
+      gap: 32px;
+    }
+
+    .footer-nav a {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--driftwood);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: color 300ms ease, transform 300ms ease;
+      display: inline-block;
+    }
+
+    .footer-nav a:hover {
+      color: var(--mist-white);
+      transform: translateX(3px);
+    }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 32px;
+      border-top: 1px solid rgba(91, 107, 74, 0.2);
+    }
+
+    .footer-copy {
+      font-size: 11px;
+      font-weight: 400;
+      color: rgba(196, 181, 162, 0.5);
+      letter-spacing: 0.08em;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-social a {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--driftwood);
+      text-decoration: none;
+      transition: color 300ms ease, transform 300ms ease;
+      display: inline-block;
+    }
+
+    .footer-social a:hover {
+      color: var(--mist-white);
+      transform: translateY(-2px);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      nav#nav {
+        padding: 20px 24px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      #hero {
+        padding: 0 32px 60px;
+      }
+
+      .hero-image {
+        display: none;
+      }
+
+      #philosophy {
+        grid-template-columns: 1fr;
+      }
+
+      .phil-photo {
+        min-height: 300px;
+      }
+
+      #programs {
+        padding: 80px 24px;
+      }
+
+      .programs-grid {
+        grid-template-columns: 1fr;
+        gap: 2px;
+      }
+
+      .program-card {
+        aspect-ratio: 4/3;
+      }
+
+      #manifesto {
+        padding: 100px 32px;
+      }
+
+      #testimonials {
+        padding: 80px 24px;
+      }
+
+      .testimonials-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-row {
+        flex-wrap: wrap;
+        gap: 32px;
+      }
+
+      .community-content {
+        padding: 80px 32px;
+        max-width: 100%;
+      }
+
+      footer {
+        padding: 60px 24px 32px;
+      }
+
+      .footer-top {
+        flex-direction: column;
+        gap: 40px;
+      }
+
+      .footer-nav {
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .hero-headline {
+        font-size: 38px;
+      }
+
+      .section-headline {
+        font-size: 28px;
+      }
+
+      /* Trail rail moves to the BOTTOM as a horizontal capsule */
+      body {
+        padding-bottom: 84px;
+      }
+
+      #trail-rail {
+        top: auto;
+        bottom: 16px;
+        right: 50%;
+        left: auto;
+        transform: translateX(50%);
+        flex-direction: row;
+        gap: 16px;
+        padding: 12px 20px;
+      }
+
+      .rail-track {
+        top: 50%;
+        bottom: auto;
+        left: 20px;
+        right: 20px;
+        width: auto;
+        height: 2px;
+        transform: translateY(-50%);
+      }
+
+      .rail-fill {
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 100%;
+      }
+
+      .rail-node.active {
+        transform: scale(1.15);
+      }
+
+      .rail-label {
+        display: none;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- ─── TRAIL PROGRESS RAIL ─── -->
-<!-- Minimalist line-icons drawn in the brand asset style. Each one is a
+  <!-- ─── TRAIL PROGRESS RAIL ─── -->
+  <!-- Minimalist line-icons drawn in the brand asset style. Each one is a
      waypoint for a section; the connecting line fills as you scroll and
      the active section's icon lights up in sea-glass. -->
-<div id="trail-rail" aria-label="Page progress">
-  <div class="rail-track"><div class="rail-fill" id="rail-fill"></div></div>
+  <div id="trail-rail" aria-label="Page progress">
+    <div class="rail-track">
+      <div class="rail-fill" id="rail-fill"></div>
+    </div>
 
-  <!-- Home · Paw -->
-  <a class="rail-node" href="#hero" data-target="hero" aria-label="Home">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-      <ellipse cx="12" cy="16.2" rx="4.3" ry="3.4"/>
-      <circle cx="6.4" cy="11" r="1.7"/>
-      <circle cx="10" cy="7.8" r="1.8"/>
-      <circle cx="14" cy="7.8" r="1.8"/>
-      <circle cx="17.6" cy="11" r="1.7"/>
-    </svg>
-    <span class="rail-label">Home</span>
-  </a>
+    <!-- Home · Paw -->
+    <a class="rail-node" href="#hero" data-target="hero" aria-label="Home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+        stroke-linejoin="round">
+        <ellipse cx="12" cy="16.2" rx="4.3" ry="3.4" />
+        <circle cx="6.4" cy="11" r="1.7" />
+        <circle cx="10" cy="7.8" r="1.8" />
+        <circle cx="14" cy="7.8" r="1.8" />
+        <circle cx="17.6" cy="11" r="1.7" />
+      </svg>
+      <span class="rail-label">Home</span>
+    </a>
 
-  <!-- Approach · Pine -->
-  <a class="rail-node" href="#philosophy" data-target="philosophy" aria-label="Our Approach">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 3 L16 10 H8 Z"/>
-      <path d="M12 8 L18 16.5 H6 Z"/>
-      <line x1="12" y1="16.5" x2="12" y2="21"/>
-    </svg>
-    <span class="rail-label">Approach</span>
-  </a>
+    <!-- Approach · Pine -->
+    <a class="rail-node" href="#philosophy" data-target="philosophy" aria-label="Our Approach">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path d="M12 3 L16 10 H8 Z" />
+        <path d="M12 8 L18 16.5 H6 Z" />
+        <line x1="12" y1="16.5" x2="12" y2="21" />
+      </svg>
+      <span class="rail-label">Approach</span>
+    </a>
 
-  <!-- Programs · Compass -->
-  <a class="rail-node" href="#programs" data-target="programs" aria-label="Programs">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="8.5"/>
-      <path d="M12 5.5 L13.3 10.7 L18.5 12 L13.3 13.3 L12 18.5 L10.7 13.3 L5.5 12 L10.7 10.7 Z"/>
-    </svg>
-    <span class="rail-label">Programs</span>
-  </a>
+    <!-- Programs · Compass -->
+    <a class="rail-node" href="#programs" data-target="programs" aria-label="Programs">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+        stroke-linejoin="round">
+        <circle cx="12" cy="12" r="8.5" />
+        <path d="M12 5.5 L13.3 10.7 L18.5 12 L13.3 13.3 L12 18.5 L10.7 13.3 L5.5 12 L10.7 10.7 Z" />
+      </svg>
+      <span class="rail-label">Programs</span>
+    </a>
 
-  <!-- Manifesto · Mountain -->
-  <a class="rail-node" href="#manifesto" data-target="manifesto" aria-label="Manifesto">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M2.5 19 L9.5 7 L13.5 13 L16 8.5 L21.5 19 Z"/>
-    </svg>
-    <span class="rail-label">Manifesto</span>
-  </a>
+    <!-- Manifesto · Mountain -->
+    <a class="rail-node" href="#manifesto" data-target="manifesto" aria-label="Manifesto">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path d="M2.5 19 L9.5 7 L13.5 13 L16 8.5 L21.5 19 Z" />
+      </svg>
+      <span class="rail-label">Manifesto</span>
+    </a>
 
-  <!-- Stories · Coffee -->
-  <a class="rail-node" href="#testimonials" data-target="testimonials" aria-label="Stories">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M5 10 H16 V14.5 A4 4 0 0 1 12 18.5 H9 A4 4 0 0 1 5 14.5 Z"/>
-      <path d="M16 11 H18 A2.4 2.4 0 0 1 18 15.8 H16"/>
-      <path d="M8.5 4.5 C8.5 6 9.5 6 9.5 7.5"/>
-      <path d="M12 4.5 C12 6 13 6 13 7.5"/>
-    </svg>
-    <span class="rail-label">Stories</span>
-  </a>
+    <!-- Stories · Coffee -->
+    <a class="rail-node" href="#testimonials" data-target="testimonials" aria-label="Stories">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path d="M5 10 H16 V14.5 A4 4 0 0 1 12 18.5 H9 A4 4 0 0 1 5 14.5 Z" />
+        <path d="M16 11 H18 A2.4 2.4 0 0 1 18 15.8 H16" />
+        <path d="M8.5 4.5 C8.5 6 9.5 6 9.5 7.5" />
+        <path d="M12 4.5 C12 6 13 6 13 7.5" />
+      </svg>
+      <span class="rail-label">Stories</span>
+    </a>
 
-  <!-- Community · Wave -->
-  <a class="rail-node" href="#community" data-target="community" aria-label="Community">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M3 12 Q6 8 9 12 T15 12 T21 12"/>
-      <path d="M3 16.5 Q6 12.5 9 16.5 T15 16.5 T21 16.5"/>
-    </svg>
-    <span class="rail-label">Community</span>
-  </a>
+    <!-- Community · Wave -->
+    <a class="rail-node" href="#community" data-target="community" aria-label="Community">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path d="M3 12 Q6 8 9 12 T15 12 T21 12" />
+        <path d="M3 16.5 Q6 12.5 9 16.5 T15 16.5 T21 16.5" />
+      </svg>
+      <span class="rail-label">Community</span>
+    </a>
 
-  <!-- Book · Lighthouse -->
-  <a class="rail-node" href="#cta-closer" data-target="cta-closer" aria-label="Book">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M9.7 19 L10.6 10 H13.4 L14.3 19 Z"/>
-      <path d="M9.5 13 H14.5"/>
-      <path d="M10.4 10 V7 H13.6 V10"/>
-      <path d="M11 7 L12 5 L13 7"/>
-      <path d="M4.5 19 Q6.5 17.2 8.5 19 M15.5 19 Q17.5 17.2 19.5 19"/>
-    </svg>
-    <span class="rail-label">Book</span>
-  </a>
-</div>
+    <!-- Book · Lighthouse -->
+    <a class="rail-node" href="#cta-closer" data-target="cta-closer" aria-label="Book">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path d="M9.7 19 L10.6 10 H13.4 L14.3 19 Z" />
+        <path d="M9.5 13 H14.5" />
+        <path d="M10.4 10 V7 H13.6 V10" />
+        <path d="M11 7 L12 5 L13 7" />
+        <path d="M4.5 19 Q6.5 17.2 8.5 19 M15.5 19 Q17.5 17.2 19.5 19" />
+      </svg>
+      <span class="rail-label">Book</span>
+    </a>
+  </div>
 
-<!-- ─── LIGHT BURST ─── -->
-<div id="light-burst"></div>
+  <!-- ─── LIGHT BURST ─── -->
+  <div id="light-burst"></div>
 
-<!-- ─── INTRO OVERLAY ─── -->
-<div id="intro-overlay">
+  <!-- ─── INTRO OVERLAY ─── -->
+  <div id="intro-overlay">
 
-  <!-- YOUR VIDEO — place walking-vid.mp4 in the same folder as this HTML file.
+    <!-- YOUR VIDEO — place walking-vid.mp4 in the same folder as this HTML file.
        'loop' is intentionally removed so the clip plays once and the transition
        fires at its natural white-out instead of snapping back to the dark start. -->
-  <video
-    id="intro-video"
-    src="walking-vid.mp4"
-    autoplay
-    muted
-    playsinline
-    preload="auto"
-  ></video>
+    <video id="intro-video" src="walking-vid.mp4" autoplay muted playsinline preload="auto"></video>
 
-  <!-- Overlays on top of video -->
-  <div class="video-overlay"></div>
-  <div class="video-vignette"></div>
+    <!-- Overlays on top of video -->
+    <div class="video-overlay"></div>
+    <div class="video-vignette"></div>
 
-  <!-- Centred brand content -->
-  <div id="intro-content">
-    <div class="logo-ring">
-      <img src="logo.PNG" alt="Impackful K9 Logo">
+    <!-- Centred brand content -->
+    <div id="intro-content">
+      <div class="logo-ring">
+        <img src="logo.PNG" alt="Impackful K9 Logo">
+      </div>
+      <div class="intro-tagline">Calm is a skill.</div>
+      <div class="intro-sub">Impackful K9 · Dog Training · Lower Mainland, BC</div>
     </div>
-    <div class="intro-tagline">Calm is a skill.</div>
-    <div class="intro-sub">Impackful K9 · Dog Training · Lower Mainland, BC</div>
+
+    <!-- Enter prompt -->
+    <div class="scroll-hint" id="scroll-hint" onclick="triggerTransition()">
+      <span>Enter</span>
+      <div class="scroll-line"></div>
+    </div>
   </div>
 
-  <!-- Enter prompt -->
-  <div class="scroll-hint" id="scroll-hint" onclick="triggerTransition()">
-    <span>Enter</span>
-    <div class="scroll-line"></div>
-  </div>
-</div>
+  <!-- ─── MAIN SITE ─── -->
+  <div id="main-site">
 
-<!-- ─── MAIN SITE ─── -->
-<div id="main-site">
+    <!-- Navigation -->
+    <nav id="nav">
+      <div class="nav-logo">
+        <img src="logo.PNG" alt="Impackful K9 Logo">
+      </div>
+      <ul class="nav-links">
+        <li><a href="#" class="active">Home</a></li>
+        <li><a href="#">Programs</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Community</a></li>
+        <li><a href="#">Stories</a></li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <button id="theme-toggle" aria-label="Toggle dark mode" style="
+    width:36px;height:36px;border-radius:50%;
+    border:1.5px solid rgba(184,212,206,0.5);
+    background:transparent;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--mist-white);transition:border-color 200ms,background 200ms;
+  ">
+          <svg id="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.8" stroke-linecap="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z" /></svg>
+          <svg id="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.8" stroke-linecap="round" style="display:none">
+            <circle cx="12" cy="12" r="4" />
+            <path
+              d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M2 12h2m16 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+          </svg>
+        </button>
+      </div>
+    </nav>
 
-  <!-- Navigation -->
-  <nav id="nav">
-    <div class="nav-logo">
-      <img src="logo.PNG" alt="Impackful K9 Logo">
-    </div>
-    <ul class="nav-links">
-      <li><a href="#" class="active">Home</a></li>
-      <li><a href="#">Programs</a></li>
-      <li><a href="#">About</a></li>
-      <li><a href="#">Community</a></li>
-      <li><a href="#">Stories</a></li>
-    </ul>
-    <a href="#" class="nav-book">Book Free Consult</a>
-  </nav>
+    <!-- Hero -->
+    <section id="hero">
+      <div class="hero-bg grad-cedar"></div>
+      <div class="hero-depth"></div>
+      <div class="hero-fog"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <div class="eyebrow" id="h-eyebrow">Impackful K9 · Dog Training</div>
+        <h1 class="hero-headline" id="h-headline">Calm is<br>a skill.</h1>
+        <p class="hero-sub" id="h-sub">We’re not just dog trainers, we’re relationship coaches. We help you learn how to
+          better understand your dog's needs and behaviours, build trust and enhance communication.</p>
+        <a href="#" class="btn-ghost" id="h-cta">Join our Pack</a>
+      </div>
 
-  <!-- Hero -->
-  <section id="hero">
-    <div class="hero-bg grad-cedar"></div>
-    <div class="hero-depth"></div>
-    <div class="hero-fog"></div>
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <div class="eyebrow" id="h-eyebrow">Impackful K9 · Dog Training</div>
-      <h1 class="hero-headline" id="h-headline">Calm is<br>a skill.</h1>
-      <p class="hero-sub" id="h-sub">We’re not just dog trainers, we’re relationship coaches. We help you learn how to better understand your dog's needs and behaviours, build trust and enhance communication.</p>
-      <a href="#" class="btn-ghost" id="h-cta">Join our Pack</a>
-    </div>
-    <!-- Gradient preview picker (design tool) -->
-    <div id="gradient-picker">
-      <span class="picker-heading">Gradient</span>
-      <div class="picker-divider"></div>
-      <div class="picker-swatches">
-        <div class="picker-swatch active" data-grad="cedar"    data-label="Deep Cedar"  style="background:#2D3A2E;"></div>
-        <div class="picker-swatch"        data-grad="bark"     data-label="Cedar Bark"  style="background:#6B4A3A;"></div>
-        <div class="picker-swatch"        data-grad="seaglass" data-label="Sea Glass"   style="background:#B8D4CE;"></div>
-        <div class="picker-swatch"        data-grad="mist"     data-label="Mist White"  style="background:#F0EDE8; border-color:rgba(45,58,46,0.2);"></div>
-        <div class="picker-swatch"        data-grad="drift"    data-label="Driftwood"   style="background:#C4B5A2;"></div>
-      </div>
-    </div>
+      <!-- Hero Image - Replace src with your dog training photo URL -->
+      <img src="personwithgerman.png" alt="Dog training" class="hero-image">
+    </section>
 
-    <!-- Hero Image - Replace src with your dog training photo URL -->
-    <img src="personwithgerman.png" alt="Dog training" class="hero-image">
-  </section>
+    <!-- Philosophy -->
+    <section id="philosophy">
+      <div class="phil-photo">
+        <div class="phil-photo-fog"></div>
+        <div class="phil-silhouette"></div>
+      </div>
+      <div class="phil-text">
+        <div class="eyebrow" data-scroll>Our Approach</div>
+        <h2 class="section-headline" data-scroll-right>Structure<br>meets stillness.</h2>
+        <p class="section-body" data-scroll-right>We don't chase tired dogs. We build calm ones. Through structured
+          training, real-world exposure, and intentional community, your dog learns to move through the world with
+          confidence — and so do you.</p>
+      </div>
+    </section>
 
-  <!-- Philosophy -->
-  <section id="philosophy">
-    <div class="phil-photo">
-      <div class="phil-photo-fog"></div>
-      <div class="phil-silhouette"></div>
-    </div>
-    <div class="phil-text">
-      <div class="eyebrow" data-scroll>Our Approach</div>
-      <h2 class="section-headline" data-scroll-right>Structure<br>meets stillness.</h2>
-      <p class="section-body" data-scroll-right>We don't chase tired dogs. We build calm ones. Through structured training, real-world exposure, and intentional community, your dog learns to move through the world with confidence — and so do you.</p>
-    </div>
-  </section>
-
-  <!-- Programs -->
-  <section id="programs">
-    <div class="section-eyebrow-center" data-scroll>What we offer</div>
-    <div class="programs-grid">
-      <div class="program-card" data-stagger="0">
-        <div class="program-card-bg program-card-bg-1"></div>
-        <div class="program-card-overlay"></div>
-        <div class="program-card-border"></div>
-        <div class="program-card-content">
-          <div class="program-card-title">Structured Training</div>
-          <div class="program-card-desc">Private sessions built around your dog's actual life — not the ideal version of it.</div>
-        </div>
-      </div>
-      <div class="program-card" data-stagger="1">
-        <div class="program-card-bg program-card-bg-2"></div>
-        <div class="program-card-overlay"></div>
-        <div class="program-card-border"></div>
-        <div class="program-card-content">
-          <div class="program-card-title">Pack Walks</div>
-          <div class="program-card-desc">Group walks at real Lower Mainland locations. Calm-state socialization, not chaos management.</div>
-        </div>
-      </div>
-      <div class="program-card" data-stagger="2">
-        <div class="program-card-bg program-card-bg-3"></div>
-        <div class="program-card-overlay"></div>
-        <div class="program-card-border"></div>
-        <div class="program-card-content">
-          <div class="program-card-title">Café Socials</div>
-          <div class="program-card-desc">Urban exposure training at cafés and patios. Where good dogs meet the city.</div>
-        </div>
-      </div>
-    </div>
-    <div class="programs-see-all">See all programs →</div>
-  </section>
-
-  <!-- Manifesto -->
-  <section id="manifesto">
-    <div class="manifesto-bg"></div>
-    <div class="manifesto-overlay"></div>
-    <div class="manifesto-grain"></div>
-    <div class="manifesto-content">
-      <div class="manifesto-quote">
-        <span class="manifesto-line" data-manifesto="0">"Pack walks build calm dogs.</span>
-        <span class="manifesto-line" data-manifesto="1">Not because we tire them out —</span>
-        <span class="manifesto-line" data-manifesto="2">but because we teach them</span>
-        <span class="manifesto-line" data-manifesto="3">how to move through the world."</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- Testimonials -->
-  <section id="testimonials">
-    <div class="section-eyebrow-center" data-scroll>Real results</div>
-    <div class="testimonials-grid">
-      <div class="testimonial-card" data-stagger-test="0">
-        <div class="testimonial-quote">"My dog went from reactive chaos on the seawall to actually being present beside me. The pack walks changed both of us."</div>
-        <div class="testimonial-attr">— Sarah M., Belgian Malinois</div>
-        <div class="testimonial-pill">Stanley Park</div>
-      </div>
-      <div class="testimonial-card" data-stagger-test="1">
-        <div class="testimonial-quote">"Impackful K9 doesn't train dogs. They train the relationship. I finally understand what my dog needs from me."</div>
-        <div class="testimonial-attr">— James K., Labrador</div>
-        <div class="testimonial-pill">Lynn Valley</div>
-      </div>
-      <div class="testimonial-card" data-stagger-test="2">
-        <div class="testimonial-quote">"The café socials were a turning point. Leo sits through a full coffee now. Our whole morning routine is different."</div>
-        <div class="testimonial-attr">— Priya T., Golden Retriever</div>
-        <div class="testimonial-pill">Yaletown</div>
-      </div>
-    </div>
-    <div class="stats-row">
-      <div class="stat-item">
-        <div class="stat-number">5+</div>
-        <div class="stat-label">Years in the Lower Mainland</div>
-      </div>
-      <div class="stat-dot"></div>
-      <div class="stat-item">
-        <div class="stat-number">200+</div>
-        <div class="stat-label">Dogs trained</div>
-      </div>
-      <div class="stat-dot"></div>
-      <div class="stat-item">
-        <div class="stat-number">6</div>
-        <div class="stat-label">Pack walk locations</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Community -->
-  <section id="community">
-    <div class="community-bg"></div>
-    <div class="community-gradient"></div>
-    <div class="community-content">
-      <div class="eyebrow" data-scroll>The Community</div>
-      <h2 class="community-headline" data-scroll-right>Where trail<br>meets tide.</h2>
-      <p class="community-body" data-scroll-right>More than training — it's a community of owners who want to build something real with their dogs. Pack walks, café mornings, trail hikes. Real locations across the Lower Mainland.</p>
-      <div class="pills-row" id="pills-row">
-        <span class="location-pill">Stanley Park</span>
-        <span class="location-pill">Lighthouse Park</span>
-        <span class="location-pill">Lynn Valley</span>
-        <span class="location-pill">Deep Cove</span>
-        <span class="location-pill">Whytecliff Park</span>
-      </div>
-      <a href="#" class="community-cta" data-scroll>Join the pack →</a>
-    </div>
-  </section>
-
-  <!-- CTA Closer -->
-  <section id="cta-closer">
-    <div class="cta-bg"></div>
-    <div class="cta-overlay"></div>
-    <div class="cta-content">
-      <h2 class="cta-headline" data-scroll>Build a calmer dog.<br>Together.</h2>
-      <p class="cta-sub" data-scroll>A free 30-minute consultation to understand your dog, your goals, and the path forward.</p>
-      <div class="cta-btn-wrap" data-scroll>
-        <a href="#" class="btn-filled">Book Your Free Consultation</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <div class="footer-inner">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <div class="footer-logo-ring">
-            <div class="footer-logo-text">IK9</div>
+    <!-- Programs -->
+    <section id="programs">
+      <div class="section-eyebrow-center" data-scroll>What we offer</div>
+      <div class="programs-grid">
+        <div class="program-card" data-stagger="0">
+          <div class="program-card-bg program-card-bg-1"></div>
+          <div class="program-card-overlay"></div>
+          <div class="program-card-border"></div>
+          <div class="program-card-content">
+            <div class="program-card-title">Structured Training</div>
+            <div class="program-card-desc">Private sessions built around your dog's actual life — not the ideal version
+              of it.</div>
           </div>
-          <div class="footer-tagline">Calm is a skill.</div>
         </div>
-        <nav class="footer-nav">
-          <a href="#">Programs</a>
-          <a href="#">About</a>
-          <a href="#">Community</a>
-          <a href="#">Stories</a>
-          <a href="#">Book</a>
-        </nav>
-      </div>
-      <div class="footer-bottom">
-        <div class="footer-copy">© 2026 Impackful K9 Dog Training · Lower Mainland, BC</div>
-        <div class="footer-social">
-          <a href="#">Instagram</a>
-          <a href="#">TikTok</a>
+        <div class="program-card" data-stagger="1">
+          <div class="program-card-bg program-card-bg-2"></div>
+          <div class="program-card-overlay"></div>
+          <div class="program-card-border"></div>
+          <div class="program-card-content">
+            <div class="program-card-title">Pack Walks</div>
+            <div class="program-card-desc">Group walks at real Lower Mainland locations. Calm-state socialization, not
+              chaos management.</div>
+          </div>
+        </div>
+        <div class="program-card" data-stagger="2">
+          <div class="program-card-bg program-card-bg-3"></div>
+          <div class="program-card-overlay"></div>
+          <div class="program-card-border"></div>
+          <div class="program-card-content">
+            <div class="program-card-title">Café Socials</div>
+            <div class="program-card-desc">Urban exposure training at cafés and patios. Where good dogs meet the city.
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </footer>
+      <div class="programs-see-all">See all programs →</div>
+    </section>
 
-</div><!-- /main-site -->
+    <!-- Manifesto -->
+    <section id="manifesto">
+      <div class="manifesto-bg"></div>
+      <div class="manifesto-overlay"></div>
+      <div class="manifesto-grain"></div>
+      <div class="manifesto-content">
+        <div class="manifesto-quote">
+          <span class="manifesto-line" data-manifesto="0">"Pack walks build calm dogs.</span>
+          <span class="manifesto-line" data-manifesto="1">Not because we tire them out —</span>
+          <span class="manifesto-line" data-manifesto="2">but because we teach them</span>
+          <span class="manifesto-line" data-manifesto="3">how to move through the world."</span>
+        </div>
+      </div>
+    </section>
 
-<script>
+    <!-- Testimonials -->
+    <section id="testimonials">
+      <div class="section-eyebrow-center" data-scroll>Real results</div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card" data-stagger-test="0">
+          <div class="testimonial-quote">"My dog went from reactive chaos on the seawall to actually being present
+            beside me. The pack walks changed both of us."</div>
+          <div class="testimonial-attr">— Sarah M., Belgian Malinois</div>
+          <div class="testimonial-pill">Stanley Park</div>
+        </div>
+        <div class="testimonial-card" data-stagger-test="1">
+          <div class="testimonial-quote">"Impackful K9 doesn't train dogs. They train the relationship. I finally
+            understand what my dog needs from me."</div>
+          <div class="testimonial-attr">— James K., Labrador</div>
+          <div class="testimonial-pill">Lynn Valley</div>
+        </div>
+        <div class="testimonial-card" data-stagger-test="2">
+          <div class="testimonial-quote">"The café socials were a turning point. Leo sits through a full coffee now. Our
+            whole morning routine is different."</div>
+          <div class="testimonial-attr">— Priya T., Golden Retriever</div>
+          <div class="testimonial-pill">Yaletown</div>
+        </div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-number">5+</div>
+          <div class="stat-label">Years in the Lower Mainland</div>
+        </div>
+        <div class="stat-dot"></div>
+        <div class="stat-item">
+          <div class="stat-number">200+</div>
+          <div class="stat-label">Dogs trained</div>
+        </div>
+        <div class="stat-dot"></div>
+        <div class="stat-item">
+          <div class="stat-number">6</div>
+          <div class="stat-label">Pack walk locations</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Community -->
+    <section id="community">
+      <div class="community-bg"></div>
+      <div class="community-gradient"></div>
+      <div class="community-content">
+        <div class="eyebrow" data-scroll>The Community</div>
+        <h2 class="community-headline" data-scroll-right>Where trail<br>meets tide.</h2>
+        <p class="community-body" data-scroll-right>More than training — it's a community of owners who want to build
+          something real with their dogs. Pack walks, café mornings, trail hikes. Real locations across the Lower
+          Mainland.</p>
+        <div class="pills-row" id="pills-row">
+          <span class="location-pill">Stanley Park</span>
+          <span class="location-pill">Lighthouse Park</span>
+          <span class="location-pill">Lynn Valley</span>
+          <span class="location-pill">Deep Cove</span>
+          <span class="location-pill">Whytecliff Park</span>
+        </div>
+        <a href="#" class="community-cta" data-scroll>Join the pack →</a>
+      </div>
+    </section>
+
+    <!-- CTA Closer -->
+    <section id="cta-closer">
+      <div class="cta-bg"></div>
+      <div class="cta-overlay"></div>
+      <div class="cta-content">
+        <h2 class="cta-headline" data-scroll>Build a calmer dog.<br>Together.</h2>
+        <p class="cta-sub" data-scroll>A free 30-minute consultation to understand your dog, your goals, and the path
+          forward.</p>
+        <div class="cta-btn-wrap" data-scroll>
+          <a href="#" class="btn-filled">Book Your Free Consultation</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <div class="footer-logo-ring">
+              <div class="footer-logo-text">IK9</div>
+            </div>
+            <div class="footer-tagline">Calm is a skill.</div>
+          </div>
+          <nav class="footer-nav">
+            <a href="#">Programs</a>
+            <a href="#">About</a>
+            <a href="#">Community</a>
+            <a href="#">Stories</a>
+            <a href="#">Book</a>
+          </nav>
+        </div>
+        <div class="footer-bottom">
+          <div class="footer-copy">© 2026 Impackful K9 Dog Training · Lower Mainland, BC</div>
+          <div class="footer-social">
+            <a href="#">Instagram</a>
+            <a href="#">TikTok</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div><!-- /main-site -->
+
+  <script>
+  // ── Theme toggle ──
+  const root = document.documentElement;
+  const toggleBtn = document.getElementById('theme-toggle');
+  const iconMoon = document.getElementById('icon-moon');
+  const iconSun  = document.getElementById('icon-sun');
+  const heroBg   = document.querySelector('#hero .hero-bg');
+  const heroEl   = document.getElementById('hero');
+
+  const GRADS = {
+    light: { cls: 'grad-mist',  light: true  },
+    dark:  { cls: 'grad-cedar', light: false },
+  };
+
+  function applyTheme(theme) {
+    root.setAttribute('data-theme', theme);
+    localStorage.setItem('ik9-theme', theme);
+
+    const g = GRADS[theme];
+    // swap hero gradient
+    ['grad-cedar','grad-bark','grad-seaglass','grad-mist','grad-drift']
+      .forEach(c => heroBg.classList.remove(c));
+    heroBg.classList.add(g.cls);
+    heroEl.classList.toggle('hero-light', g.light);
+
+    // swap icon
+    iconMoon.style.display = theme === 'dark'  ? 'none'  : 'block';
+    iconSun.style.display  = theme === 'light' ? 'none'  : 'block';
+
+    // toggle button color
+    toggleBtn.style.color = theme === 'light'
+      ? 'var(--deep-cedar)' : 'var(--mist-white)';
+    toggleBtn.style.borderColor = theme === 'light'
+      ? 'rgba(45,58,46,0.35)' : 'rgba(184,212,206,0.5)';
+  }
+
+  toggleBtn.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+  });
+
+  // restore saved theme (default: light)
+  const saved = localStorage.getItem('ik9-theme') || 'light';
+  applyTheme(saved);
+
   let transitionDone = false;
-
-  // Mark body as intro-mode on load
   document.body.classList.add('on-intro');
 
   const introVideo = document.getElementById('intro-video');
 
-  // ─── Transition ───
-  // 'fromWhiteout' is true when the clip reached its natural ending: the footage
-  // is already a white frame, so we DON'T pause it back to anything darker —
-  // we let it sit on the white frame while the matching light-burst takes over.
   function triggerTransition(fromWhiteout) {
     if (transitionDone) return;
     transitionDone = true;
-
     const burst = document.getElementById('light-burst');
     const intro = document.getElementById('intro-overlay');
     const main  = document.getElementById('main-site');
-
-    // If the user entered early (clip not yet at its white-out), nudge the
-    // playhead to the bright ending so whatever frame freezes under the burst
-    // is already light — keeps the handoff seamless regardless of timing.
     if (!fromWhiteout && introVideo && !isNaN(introVideo.duration)) {
-      try { introVideo.currentTime = Math.max(introVideo.currentTime, 7.8); } catch (e) {}
+      try { introVideo.currentTime = Math.max(introVideo.currentTime, 7.8); } catch(e) {}
     }
-
-    // Let overlays drop so the footage glows, then freeze on the bright frame.
     intro.classList.add('whiteout');
-    setTimeout(() => { try { introVideo.pause(); } catch (e) {} }, 60);
-
+    setTimeout(() => { try { introVideo.pause(); } catch(e) {} }, 60);
     burst.classList.add('active');
-
     setTimeout(() => {
       main.style.display = 'block';
       intro.style.opacity = '0';
       intro.style.transition = 'opacity 0.5s ease';
     }, 850);
-
-    setTimeout(() => {
-      main.classList.add('visible');
-    }, 900);
-
+    setTimeout(() => { main.classList.add('visible'); }, 900);
     setTimeout(() => {
       intro.style.display = 'none';
       burst.style.display = 'none';
@@ -1841,40 +2144,26 @@
     setTimeout(() => document.getElementById('h-cta').classList.add('revealed'), 900);
   }
 
-  // ─── Auto-trigger synced to the video's natural white-out ───
-  // The clip blows out to a white center with golden edges at ~7.8s. Firing the
-  // burst right then means the CSS light-burst opens in those exact tones and
-  // there's no visible seam between footage and transition.
-  const WHITEOUT_TIME = 7.8; // seconds — the frame where the gate light floods the screen
-
+  const WHITEOUT_TIME = 7.8;
   introVideo.addEventListener('timeupdate', () => {
     if (!transitionDone && introVideo.currentTime >= WHITEOUT_TIME) triggerTransition(true);
   });
-  // Fallbacks: if the clip ends, or if it can't play / timeupdate is throttled.
   introVideo.addEventListener('ended', () => { if (!transitionDone) triggerTransition(true); });
   setTimeout(() => { if (!transitionDone) triggerTransition(false); }, 9500);
-
-  // Click anywhere on the intro overlay (except the sound button) triggers transition.
   document.getElementById('intro-overlay').addEventListener('click', () => triggerTransition(false));
   document.addEventListener('keydown', () => { if (!transitionDone) triggerTransition(false); });
 
-  // ─── Nav scroll ───
   window.addEventListener('scroll', () => {
-    const nav = document.getElementById('nav');
-    if (window.scrollY > 80) nav.classList.add('scrolled');
-    else nav.classList.remove('scrolled');
+    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 80);
   });
 
-  // ─── Scroll-reveal observer ───
   const observerOptions = { threshold: 0.15 };
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
       const el = entry.target;
-
-      if (el.hasAttribute('data-scroll'))        el.classList.add('revealed');
-      if (el.hasAttribute('data-scroll-right'))  el.classList.add('revealed');
-
+      if (el.hasAttribute('data-scroll'))       el.classList.add('revealed');
+      if (el.hasAttribute('data-scroll-right')) el.classList.add('revealed');
       if (el.hasAttribute('data-manifesto')) {
         const idx = parseInt(el.getAttribute('data-manifesto'));
         setTimeout(() => el.classList.add('revealed'), idx * 200);
@@ -1890,12 +2179,9 @@
       observer.unobserve(el);
     });
   }, observerOptions);
+  document.querySelectorAll('[data-scroll],[data-scroll-right],[data-manifesto],[data-stagger],[data-stagger-test]')
+    .forEach(el => observer.observe(el));
 
-  document.querySelectorAll('[data-scroll], [data-scroll-right], [data-manifesto], [data-stagger], [data-stagger-test]').forEach(el => {
-    observer.observe(el);
-  });
-
-  // ─── Stats row animation ───
   const statsObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
@@ -1903,11 +2189,9 @@
       statsObserver.unobserve(entry.target);
     });
   }, { threshold: 0.2 });
-
   const statsRow = document.querySelector('.stats-row');
   if (statsRow) statsObserver.observe(statsRow);
 
-  // ─── Location pills cascade ───
   const pillsObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
@@ -1918,85 +2202,32 @@
       pillsObserver.unobserve(entry.target);
     });
   }, { threshold: 0.2 });
-
   const pillsRow = document.getElementById('pills-row');
   if (pillsRow) pillsObserver.observe(pillsRow);
 
-  // ─── GRADIENT PICKER ───
-  (function () {
-    const GRADS = {
-      cedar:    { cls: 'grad-cedar',    light: false },
-      bark:     { cls: 'grad-bark',     light: false },
-      seaglass: { cls: 'grad-seaglass', light: true  },
-      mist:     { cls: 'grad-mist',     light: true  },
-      drift:    { cls: 'grad-drift',    light: true  },
-    };
-    const heroBg = document.querySelector('#hero .hero-bg');
-    const heroEl = document.getElementById('hero');
-    const swatches = document.querySelectorAll('.picker-swatch');
-
-    swatches.forEach(sw => {
-      sw.addEventListener('click', () => {
-        const key = sw.dataset.grad;
-        const g = GRADS[key];
-
-        // swap gradient class
-        Object.values(GRADS).forEach(x => heroBg.classList.remove(x.cls));
-        heroBg.classList.add(g.cls);
-
-        // swap text contrast
-        heroEl.classList.toggle('hero-light', g.light);
-
-        // update active swatch
-        swatches.forEach(s => s.classList.remove('active'));
-        sw.classList.add('active');
-      });
-    });
-  })();
-
-  // Tracks scroll progress (fills the connecting line) and highlights the
-  // icon for whichever section is currently in view. Vertical on desktop,
-  // horizontal on mobile — the JS picks which dimension of the fill to set.
   (function() {
     const rail = document.getElementById('trail-rail');
     if (!rail) return;
-
     const fill     = document.getElementById('rail-fill');
     const nodes    = Array.from(rail.querySelectorAll('.rail-node'));
     const sections = nodes.map(n => document.getElementById(n.dataset.target));
-
-    function isMobile() {
-      return window.matchMedia('(max-width: 900px)').matches;
-    }
-
+    function isMobile() { return window.matchMedia('(max-width: 900px)').matches; }
     function update() {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const pct = docHeight > 0 ? Math.min(1, Math.max(0, scrollTop / docHeight)) : 0;
-
-      // Fill the trail line — height on desktop, width on mobile.
-      if (isMobile()) {
-        fill.style.height = '';
-        fill.style.width  = (pct * 100) + '%';
-      } else {
-        fill.style.width  = '';
-        fill.style.height = (pct * 100) + '%';
-      }
-
-      // Active section = last one whose top has crossed the marker line (~42% down).
+      if (isMobile()) { fill.style.height = ''; fill.style.width = (pct*100)+'%'; }
+      else            { fill.style.width  = ''; fill.style.height = (pct*100)+'%'; }
       const marker = window.innerHeight * 0.42;
       let activeIdx = 0;
       sections.forEach((sec, i) => {
         if (sec && sec.getBoundingClientRect().top <= marker) activeIdx = i;
       });
-
       nodes.forEach((n, i) => {
         n.classList.toggle('active', i === activeIdx);
         n.classList.toggle('passed', i < activeIdx);
       });
     }
-
-    // Smooth-scroll to a section when its icon is tapped.
     nodes.forEach(n => {
       n.addEventListener('click', (e) => {
         e.preventDefault();
@@ -2004,7 +2235,6 @@
         if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     });
-
     window.addEventListener('scroll', update, { passive: true });
     window.addEventListener('resize', update);
     update();
@@ -2012,4 +2242,5 @@
 </script>
 
 </body>
+
 </html>
