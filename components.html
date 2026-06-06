@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impackful K9 — Component Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+
+/* ─────────────────────────────────────────────────────
+   THE SEASONS BOLD  —  place files in /fonts/
+   Playfair Display (Google Fonts) is the fallback.
+───────────────────────────────────────────────────── */
+@font-face {
+  font-family: 'The Seasons';
+  src: local('The Seasons Bold'), local('TheSeasons-Bold'),
+       url('fonts/TheSeasons-Bold.woff2') format('woff2'),
+       url('fonts/TheSeasons-Bold.woff') format('woff');
+  font-weight: 400 900; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'The Seasons';
+  src: local('The Seasons Bold Italic'), local('TheSeasons-BoldIt'),
+       url('fonts/TheSeasons-BoldIt.woff2') format('woff2'),
+       url('fonts/TheSeasons-BoldIt.woff') format('woff');
+  font-weight: 400 900; font-style: italic; font-display: swap;
+}
+
+/* ═══════════════════════════════════════════════════
+   DESIGN TOKEN SYSTEM
+   Raw palette stays fixed.
+   Every component uses a semantic token.
+   Toggling [data-theme="dark"] on <html> redefines
+   the semantic tokens — nothing else needs changing.
+═══════════════════════════════════════════════════ */
+
+/* ── Raw palette (never override these) ── */
+:root {
+  --col-deep-cedar: #2D3A2E;
+  --col-moss:       #5B6B4A;
+  --col-bark:       #6B4A3A;
+  --col-sea:        #B8D4CE;
+  --col-sea-mid:    #7FA89E;
+  --col-paper:      #F0EDE8;
+  --col-paper-2:    #EAE6DF;
+  --col-sand:       #C4B5A2;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --pad: clamp(24px, 5vw, 72px);
+}
+
+/* ── Light mode semantic tokens ── */
+[data-theme="light"] {
+  /* surfaces */
+  --bg-page:    #EDEBE5;
+  --bg:         #F0EDE8;
+  --bg-2:       #EAE6DF;
+  --bg-sea:     rgba(184,212,206,0.2);
+  --bg-input:   #EAE6DF;
+  --bg-input-focus: #ffffff;
+
+  /* text */
+  --text-heading: #2D3A2E;
+  --text-body:    #475240;
+  --text-muted:   #7A6E5D;
+  --text-faint:   rgba(45,58,46,0.45);
+
+  /* borders / lines */
+  --line:         rgba(45,58,46,0.1);
+  --line-mid:     rgba(45,58,46,0.2);
+  --line-strong:  rgba(45,58,46,0.35);
+
+  /* nav */
+  --nav-bg:       rgba(237,235,229,0.9);
+  --nav-text:     #7A6E5D;
+  --nav-hover:    #2D3A2E;
+  --nav-brand:    #2D3A2E;
+
+  /* section label */
+  --label-color:  #7FA89E;
+
+  /* accent */
+  --accent:       #B8D4CE;
+  --accent-mid:   #7FA89E;
+  --accent-hover: #a4c4be;
+
+  /* primary button  */
+  --btn-p-bg:     #2D3A2E;
+  --btn-p-text:   #F0EDE8;
+  --btn-p-hover:  #364536;
+  --btn-p-shadow: rgba(45,58,46,0.22);
+
+  /* ghost button */
+  --btn-g-text:   #2D3A2E;
+  --btn-g-border: rgba(45,58,46,0.35);
+  --btn-g-hover-bg: rgba(45,58,46,0.05);
+
+  /* secondary (sea glass) button */
+  --btn-s-bg:     #B8D4CE;
+  --btn-s-text:   #2D3A2E;
+  --btn-s-hover:  #a4c4be;
+
+  /* text/link button */
+  --btn-t-text:   #2D3A2E;
+
+  /* icon button */
+  --btn-i-border: rgba(45,58,46,0.25);
+  --btn-i-text:   #2D3A2E;
+  --btn-i-hover:  rgba(45,58,46,0.06);
+
+  /* arrow link */
+  --link-text:    #2D3A2E;
+  --link-hover:   #5B6B4A;
+
+  /* inputs */
+  --inp-bg:       #EAE6DF;
+  --inp-border:   rgba(45,58,46,0.15);
+  --inp-text:     #2D3A2E;
+  --inp-ph:       #C4B5A2;
+  --inp-focus-border: #7FA89E;
+  --inp-focus-shadow: rgba(127,168,158,0.18);
+  --inp-hover-border: rgba(45,58,46,0.3);
+  --inp-error-shadow: rgba(192,97,74,0.15);
+  --inp-icon-color: rgba(45,58,46,0.4);
+  /* select dropdown arrow (dark green chevron on light bg) */
+  --sel-arrow: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 7L11 1' stroke='%232D3A2E' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+
+  /* checkbox / radio */
+  --chk-bg:         #EAE6DF;
+  --chk-border:     rgba(45,58,46,0.28);
+  --chk-hover-bd:   #7FA89E;
+  --chk-on-bg:      #2D3A2E;
+  --chk-on-border:  #2D3A2E;
+  --chk-mark-color: #F0EDE8; /* used via filter trick */
+  --rad-on-border:  #2D3A2E;
+  --rad-on-dot:     #2D3A2E;
+
+  /* pills */
+  --pill-outline-text:   #2D3A2E;
+  --pill-outline-border: rgba(45,58,46,0.28);
+  --pill-outline-hover:  rgba(45,58,46,0.05);
+  --pill-filled-bg:      #2D3A2E;
+  --pill-filled-text:    #F0EDE8;
+  --pill-drift-bg:       #EAE6DF;
+  --pill-drift-text:     #2D3A2E;
+  --pill-drift-border:   rgba(45,58,46,0.12);
+
+  /* badges */
+  --badge-new-bg:  rgba(184,212,206,0.3);
+  --badge-new-text:#7FA89E;
+  --badge-hot-bg:  rgba(107,74,58,0.14);
+  --badge-hot-text:#6B4A3A;
+  --badge-cnt-bg:  #2D3A2E;
+  --badge-cnt-text:#F0EDE8;
+
+  /* dividers */
+  --div-default:   rgba(45,58,46,0.12);
+  --div-sea:       rgba(127,168,158,0.35);
+  --div-label-text:#7A6E5D;
+
+  /* alerts */
+  --al-info-bg:    rgba(184,212,206,0.2);
+  --al-info-border:#7FA89E;
+  --al-info-text:  #2D3A2E;
+  --al-ok-bg:      rgba(91,107,74,0.1);
+  --al-ok-border:  #5B6B4A;
+  --al-ok-text:    #2D3A2E;
+  --al-warn-bg:    rgba(196,181,162,0.2);
+  --al-warn-border:#C4B5A2;
+  --al-warn-text:  #2D3A2E;
+  --al-strong-color:#2D3A2E;
+
+  /* cards */
+  --card-bg:       #EAE6DF;
+  --card-border:   rgba(45,58,46,0.1);
+  --card-hover-border: rgba(45,58,46,0.22);
+  --card-hover-shadow: rgba(45,58,46,0.1);
+  --card-eyebrow:  #7FA89E;
+  --card-title:    #2D3A2E;
+  --card-body:     #7A6E5D;
+  --qcard-bg:      #F0EDE8;
+  --qcard-border:  rgba(45,58,46,0.1);
+  --qcard-hover-border: rgba(127,168,158,0.35);
+  --qcard-hover-shadow: rgba(184,212,206,0.18);
+  --qtext-color:   #2D3A2E;
+  --qname-color:   #2D3A2E;
+  --qsub-color:    #7A6E5D;
+  --scard-bg:      #EAE6DF;
+  --scard-border:  rgba(45,58,46,0.1);
+  --snum-color:    #2D3A2E;
+  --slbl-color:    #7A6E5D;
+  --sbar-track:    rgba(45,58,46,0.1);
+
+  /* nav demos */
+  --nav-demo-l-bg:     rgba(240,237,232,0.92);
+  --nav-demo-l-border: rgba(45,58,46,0.1);
+  --nav-demo-l-text:   #7A6E5D;
+  --nav-demo-l-brand:  #2D3A2E;
+  --bcrumb-a:          #7A6E5D;
+  --bcrumb-sep:        #C4B5A2;
+  --bcrumb-cur:        #2D3A2E;
+
+  /* rail (light variant) */
+  --rail-bg:       rgba(240,237,232,0.7);
+  --rail-border:   rgba(45,58,46,0.1);
+  --rail-shadow:   rgba(45,58,46,0.08);
+  --rail-track:    rgba(45,58,46,0.13);
+  --rail-fill-a:   #5B6B4A;
+  --rail-fill-b:   #7FA89E;
+  --rnode-default: rgba(45,58,46,0.38);
+  --rnode-passed:  #5B6B4A;
+  --rnode-active:  #2D3A2E;
+  --rnode-glow:    rgba(127,168,158,0.65);
+
+  /* swatch labels */
+  --sw-name: #2D3A2E;
+  --sw-hex:  #7A6E5D;
+
+  /* toggle */
+  --toggle-border: rgba(45,58,46,0.25);
+  --toggle-text:   #2D3A2E;
+  --toggle-hover:  rgba(45,58,46,0.06);
+
+  /* footer */
+  --footer-border: rgba(45,58,46,0.1);
+  --footer-text:   #7A6E5D;
+  --footer-tag:    #2D3A2E;
+}
+
+/* ── Dark mode semantic tokens ── */
+[data-theme="dark"] {
+  --bg-page:    #141f14;
+  --bg:         #1e2d1f;
+  --bg-2:       #243520;
+  --bg-sea:     rgba(184,212,206,0.07);
+  --bg-input:   rgba(255,255,255,0.07);
+  --bg-input-focus: rgba(255,255,255,0.1);
+
+  --text-heading: #F0EDE8;
+  --text-body:    rgba(240,237,232,0.85);
+  --text-muted:   rgba(196,181,162,0.68);
+  --text-faint:   rgba(196,181,162,0.4);
+
+  --line:         rgba(240,237,232,0.1);
+  --line-mid:     rgba(240,237,232,0.18);
+  --line-strong:  rgba(240,237,232,0.3);
+
+  --nav-bg:       rgba(20,31,20,0.92);
+  --nav-text:     rgba(196,181,162,0.65);
+  --nav-hover:    #F0EDE8;
+  --nav-brand:    #F0EDE8;
+
+  --label-color:  #B8D4CE;
+
+  --accent:       #B8D4CE;
+  --accent-mid:   #7FA89E;
+  --accent-hover: #a4c4be;
+
+  /* primary button flips to Sea Glass on dark */
+  --btn-p-bg:     #B8D4CE;
+  --btn-p-text:   #2D3A2E;
+  --btn-p-hover:  #a4c4be;
+  --btn-p-shadow: rgba(184,212,206,0.22);
+
+  --btn-g-text:   #F0EDE8;
+  --btn-g-border: rgba(240,237,232,0.3);
+  --btn-g-hover-bg: rgba(240,237,232,0.07);
+
+  --btn-s-bg:     rgba(184,212,206,0.18);
+  --btn-s-text:   #B8D4CE;
+  --btn-s-hover:  rgba(184,212,206,0.26);
+
+  --btn-t-text:   #F0EDE8;
+
+  --btn-i-border: rgba(240,237,232,0.2);
+  --btn-i-text:   #F0EDE8;
+  --btn-i-hover:  rgba(240,237,232,0.07);
+
+  --link-text:    #F0EDE8;
+  --link-hover:   #B8D4CE;
+
+  --inp-bg:       rgba(255,255,255,0.07);
+  --inp-border:   rgba(240,237,232,0.13);
+  --inp-text:     #F0EDE8;
+  --inp-ph:       rgba(196,181,162,0.45);
+  --inp-focus-border: #7FA89E;
+  --inp-focus-shadow: rgba(127,168,158,0.22);
+  --inp-hover-border: rgba(240,237,232,0.26);
+  --inp-error-shadow: rgba(192,97,74,0.18);
+  --inp-icon-color: rgba(196,181,162,0.5);
+  --sel-arrow: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 7L11 1' stroke='%23F0EDE8' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+
+  --chk-bg:         rgba(255,255,255,0.07);
+  --chk-border:     rgba(240,237,232,0.2);
+  --chk-hover-bd:   #7FA89E;
+  --chk-on-bg:      #B8D4CE;
+  --chk-on-border:  #B8D4CE;
+  --rad-on-border:  #B8D4CE;
+  --rad-on-dot:     #B8D4CE;
+
+  --pill-outline-text:   rgba(240,237,232,0.85);
+  --pill-outline-border: rgba(240,237,232,0.24);
+  --pill-outline-hover:  rgba(240,237,232,0.07);
+  --pill-filled-bg:      #B8D4CE;
+  --pill-filled-text:    #2D3A2E;
+  --pill-drift-bg:       rgba(255,255,255,0.07);
+  --pill-drift-text:     rgba(240,237,232,0.8);
+  --pill-drift-border:   rgba(240,237,232,0.12);
+
+  --badge-new-bg:  rgba(184,212,206,0.15);
+  --badge-new-text:#B8D4CE;
+  --badge-hot-bg:  rgba(107,74,58,0.45);
+  --badge-hot-text:#d4a090;
+  --badge-cnt-bg:  #B8D4CE;
+  --badge-cnt-text:#2D3A2E;
+
+  --div-default:   rgba(240,237,232,0.1);
+  --div-sea:       rgba(127,168,158,0.28);
+  --div-label-text:rgba(196,181,162,0.5);
+
+  --al-info-bg:    rgba(184,212,206,0.1);
+  --al-info-border:#7FA89E;
+  --al-info-text:  rgba(240,237,232,0.9);
+  --al-ok-bg:      rgba(91,107,74,0.2);
+  --al-ok-border:  #5B6B4A;
+  --al-ok-text:    rgba(240,237,232,0.9);
+  --al-warn-bg:    rgba(196,181,162,0.1);
+  --al-warn-border:rgba(196,181,162,0.5);
+  --al-warn-text:  rgba(240,237,232,0.9);
+  --al-strong-color:#F0EDE8;
+
+  --card-bg:       rgba(255,255,255,0.05);
+  --card-border:   rgba(240,237,232,0.09);
+  --card-hover-border: rgba(240,237,232,0.2);
+  --card-hover-shadow: rgba(0,0,0,0.3);
+  --card-eyebrow:  #7FA89E;
+  --card-title:    #F0EDE8;
+  --card-body:     rgba(240,237,232,0.65);
+  --qcard-bg:      rgba(255,255,255,0.05);
+  --qcard-border:  rgba(240,237,232,0.09);
+  --qcard-hover-border: rgba(184,212,206,0.3);
+  --qcard-hover-shadow: rgba(0,0,0,0.28);
+  --qtext-color:   rgba(240,237,232,0.85);
+  --qname-color:   #F0EDE8;
+  --qsub-color:    rgba(196,181,162,0.65);
+  --scard-bg:      rgba(255,255,255,0.05);
+  --scard-border:  rgba(240,237,232,0.09);
+  --snum-color:    #F0EDE8;
+  --slbl-color:    rgba(196,181,162,0.65);
+  --sbar-track:    rgba(240,237,232,0.1);
+
+  --nav-demo-l-bg:     rgba(255,255,255,0.07);
+  --nav-demo-l-border: rgba(240,237,232,0.1);
+  --nav-demo-l-text:   rgba(196,181,162,0.65);
+  --nav-demo-l-brand:  #F0EDE8;
+  --bcrumb-a:          rgba(196,181,162,0.6);
+  --bcrumb-sep:        rgba(196,181,162,0.35);
+  --bcrumb-cur:        #F0EDE8;
+
+  --rail-bg:       rgba(20,30,21,0.55);
+  --rail-border:   rgba(184,212,206,0.13);
+  --rail-shadow:   rgba(0,0,0,0.25);
+  --rail-track:    rgba(196,181,162,0.18);
+  --rail-fill-a:   #B8D4CE;
+  --rail-fill-b:   #8fb6ae;
+  --rnode-default: rgba(196,181,162,0.45);
+  --rnode-passed:  #B8D4CE;
+  --rnode-active:  #B8D4CE;
+  --rnode-glow:    rgba(184,212,206,0.55);
+
+  --sw-name: #F0EDE8;
+  --sw-hex:  rgba(196,181,162,0.65);
+
+  --toggle-border: rgba(240,237,232,0.22);
+  --toggle-text:   #F0EDE8;
+  --toggle-hover:  rgba(240,237,232,0.07);
+
+  --footer-border: rgba(240,237,232,0.08);
+  --footer-text:   rgba(196,181,162,0.45);
+  --footer-tag:    #F0EDE8;
+}
+
+/* ═══════════════════════════════════════════════════
+   BASE  —  everything uses semantic tokens from here down
+═══════════════════════════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-page);
+  color: var(--text-body);
+  font-family: 'Montserrat', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  transition: background 300ms var(--ease-out), color 300ms var(--ease-out);
+}
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: 400;
+  pointer-events: none; opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px; mix-blend-mode: multiply;
+}
+::selection { background: var(--accent); color: var(--col-deep-cedar); }
+
+h1,h2,h3,.serif {
+  font-family: 'The Seasons', 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+  color: var(--text-heading);
+}
+
+/* ── Layout ── */
+.page { max-width: 1200px; margin: 0 auto; padding: 0 var(--pad); }
+.section { padding: 80px 0; border-top: 1px solid var(--line); transition: border-color 300ms; }
+.section:first-of-type { border-top: none; }
+.section-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--label-color); margin-bottom: 36px;
+  display: flex; align-items: center; gap: 14px;
+  transition: color 300ms;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--line); transition: background 300ms; }
+.c-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--text-muted); display: block; margin-bottom: 12px; transition: color 300ms;
+}
+.row  { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.col  { display: flex; flex-direction: column; gap: 12px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.mt-sm  { margin-top: 12px; }
+.mt-md  { margin-top: 24px; }
+.mt-lg  { margin-top: 40px; }
+
+/* ── Sticky nav ── */
+.comp-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--nav-bg);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 var(--pad); height: 64px;
+  transition: background 300ms, border-color 300ms;
+}
+.comp-nav .brand {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--nav-brand); text-decoration: none;
+  display: flex; align-items: center; gap: 9px; transition: color 300ms;
+}
+.brand-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-mid); }
+.comp-nav-links { display: flex; gap: 28px; list-style: none; }
+.comp-nav-links a {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--nav-text); text-decoration: none; transition: color 200ms;
+}
+.comp-nav-links a:hover { color: var(--nav-hover); }
+.nav-right { display: flex; align-items: center; gap: 12px; }
+
+/* ── Theme toggle button ── */
+.theme-toggle {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1.5px solid var(--toggle-border);
+  background: transparent; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--toggle-text);
+  transition: border-color 200ms, background 200ms, color 200ms, transform 160ms var(--ease-out);
+}
+.theme-toggle:hover  { background: var(--toggle-hover); border-color: var(--toggle-text); }
+.theme-toggle:active { transform: scale(0.92); }
+.icon-sun  { display: none; }
+.icon-moon { display: block; }
+[data-theme="dark"] .icon-sun  { display: block; }
+[data-theme="dark"] .icon-moon { display: none; }
+
+/* ── Page header ── */
+.page-header {
+  padding: 72px 0 60px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end;
+}
+.page-header h1 {
+  font-size: clamp(44px, 5.5vw, 76px);
+  line-height: 1.0; letter-spacing: 0.01em;
+}
+.page-header h1 em { font-style: italic; font-weight: 400; color: var(--col-moss); }
+.eyebrow-sm {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--accent-mid); margin-bottom: 14px; display: block; transition: color 300ms;
+}
+.page-header-meta p { font-size: 15px; line-height: 1.7; color: var(--text-muted); transition: color 300ms; }
+
+/* ═══════════════════════════════════════════════════
+   COMPONENTS
+═══════════════════════════════════════════════════ */
+
+/* ── Colour swatches ── */
+.swatches { display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; border-radius: 8px; overflow: hidden; }
+.sw-block  { aspect-ratio: 3/2; transition: transform 200ms var(--ease-out); cursor: default; }
+.sw-block:hover { transform: scale(1.04); }
+.sw-name { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sw-name); margin-top: 10px; margin-bottom: 2px; transition: color 300ms; }
+.sw-hex  { font-size: 10px; color: var(--sw-hex); transition: color 300ms; }
+
+/* ── Type system ── */
+.type-row {
+  display: grid; grid-template-columns: 80px 1fr 150px; align-items: baseline; gap: 24px;
+  padding: 26px 0; border-bottom: 1px solid var(--line); transition: border-color 300ms;
+}
+.type-row:last-child { border-bottom: none; }
+.type-tier  { font-size: 9px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-muted); transition: color 300ms; }
+.type-s1    { font-family: 'The Seasons', 'Playfair Display', serif; font-size: clamp(34px, 4.8vw, 58px); font-weight: 600; text-transform: uppercase; color: var(--text-heading); line-height: 1; transition: color 300ms; }
+.type-s2    { font-size: clamp(20px, 2.8vw, 30px); font-weight: 500; color: var(--text-heading); line-height: 1.2; transition: color 300ms; }
+.type-s3    { font-size: 15px; font-weight: 400; line-height: 1.75; color: var(--text-body); max-width: 52ch; transition: color 300ms; }
+.type-meta strong { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-heading); transition: color 300ms; }
+.type-meta span   { font-size: 10px; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; transition: color 300ms; }
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  text-decoration: none; cursor: pointer; border: none;
+  transition: transform 160ms var(--ease-out), background 220ms var(--ease-out),
+              color 220ms var(--ease-out), border-color 220ms var(--ease-out),
+              box-shadow 220ms var(--ease-out);
+}
+.btn:active { transform: scale(0.97); }
+.btn-lg { padding: 15px 32px; border-radius: 100px; }
+.btn-md { padding: 12px 24px; border-radius: 100px; font-size: 11px; }
+.btn-sm { padding: 9px 18px;  border-radius: 100px; font-size: 10px; }
+
+.btn-primary { background: var(--btn-p-bg); color: var(--btn-p-text); border: 1.5px solid transparent; }
+.btn-primary:hover { background: var(--btn-p-hover); transform: translateY(-2px); box-shadow: 0 12px 28px var(--btn-p-shadow); }
+
+.btn-secondary { background: var(--btn-s-bg); color: var(--btn-s-text); border: 1.5px solid transparent; }
+.btn-secondary:hover { background: var(--btn-s-hover); transform: translateY(-2px); }
+
+.btn-ghost { background: transparent; color: var(--btn-g-text); border: 1.5px solid var(--btn-g-border); }
+.btn-ghost:hover { border-color: var(--btn-g-text); background: var(--btn-g-hover-bg); transform: translateY(-2px); }
+
+.btn-text {
+  background: transparent; border: none; padding: 0; border-radius: 0;
+  color: var(--btn-t-text); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer;
+  border-bottom: 1.5px solid transparent; display: inline-flex; align-items: center; gap: 8px;
+  transition: border-color 200ms, color 200ms;
+}
+.btn-text:hover { border-bottom-color: var(--btn-t-text); }
+
+.btn-icon {
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1.5px solid var(--btn-i-border); background: transparent;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--btn-i-text);
+  transition: border-color 200ms, background 200ms, color 200ms, transform 160ms;
+}
+.btn-icon:hover { border-color: var(--btn-i-text); background: var(--btn-i-hover); transform: translateY(-1px); }
+.btn-icon:active { transform: scale(0.92); }
+
+/* filled icon override for the "play" button demo */
+.btn-icon-filled { background: var(--btn-p-bg); border-color: var(--btn-p-bg); color: var(--btn-p-text); }
+.btn-icon-filled:hover { background: var(--btn-p-hover); }
+
+.arrow-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--link-text); text-decoration: none;
+  transition: gap 200ms var(--ease-out), color 200ms;
+}
+.arrow-link svg { transition: transform 200ms var(--ease-out); }
+.arrow-link:hover { color: var(--link-hover); gap: 14px; }
+.arrow-link:hover svg { transform: translateX(3px); }
+
+/* ── Forms ── */
+.field { display: flex; flex-direction: column; gap: 7px; }
+.field-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--text-heading); transition: color 300ms;
+}
+.inp {
+  font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 400;
+  color: var(--inp-text); background: var(--inp-bg); border: 1.5px solid var(--inp-border);
+  padding: 12px 15px; border-radius: 8px; outline: none; width: 100%;
+  transition: border-color 200ms, box-shadow 200ms, background 200ms, color 300ms;
+}
+.inp::placeholder { color: var(--inp-ph); }
+.inp:focus { border-color: var(--inp-focus-border); background: var(--bg-input-focus); box-shadow: 0 0 0 3px var(--inp-focus-shadow); }
+.inp:hover:not(:focus) { border-color: var(--inp-hover-border); }
+.inp-error { border-color: #c0614a !important; }
+.inp-error:focus { box-shadow: 0 0 0 3px var(--inp-error-shadow) !important; }
+.field-error { font-size: 11px; color: #c0614a; display: flex; align-items: center; gap: 5px; }
+[data-theme="dark"] .field-error { color: #d47b66; }
+textarea.inp { resize: vertical; min-height: 100px; line-height: 1.65; }
+.inp-wrap { position: relative; }
+.inp-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--inp-icon-color); pointer-events: none; transition: color 300ms; }
+.inp-leading { padding-left: 40px; }
+.inp-select {
+  appearance: none; -webkit-appearance: none;
+  background-image: var(--sel-arrow);
+  background-repeat: no-repeat; background-position: right 13px center;
+  padding-right: 38px;
+}
+.inp-select option { background: var(--bg); color: var(--inp-text); }
+
+/* Checkbox */
+.chk-row { display: flex; align-items: center; gap: 9px; cursor: pointer; }
+.chk-row input[type="checkbox"] { display: none; }
+.chk-box {
+  width: 17px; height: 17px; border-radius: 4px; flex-shrink: 0;
+  background: var(--chk-bg); border: 1.5px solid var(--chk-border);
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 200ms, background 200ms;
+}
+.chk-row:hover .chk-box { border-color: var(--chk-hover-bd); }
+.chk-row input:checked + .chk-box { background: var(--chk-on-bg); border-color: var(--chk-on-border); }
+.chk-row input:checked + .chk-box::after {
+  content: ''; width: 9px; height: 5px;
+  border-left: 2px solid var(--bg-page); border-bottom: 2px solid var(--bg-page);
+  transform: rotate(-45deg) translateY(-1px);
+}
+.chk-label { font-size: 13px; color: var(--text-body); user-select: none; transition: color 300ms; }
+
+/* Radio */
+.rad-group { display: flex; flex-direction: column; gap: 9px; }
+.rad-row { display: flex; align-items: center; gap: 9px; cursor: pointer; }
+.rad-row input { display: none; }
+.rad-circle {
+  width: 17px; height: 17px; border-radius: 50%; flex-shrink: 0;
+  background: var(--chk-bg); border: 1.5px solid var(--chk-border);
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 200ms;
+}
+.rad-row:hover .rad-circle { border-color: var(--chk-hover-bd); }
+.rad-row input:checked + .rad-circle { border-color: var(--rad-on-border); }
+.rad-row input:checked + .rad-circle::after { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--rad-on-dot); transition: background 200ms; }
+
+/* ── Pills & Badges ── */
+.pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+  padding: 6px 13px; border-radius: 100px;
+  transition: transform 160ms var(--ease-out), background 160ms, color 160ms, border-color 160ms;
+  cursor: default;
+}
+.pill:hover { transform: translateY(-1px); }
+.pill-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; opacity: 0.7; }
+
+.pill-outline { color: var(--pill-outline-text); border: 1px solid var(--pill-outline-border); background: transparent; }
+.pill-outline:hover { background: var(--pill-outline-hover); border-color: var(--pill-outline-text); }
+.pill-filled  { color: var(--pill-filled-text); background: var(--pill-filled-bg); border: 1px solid transparent; }
+.pill-sea     { color: var(--col-deep-cedar); background: var(--col-sea); border: 1px solid transparent; }
+.pill-sea:hover { background: var(--accent-hover); }
+.pill-ghost-sea { color: var(--accent-mid); border: 1px solid rgba(127,168,158,0.45); background: transparent; }
+.pill-ghost-sea:hover { background: var(--bg-sea); }
+.pill-bark    { color: var(--col-paper); background: var(--col-bark); border: 1px solid transparent; }
+.pill-drift   { color: var(--pill-drift-text); background: var(--pill-drift-bg); border: 1px solid var(--pill-drift-border); }
+
+.badge { display: inline-flex; align-items: center; font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 8px; border-radius: 100px; transition: background 300ms, color 300ms; }
+.badge-new { background: var(--badge-new-bg); color: var(--badge-new-text); }
+.badge-hot { background: var(--badge-hot-bg); color: var(--badge-hot-text); }
+.badge-cnt { background: var(--badge-cnt-bg); color: var(--badge-cnt-text); min-width: 20px; height: 20px; padding: 0 6px; justify-content: center; }
+
+/* ── Dividers ── */
+.div-line  { height: 1px; border-radius: 1px; transition: background 300ms; }
+.div-solid { background: var(--div-default); }
+.div-sea   { background: var(--div-sea); }
+.div-bark  { background: var(--col-bark); height: 2px; }
+.div-label {
+  display: flex; align-items: center; gap: 14px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--div-label-text); transition: color 300ms;
+}
+.div-label::before, .div-label::after { content: ''; flex: 1; height: 1px; background: var(--div-default); transition: background 300ms; }
+
+/* ── Alerts ── */
+.alert-box {
+  display: flex; align-items: flex-start; gap: 13px;
+  padding: 15px 18px; border-radius: 8px; border-left: 3px solid;
+  font-size: 13.5px; line-height: 1.6;
+  transition: background 300ms, color 300ms;
+}
+.alert-box strong { font-weight: 600; color: var(--al-strong-color); transition: color 300ms; }
+.alert-info  { background: var(--al-info-bg);  border-color: var(--al-info-border);  color: var(--al-info-text);  }
+.alert-ok    { background: var(--al-ok-bg);    border-color: var(--al-ok-border);    color: var(--al-ok-text);    }
+.alert-warn  { background: var(--al-warn-bg);  border-color: var(--al-warn-border);  color: var(--al-warn-text);  }
+
+/* ── Cards ── */
+.card {
+  background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; overflow: hidden;
+  transition: transform 280ms var(--ease-out), border-color 280ms, box-shadow 280ms, background 300ms;
+}
+.card:hover { transform: translateY(-4px); border-color: var(--card-hover-border); box-shadow: 0 14px 38px var(--card-hover-shadow); }
+.card-thumb {
+  width: 100%; aspect-ratio: 16/9;
+  background: linear-gradient(135deg, #1a2e1c 0%, #2d3a2e 100%);
+  position: relative; display: flex; align-items: center; justify-content: center;
+}
+.card-thumb-icon { opacity: 0.22; color: var(--col-paper); }
+.card-thumb-pill {
+  position: absolute; bottom: 10px; left: 12px;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(240,237,232,0.75); background: rgba(45,58,46,0.55);
+  padding: 4px 10px; border-radius: 100px;
+}
+.card-body     { padding: 22px; }
+.card-eyebrow  { font-size: 9px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--card-eyebrow); margin-bottom: 8px; transition: color 300ms; }
+.card-title    { font-family: 'The Seasons', 'Playfair Display', serif; font-size: 19px; font-weight: 600; color: var(--card-title); line-height: 1.25; margin-bottom: 8px; transition: color 300ms; }
+.card-body p   { font-size: 13px; line-height: 1.7; color: var(--card-body); margin-bottom: 18px; transition: color 300ms; }
+.card-footer   { display: flex; align-items: center; justify-content: space-between; }
+
+/* Quote card */
+.qcard {
+  background: var(--qcard-bg); border: 1px solid var(--qcard-border); border-radius: 12px; padding: 28px;
+  transition: transform 280ms var(--ease-out), border-color 280ms, box-shadow 280ms, background 300ms;
+}
+.qcard:hover { transform: translateY(-4px); border-color: var(--qcard-hover-border); box-shadow: 0 14px 36px var(--qcard-hover-shadow); }
+.qmark  { font-family: 'The Seasons', 'Playfair Display', serif; font-size: 56px; line-height: 0.6; color: var(--col-sea); margin-bottom: 14px; display: block; }
+.qtext  { font-size: 14px; line-height: 1.75; color: var(--qtext-color); font-style: italic; margin-bottom: 20px; transition: color 300ms; }
+.qauthor { display: flex; align-items: center; gap: 11px; }
+.qavatar { width: 34px; height: 34px; border-radius: 50%; background: var(--col-sea); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--col-deep-cedar); flex-shrink: 0; }
+.qname  { font-size: 12px; font-weight: 600; color: var(--qname-color); transition: color 300ms; }
+.qsub   { font-size: 11px; color: var(--qsub-color); margin-top: 1px; transition: color 300ms; }
+
+/* Stat card */
+.stat-card { background: var(--scard-bg); border: 1px solid var(--scard-border); border-radius: 12px; padding: 26px 22px; transition: background 300ms, border-color 300ms; }
+.stat-n    { font-family: 'The Seasons', 'Playfair Display', serif; font-size: 46px; font-weight: 600; color: var(--snum-color); line-height: 1; margin-bottom: 6px; transition: color 300ms; }
+.stat-l    { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--slbl-color); transition: color 300ms; }
+.stat-bar  { height: 3px; border-radius: 2px; margin-top: 14px; background: var(--sbar-track); overflow: hidden; transition: background 300ms; }
+.stat-fill { height: 100%; background: var(--accent-mid); border-radius: 2px; }
+
+/* Program cards (intentionally always dark, unchanged by toggle) */
+.prog-card {
+  position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 3/4;
+  background: linear-gradient(180deg, #1f2f20 0%, #2d3a2e 100%);
+  transition: transform 280ms var(--ease-out), box-shadow 280ms;
+  cursor: pointer;
+}
+.prog-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(45,58,46,0.4); }
+.prog-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(45,58,46,0.92) 0%, rgba(45,58,46,0.18) 60%, transparent 100%); }
+.prog-border  { position: absolute; inset: 0; border: 1.5px solid transparent; border-radius: 12px; pointer-events: none; transition: border-color 280ms; }
+.prog-card:hover .prog-border { border-color: rgba(184,212,206,0.4); }
+.prog-content  { position: absolute; bottom: 0; left: 0; right: 0; padding: 24px; }
+.prog-eyebrow  { font-size: 9px; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(184,212,206,0.75); margin-bottom: 6px; }
+.prog-title    { font-family: 'The Seasons', 'Playfair Display', serif; font-size: 20px; font-weight: 600; color: #F0EDE8; line-height: 1.2; margin-bottom: 6px; }
+.prog-desc     { font-size: 12px; line-height: 1.6; color: rgba(240,237,232,0.65); }
+
+/* ── Nav demos ── */
+.nav-demo { border-radius: 100px; padding: 0 20px; height: 50px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.nav-demo-light { background: var(--nav-demo-l-bg); border: 1px solid var(--nav-demo-l-border); transition: background 300ms, border-color 300ms; }
+.nav-demo-dark  { background: var(--col-deep-cedar); }
+.nav-demo-links { display: flex; gap: 20px; list-style: none; }
+.ndl-light { font-size: 10px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--nav-demo-l-text); text-decoration: none; transition: color 300ms; }
+.ndb-light { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--nav-demo-l-brand); transition: color 300ms; }
+.ndb-dark  { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #F0EDE8; }
+.ndl-dark  { font-size: 10px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(196,181,162,0.75); text-decoration: none; }
+
+/* Breadcrumb */
+.breadcrumb { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.bcrumb-a   { font-size: 12px; font-weight: 500; color: var(--bcrumb-a); text-decoration: none; transition: color 200ms; }
+.bcrumb-a:hover { color: var(--text-heading); }
+.bcrumb-sep { font-size: 10px; color: var(--bcrumb-sep); transition: color 300ms; }
+.bcrumb-cur { font-size: 12px; font-weight: 600; color: var(--bcrumb-cur); transition: color 300ms; }
+
+/* ── Trail rail ── */
+.rail-outer { display: flex; gap: 18px; align-items: flex-start; }
+.rail-wrap  {
+  display: inline-flex; flex-direction: column; align-items: center; gap: 19px;
+  padding: 20px 11px; border-radius: 100px; position: relative;
+  background: var(--rail-bg); border: 1px solid var(--rail-border);
+  box-shadow: 0 8px 24px var(--rail-shadow);
+  transition: background 300ms, border-color 300ms, box-shadow 300ms;
+}
+.rail-track { position: absolute; top: 20px; bottom: 20px; left: 50%; width: 2px; transform: translateX(-50%); background: var(--rail-track); border-radius: 2px; overflow: hidden; transition: background 300ms; }
+.rail-fill  { position: absolute; top: 0; width: 100%; background: linear-gradient(to bottom, var(--rail-fill-a), var(--rail-fill-b)); border-radius: 2px; transition: background 300ms; }
+.rnode { position: relative; z-index: 1; width: 31px; height: 31px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: var(--rnode-default); transition: color 300ms, transform 300ms, filter 300ms; }
+.rnode svg { width: 19px; height: 19px; }
+.rnode.rp  { color: var(--rnode-passed); }
+.rnode.ra  { color: var(--rnode-active); transform: scale(1.18); filter: drop-shadow(0 0 7px var(--rnode-glow)); }
+.rail-labels { display: flex; flex-direction: column; gap: 19px; padding: 20px 0; }
+.rail-lbl { font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); height: 31px; display: flex; align-items: center; transition: color 300ms; }
+.rail-lbl.active { color: var(--text-heading); font-weight: 700; }
+
+/* ── Footer ── */
+.comp-footer {
+  border-top: 1px solid var(--footer-border); padding: 44px 0;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;
+  transition: border-color 300ms;
+}
+.comp-footer p       { font-size: 11px; color: var(--footer-text); letter-spacing: 0.04em; transition: color 300ms; }
+.comp-footer .tagline { font-family: 'The Seasons', 'Playfair Display', serif; font-size: 18px; color: var(--footer-tag); font-style: italic; transition: color 300ms; }
+
+/* ── Reveal animation ── */
+[data-r] { opacity: 0; transform: translateY(16px); transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out); }
+[data-r].in { opacity: 1; transform: none; }
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+  .comp-nav-links { display: none; }
+  .page-header { grid-template-columns: 1fr; }
+  .swatches { grid-template-columns: repeat(3, 1fr); }
+  .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; }
+  .type-row { grid-template-columns: 60px 1fr; }
+  .type-meta { display: none; }
+}
+@media (max-width: 560px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV with toggle -->
+<nav class="comp-nav">
+  <a href="#" class="brand"><span class="brand-dot"></span>Impackful K9</a>
+  <ul class="comp-nav-links">
+    <li><a href="#colours">Colours</a></li>
+    <li><a href="#type">Type</a></li>
+    <li><a href="#buttons">Buttons</a></li>
+    <li><a href="#forms">Forms</a></li>
+    <li><a href="#pills">Pills</a></li>
+    <li><a href="#alerts">Alerts</a></li>
+    <li><a href="#cards">Cards</a></li>
+    <li><a href="#nav-section">Nav</a></li>
+    <li><a href="#rail">Rail</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+      <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
+      <svg class="icon-sun"  width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M2 12h2m16 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </button>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <div>
+      <span class="eyebrow-sm">Coastal Cathedral 02/04</span>
+      <h1>Component<br><em>Library.</em></h1>
+    </div>
+    <div class="page-header-meta">
+      <p>Forest-to-tide palette. The Seasons Bold for all headings, Montserrat for body. Toggle the mode in the top right to see all components in dark.</p>
+    </div>
+  </header>
+
+  <!-- 01 COLOURS -->
+  <section class="section" id="colours">
+    <div class="section-label">01 — Colour System</div>
+    <div class="swatches" data-r>
+      <div><div class="sw-block" style="background:#2D3A2E;"></div><div class="sw-name">Deep Cedar</div><div class="sw-hex">#2D3A2E · Ink / accent</div></div>
+      <div><div class="sw-block" style="background:#5B6B4A;"></div><div class="sw-name">Moss</div><div class="sw-hex">#5B6B4A · Secondary</div></div>
+      <div><div class="sw-block" style="background:#6B4A3A;"></div><div class="sw-name">Cedar Bark</div><div class="sw-hex">#6B4A3A · Warm anchor</div></div>
+      <div><div class="sw-block" style="background:#B8D4CE;"></div><div class="sw-name">Sea Glass</div><div class="sw-hex">#B8D4CE · Accent</div></div>
+      <div><div class="sw-block" style="background:#F0EDE8; outline:1px solid rgba(0,0,0,0.08);"></div><div class="sw-name">Mist White</div><div class="sw-hex">#F0EDE8 · Background</div></div>
+      <div><div class="sw-block" style="background:#C4B5A2;"></div><div class="sw-name">Driftwood</div><div class="sw-hex">#C4B5A2 · Neutral</div></div>
+    </div>
+  </section>
+
+  <!-- 02 TYPE -->
+  <section class="section" id="type">
+    <div class="section-label">02 — Type System</div>
+    <div data-r>
+      <div class="type-row">
+        <span class="type-tier">Tier 1</span>
+        <div class="type-s1">Where Tide Meets Trail.</div>
+        <div class="type-meta"><strong>The Seasons Bold</strong><span>All caps · Display</span></div>
+      </div>
+      <div class="type-row">
+        <span class="type-tier">Tier 2</span>
+        <div class="type-s2">Grounded in the grove. Open to the shore.</div>
+        <div class="type-meta"><strong>Montserrat Medium</strong><span>Title / Subhead</span></div>
+      </div>
+      <div class="type-row">
+        <span class="type-tier">Tier 3</span>
+        <div class="type-s3">Calm-state training rooted in the forest, carried to the city, returned to the sea. Seek connection. Chase adventure.</div>
+        <div class="type-meta"><strong>Montserrat Regular</strong><span>Body copy</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 BUTTONS -->
+  <section class="section" id="buttons">
+    <div class="section-label">03 — Buttons</div>
+    <div class="col" data-r>
+      <div>
+        <span class="c-label">Primary — Deep Cedar (light) / Sea Glass (dark)</span>
+        <div class="row mt-sm">
+          <button class="btn btn-primary btn-lg">Get Started</button>
+          <button class="btn btn-primary btn-md">Join the Pack</button>
+          <button class="btn btn-primary btn-sm">Explore</button>
+        </div>
+      </div>
+      <div>
+        <span class="c-label">Secondary — Sea Glass</span>
+        <div class="row mt-sm">
+          <button class="btn btn-secondary btn-lg">See Programs</button>
+          <button class="btn btn-secondary btn-md">Learn More</button>
+          <button class="btn btn-secondary btn-sm">View</button>
+        </div>
+      </div>
+      <div>
+        <span class="c-label">Ghost / Outline</span>
+        <div class="row mt-sm">
+          <button class="btn btn-ghost btn-lg">Get Started</button>
+          <button class="btn btn-ghost btn-md">Explore</button>
+          <button class="btn btn-ghost btn-sm">View</button>
+        </div>
+      </div>
+      <div>
+        <span class="c-label">Text &amp; Arrow links</span>
+        <div class="row mt-sm">
+          <button class="btn btn-text">See all programs</button>
+          <a href="#" class="arrow-link">Join the Pack <svg width="14" height="11" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6h13M9 1l5 5-5 5"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <span class="c-label">Icon buttons</span>
+        <div class="row mt-sm">
+          <button class="btn-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></button>
+          <button class="btn-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+          <button class="btn-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/></svg></button>
+          <button class="btn-icon btn-icon-filled"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 FORMS -->
+  <section class="section" id="forms">
+    <div class="section-label">04 — Form Elements</div>
+    <div class="grid-2" data-r>
+      <div class="col">
+        <div class="field">
+          <label class="field-label">Your Name</label>
+          <input class="inp" type="text" placeholder="e.g. Sarah Mitchell">
+        </div>
+        <div class="field">
+          <label class="field-label">Email</label>
+          <div class="inp-wrap">
+            <svg class="inp-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+            <input class="inp inp-leading" type="email" placeholder="your@email.com">
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Program</label>
+          <select class="inp inp-select">
+            <option>Select a program...</option>
+            <option>Focused Foundations (in person)</option>
+            <option>Focused Foundations (online)</option>
+            <option>Mindful Meetups</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label">Error state</label>
+          <input class="inp inp-error" type="text" value="Leash pulling">
+          <span class="field-error"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Please describe your challenge</span>
+        </div>
+      </div>
+      <div class="col">
+        <div class="field">
+          <label class="field-label">Tell us about your dog</label>
+          <textarea class="inp" placeholder="What's your dog's name? How old are they?"></textarea>
+        </div>
+        <div class="field">
+          <label class="field-label">Program preference</label>
+          <div class="rad-group">
+            <label class="rad-row"><input type="radio" name="prog" checked><span class="rad-circle"></span><span class="chk-label">In-person program</span></label>
+            <label class="rad-row"><input type="radio" name="prog"><span class="rad-circle"></span><span class="chk-label">Online program</span></label>
+            <label class="rad-row"><input type="radio" name="prog"><span class="rad-circle"></span><span class="chk-label">Mindful Meetups membership</span></label>
+          </div>
+        </div>
+        <label class="chk-row">
+          <input type="checkbox" checked>
+          <span class="chk-box"></span>
+          <span class="chk-label">Receive training tips and updates from Impackful K9</span>
+        </label>
+        <button class="btn btn-primary btn-lg" style="width:100%;justify-content:center;">Get Started</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 PILLS & BADGES -->
+  <section class="section" id="pills">
+    <div class="section-label">05 — Pills, Tags &amp; Badges</div>
+    <div class="col" data-r>
+      <div>
+        <span class="c-label">Location pills</span>
+        <div class="row mt-sm"><span class="pill pill-ghost-sea">Stanley Park</span><span class="pill pill-ghost-sea">Lighthouse Park</span><span class="pill pill-ghost-sea">Lynn Valley</span><span class="pill pill-ghost-sea">Deep Cove</span><span class="pill pill-ghost-sea">Whytecliff Park</span></div>
+      </div>
+      <div>
+        <span class="c-label">Category outline pills</span>
+        <div class="row mt-sm"><span class="pill pill-outline">Leash Training</span><span class="pill pill-outline">Pack Walks</span><span class="pill pill-outline">Reactive Dogs</span><span class="pill pill-outline">Café Socials</span></div>
+      </div>
+      <div>
+        <span class="c-label">Filled variants</span>
+        <div class="row mt-sm"><span class="pill pill-filled"><span class="pill-dot"></span>Primary fill</span><span class="pill pill-sea">Sea Glass</span><span class="pill pill-bark">Cedar Bark</span><span class="pill pill-drift">Driftwood</span></div>
+      </div>
+      <div>
+        <span class="c-label">Badges</span>
+        <div class="row mt-sm"><span class="badge badge-new">New</span><span class="badge badge-hot">Popular</span><span class="badge badge-cnt">6</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 ALERTS & DIVIDERS -->
+  <section class="section" id="alerts">
+    <div class="section-label">06 — Alerts &amp; Dividers</div>
+    <div class="col" data-r>
+      <div class="alert-box alert-info"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" style="flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg><p><strong>Pack walk this Saturday</strong> Lynn Valley trail, 9am. Bring water for you and your dog.</p></div>
+      <div class="alert-box alert-ok"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" style="flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg><p><strong>You're in.</strong> Check your email — your personalised next steps are on their way.</p></div>
+      <div class="alert-box alert-warn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" style="flex-shrink:0;margin-top:2px"><path d="M12 2L2 20h20L12 2z"/><path d="M12 9v4m0 4h.01"/></svg><p><strong>Spots filling fast</strong> Only 2 spots remain in the next Focused Foundations cohort starting soon.</p></div>
+      <div class="col mt-sm" style="gap:10px;">
+        <div class="div-line div-solid"></div>
+        <div class="div-line div-sea"></div>
+        <div class="div-line div-bark"></div>
+        <div class="div-label">Or continue with</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 CARDS -->
+  <section class="section" id="cards">
+    <div class="section-label">07 — Cards</div>
+
+    <span class="c-label" data-r>Content cards</span>
+    <div class="grid-3 mt-sm" data-r>
+      <div class="card"><div class="card-thumb"><svg class="card-thumb-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 3 L16 10 H8 Z"/><path d="M12 8 L18 16.5 H6 Z"/><line x1="12" y1="16.5" x2="12" y2="21"/></svg><span class="card-thumb-pill">Pack Walk</span></div><div class="card-body"><div class="card-eyebrow">Mindful Meetups</div><div class="card-title">Lynn Valley Trail</div><p>Guided hike through the North Shore forest. Calm-state socialization in a natural setting.</p><div class="card-footer"><span class="pill pill-ghost-sea" style="font-size:9px;padding:4px 11px;">Lynn Valley</span><a href="#" class="arrow-link" style="font-size:10px;">Join <svg width="11" height="9" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6h13M9 1l5 5-5 5"/></svg></a></div></div></div>
+      <div class="card"><div class="card-thumb" style="background:linear-gradient(160deg,#243322 0%,#2d3a2e 100%);"><svg class="card-thumb-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M5 10 H16 V14.5 A4 4 0 0 1 12 18.5 H9 A4 4 0 0 1 5 14.5 Z"/><path d="M16 11 H18 A2.4 2.4 0 0 1 18 15.8 H16"/></svg><span class="card-thumb-pill">Café Social</span></div><div class="card-body"><div class="card-eyebrow">Mindful Meetups</div><div class="card-title">Yaletown Morning</div><p>Real-world exposure at cafés and patios. Where calm dogs meet city life.</p><div class="card-footer"><span class="pill pill-ghost-sea" style="font-size:9px;padding:4px 11px;">Yaletown</span><a href="#" class="arrow-link" style="font-size:10px;">Join <svg width="11" height="9" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6h13M9 1l5 5-5 5"/></svg></a></div></div></div>
+      <div class="card"><div class="card-thumb" style="background:linear-gradient(135deg,#1a2819 0%,#2d3a2e 100%);"><svg class="card-thumb-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 12 Q6 8 9 12 T15 12 T21 12"/><path d="M3 16.5 Q6 12.5 9 16.5 T15 16.5 T21 16.5"/></svg><span class="card-thumb-pill">Coastal</span></div><div class="card-body"><div class="card-eyebrow">Mindful Meetups</div><div class="card-title">Whytecliff Park</div><p>Oceanside trails and tidal flats for dogs ready to navigate open, distracting environments.</p><div class="card-footer"><span class="pill pill-ghost-sea" style="font-size:9px;padding:4px 11px;">West Van</span><a href="#" class="arrow-link" style="font-size:10px;">Join <svg width="11" height="9" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6h13M9 1l5 5-5 5"/></svg></a></div></div></div>
+    </div>
+
+    <span class="c-label mt-lg" data-r>Testimonial quotes</span>
+    <div class="grid-3 mt-sm" data-r>
+      <div class="qcard"><span class="qmark">"</span><p class="qtext">My dog went from reactive chaos on the seawall to actually being present beside me. The pack walks changed both of us.</p><div class="qauthor"><div class="qavatar">SM</div><div><div class="qname">Sarah M.</div><div class="qsub">Belgian Malinois · Stanley Park</div></div></div></div>
+      <div class="qcard"><span class="qmark">"</span><p class="qtext">Impackful K9 doesn't train dogs. They train the relationship. I finally understand what my dog needs from me.</p><div class="qauthor"><div class="qavatar" style="background:var(--bg-2);">JK</div><div><div class="qname">James K.</div><div class="qsub">Labrador · Lynn Valley</div></div></div></div>
+      <div class="qcard"><span class="qmark">"</span><p class="qtext">The café socials were a turning point. Leo sits through a full coffee now. Our whole morning routine is different.</p><div class="qauthor"><div class="qavatar" style="background:rgba(107,74,58,0.18);">PT</div><div><div class="qname">Priya T.</div><div class="qsub">Golden Retriever · Yaletown</div></div></div></div>
+    </div>
+
+    <span class="c-label mt-lg" data-r>Stat cards</span>
+    <div class="grid-4 mt-sm" data-r>
+      <div class="stat-card"><div class="stat-n">10+</div><div class="stat-l">Years Training</div><div class="stat-bar"><div class="stat-fill" style="width:85%;"></div></div></div>
+      <div class="stat-card"><div class="stat-n">2k+</div><div class="stat-l">Dogs Trained</div><div class="stat-bar"><div class="stat-fill" style="width:92%;"></div></div></div>
+      <div class="stat-card"><div class="stat-n">6</div><div class="stat-l">Walk Locations</div><div class="stat-bar"><div class="stat-fill" style="width:60%;"></div></div></div>
+      <div class="stat-card"><div class="stat-n">4w</div><div class="stat-l">Foundation Course</div><div class="stat-bar"><div class="stat-fill" style="width:40%;"></div></div></div>
+    </div>
+
+    <span class="c-label mt-lg" data-r>Program cards — always dark surface, intentional (unchanged by toggle)</span>
+    <div style="display:grid;grid-template-columns:repeat(2,200px);gap:16px;" class="mt-sm" data-r>
+      <div class="prog-card"><div class="prog-overlay"></div><div class="prog-border"></div><div class="prog-content"><div class="prog-eyebrow">Start here</div><div class="prog-title">Focused Foundations</div><div class="prog-desc">The leash communication system.</div></div></div>
+      <div class="prog-card"><div class="prog-overlay"></div><div class="prog-border"></div><div class="prog-content"><div class="prog-eyebrow">Membership</div><div class="prog-title">Mindful Meetups</div><div class="prog-desc">Training becomes lifestyle.</div></div></div>
+    </div>
+  </section>
+
+  <!-- 08 NAV -->
+  <section class="section" id="nav-section">
+    <div class="section-label">08 — Navigation</div>
+    <div class="col" data-r>
+      <div>
+        <span class="c-label">Light nav (scrolled state)</span>
+        <div class="nav-demo nav-demo-light mt-sm">
+          <span class="ndb-light">Impackful K9</span>
+          <ul class="nav-demo-links"><li><a href="#" class="ndl-light">Programs</a></li><li><a href="#" class="ndl-light">About</a></li><li><a href="#" class="ndl-light">Community</a></li><li><a href="#" class="ndl-light">Stories</a></li></ul>
+          <button class="btn btn-primary btn-sm">Get Started</button>
+        </div>
+      </div>
+      <div class="mt-sm">
+        <span class="c-label">Dark nav (hero overlay — stays dark in both modes)</span>
+        <div class="nav-demo nav-demo-dark mt-sm">
+          <span class="ndb-dark">Impackful K9</span>
+          <ul class="nav-demo-links"><li><a href="#" class="ndl-dark">Programs</a></li><li><a href="#" class="ndl-dark">About</a></li><li><a href="#" class="ndl-dark">Community</a></li><li><a href="#" class="ndl-dark">Stories</a></li></ul>
+          <button class="btn btn-ghost btn-sm">Get Started</button>
+        </div>
+      </div>
+      <div class="mt-sm">
+        <span class="c-label">Breadcrumb</span>
+        <div class="breadcrumb mt-sm">
+          <a href="#" class="bcrumb-a">Home</a><span class="bcrumb-sep">·</span>
+          <a href="#" class="bcrumb-a">Programs</a><span class="bcrumb-sep">·</span>
+          <span class="bcrumb-cur">Focused Foundations</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 TRAIL RAIL -->
+  <section class="section" id="rail">
+    <div class="section-label">09 — Trail Progress Rail</div>
+    <div class="rail-outer" data-r>
+      <div class="rail-wrap">
+        <div class="rail-track"><div class="rail-fill" style="height:55%;"></div></div>
+        <div class="rnode ra"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><ellipse cx="12" cy="16.2" rx="4.3" ry="3.4"/><circle cx="6.4" cy="11" r="1.7"/><circle cx="10" cy="7.8" r="1.8"/><circle cx="14" cy="7.8" r="1.8"/><circle cx="17.6" cy="11" r="1.7"/></svg></div>
+        <div class="rnode rp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M12 3 L16 10 H8 Z"/><path d="M12 8 L18 16.5 H6 Z"/><line x1="12" y1="16.5" x2="12" y2="21"/></svg></div>
+        <div class="rnode rp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 5.5 L13.3 10.7 L18.5 12 L13.3 13.3 L12 18.5 L10.7 13.3 L5.5 12 L10.7 10.7 Z"/></svg></div>
+        <div class="rnode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2.5 19 L9.5 7 L13.5 13 L16 8.5 L21.5 19 Z"/></svg></div>
+        <div class="rnode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M5 10 H16 V14.5 A4 4 0 0 1 12 18.5 H9 A4 4 0 0 1 5 14.5 Z"/><path d="M16 11 H18 A2.4 2.4 0 0 1 18 15.8 H16"/></svg></div>
+        <div class="rnode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M3 12 Q6 8 9 12 T15 12 T21 12"/><path d="M3 16.5 Q6 12.5 9 16.5 T15 16.5 T21 16.5"/></svg></div>
+        <div class="rnode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M9.7 19 L10.6 10 H13.4 L14.3 19 Z"/><path d="M9.5 13 H14.5"/><path d="M10.4 10 V7 H13.6 V10"/><path d="M11 7 L12 5 L13 7"/><path d="M4.5 19 Q6.5 17.2 8.5 19 M15.5 19 Q17.5 17.2 19.5 19"/></svg></div>
+      </div>
+      <div class="rail-labels">
+        <span class="rail-lbl active">Home</span>
+        <span class="rail-lbl">Approach</span>
+        <span class="rail-lbl">Programs</span>
+        <span class="rail-lbl">Manifesto</span>
+        <span class="rail-lbl">Stories</span>
+        <span class="rail-lbl">Community</span>
+        <span class="rail-lbl">Book</span>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /page -->
+
+<div class="page">
+  <div class="comp-footer">
+    <p>Impackful K9 &mdash; Coastal Cathedral 02/04 &mdash; Component Library v3.0</p>
+    <span class="tagline">Seek connection. Chase adventure.</span>
+  </div>
+</div>
+
+<script>
+// ── Theme toggle (saves preference) ──
+const root   = document.documentElement;
+const toggle = document.getElementById('theme-toggle');
+
+// restore saved theme
+const saved = localStorage.getItem('ik9-theme');
+if (saved) root.setAttribute('data-theme', saved);
+
+toggle.addEventListener('click', () => {
+  const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', next);
+  localStorage.setItem('ik9-theme', next);
+});
+
+// ── Scroll reveal ──
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e) => {
+    if (!e.isIntersecting) return;
+    const sibs = Array.from(e.target.parentElement.querySelectorAll('[data-r]'));
+    const idx  = sibs.indexOf(e.target);
+    setTimeout(() => e.target.classList.add('in'), idx * 60);
+    obs.unobserve(e.target);
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('[data-r]').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
