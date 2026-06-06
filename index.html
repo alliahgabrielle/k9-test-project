@@ -112,15 +112,6 @@ h1, h2, h3, h4, h5, h6,
   font-family: 'The Seasons', 'Playfair Display', Georgia, serif;
 }
 
-/* Hide trail rail while on intro */
-body.on-intro #trail-rail {
-  opacity: 0;
-  pointer-events: none;
-}
-#trail-rail {
-  transition: opacity 0.6s ease;
-}
-
 /* ─── INTRO OVERLAY ─── */
 #intro-overlay {
   position: fixed;
@@ -299,101 +290,6 @@ body.on-intro #trail-rail {
 
 #main-site.visible {
   opacity: 1;
-}
-
-/* ─── TRAIL PROGRESS RAIL ─── */
-#trail-rail {
-  position: fixed;
-  right: 22px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 200;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 22px;
-  padding: 22px 12px;
-  border-radius: 100px;
-  background: rgba(20, 30, 21, 0.45);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(184, 212, 206, 0.14);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.25);
-}
-
-.rail-track {
-  position: absolute;
-  top: 24px;
-  bottom: 24px;
-  left: 50%;
-  width: 2px;
-  transform: translateX(-50%);
-  background: rgba(196, 181, 162, 0.22);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.rail-fill {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 0;
-  background: linear-gradient(to bottom, var(--sea-glass), #8fb6ae);
-  border-radius: 2px;
-  transition: height 0.12s linear, width 0.12s linear;
-}
-
-.rail-node {
-  position: relative;
-  z-index: 1;
-  width: 34px;
-  height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--driftwood);
-  opacity: 0.55;
-  border-radius: 50%;
-  background: transparent;
-  cursor: pointer;
-  text-decoration: none;
-  transition: color 350ms ease, opacity 350ms ease, transform 350ms ease, filter 350ms ease;
-}
-
-.rail-node svg { width: 21px; height: 21px; display: block; }
-.rail-node.passed { color: var(--sea-glass); opacity: 0.8; }
-.rail-node.active {
-  color: var(--sea-glass);
-  opacity: 1;
-  transform: scale(1.18);
-  filter: drop-shadow(0 0 8px rgba(184,212,206,0.55));
-}
-.rail-node:hover { color: var(--mist-white); opacity: 1; }
-
-.rail-label {
-  position: absolute;
-  right: 46px;
-  top: 50%;
-  transform: translateY(-50%) translateX(6px);
-  white-space: nowrap;
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--mist-white);
-  background: rgba(20, 30, 21, 0.9);
-  border: 1px solid rgba(184,212,206,0.18);
-  padding: 6px 10px;
-  border-radius: 4px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 250ms ease, transform 250ms ease;
-}
-
-.rail-node:hover .rail-label {
-  opacity: 1;
-  transform: translateY(-50%) translateX(0);
 }
 
 /* ─── NAVIGATION ─── */
@@ -1490,126 +1386,13 @@ footer {
 
   body { padding-bottom: 84px; }
 
-  #trail-rail {
-    top: auto;
-    bottom: 16px;
-    right: 50%;
-    left: auto;
-    transform: translateX(50%);
-    flex-direction: row;
-    gap: 16px;
-    padding: 12px 20px;
-  }
-  .rail-track {
-    top: 50%;
-    bottom: auto;
-    left: 20px;
-    right: 20px;
-    width: auto;
-    height: 2px;
-    transform: translateY(-50%);
-  }
-  .rail-fill {
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 100%;
-  }
-  .rail-node.active { transform: scale(1.15); }
-  .rail-label { display: none; }
+ 
 }
   </style>
 </head>
 
 <body>
 
-  <!-- ─── TRAIL PROGRESS RAIL ─── -->
-  <!-- Minimalist line-icons drawn in the brand asset style. Each one is a
-     waypoint for a section; the connecting line fills as you scroll and
-     the active section's icon lights up in sea-glass. -->
-  <div id="trail-rail" aria-label="Page progress">
-    <div class="rail-track">
-      <div class="rail-fill" id="rail-fill"></div>
-    </div>
-
-    <!-- Home · Paw -->
-    <a class="rail-node" href="#hero" data-target="hero" aria-label="Home">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
-        stroke-linejoin="round">
-        <ellipse cx="12" cy="16.2" rx="4.3" ry="3.4" />
-        <circle cx="6.4" cy="11" r="1.7" />
-        <circle cx="10" cy="7.8" r="1.8" />
-        <circle cx="14" cy="7.8" r="1.8" />
-        <circle cx="17.6" cy="11" r="1.7" />
-      </svg>
-      <span class="rail-label">Home</span>
-    </a>
-
-    <!-- Approach · Pine -->
-    <a class="rail-node" href="#philosophy" data-target="philosophy" aria-label="Our Approach">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
-        stroke-linejoin="round">
-        <path d="M12 3 L16 10 H8 Z" />
-        <path d="M12 8 L18 16.5 H6 Z" />
-        <line x1="12" y1="16.5" x2="12" y2="21" />
-      </svg>
-      <span class="rail-label">Approach</span>
-    </a>
-
-    <!-- Programs · Compass -->
-    <a class="rail-node" href="#programs" data-target="programs" aria-label="Programs">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
-        stroke-linejoin="round">
-        <circle cx="12" cy="12" r="8.5" />
-        <path d="M12 5.5 L13.3 10.7 L18.5 12 L13.3 13.3 L12 18.5 L10.7 13.3 L5.5 12 L10.7 10.7 Z" />
-      </svg>
-      <span class="rail-label">Programs</span>
-    </a>
-
-    <!-- Manifesto · Mountain -->
-    <a class="rail-node" href="#manifesto" data-target="manifesto" aria-label="Manifesto">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
-        stroke-linejoin="round">
-        <path d="M2.5 19 L9.5 7 L13.5 13 L16 8.5 L21.5 19 Z" />
-      </svg>
-      <span class="rail-label">Manifesto</span>
-    </a>
-
-    <!-- Stories · Coffee -->
-    <a class="rail-node" href="#testimonials" data-target="testimonials" aria-label="Stories">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
-        stroke-linejoin="round">
-        <path d="M5 10 H16 V14.5 A4 4 0 0 1 12 18.5 H9 A4 4 0 0 1 5 14.5 Z" />
-        <path d="M16 11 H18 A2.4 2.4 0 0 1 18 15.8 H16" />
-        <path d="M8.5 4.5 C8.5 6 9.5 6 9.5 7.5" />
-        <path d="M12 4.5 C12 6 13 6 13 7.5" />
-      </svg>
-      <span class="rail-label">Stories</span>
-    </a>
-
-    <!-- Community · Wave -->
-    <a class="rail-node" href="#community" data-target="community" aria-label="Community">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
-        stroke-linejoin="round">
-        <path d="M3 12 Q6 8 9 12 T15 12 T21 12" />
-        <path d="M3 16.5 Q6 12.5 9 16.5 T15 16.5 T21 16.5" />
-      </svg>
-      <span class="rail-label">Community</span>
-    </a>
-
-    <!-- Book · Lighthouse -->
-    <a class="rail-node" href="#cta-closer" data-target="cta-closer" aria-label="Book">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
-        stroke-linejoin="round">
-        <path d="M9.7 19 L10.6 10 H13.4 L14.3 19 Z" />
-        <path d="M9.5 13 H14.5" />
-        <path d="M10.4 10 V7 H13.6 V10" />
-        <path d="M11 7 L12 5 L13 7" />
-        <path d="M4.5 19 Q6.5 17.2 8.5 19 M15.5 19 Q17.5 17.2 19.5 19" />
-      </svg>
-      <span class="rail-label">Book</span>
-    </a>
-  </div>
 
   <!-- ─── LIGHT BURST ─── -->
   <div id="light-burst"></div>
@@ -2009,40 +1792,6 @@ function applyTheme(theme) {
   const pillsRow = document.getElementById('pills-row');
   if (pillsRow) pillsObserver.observe(pillsRow);
 
-  (function() {
-    const rail = document.getElementById('trail-rail');
-    if (!rail) return;
-    const fill     = document.getElementById('rail-fill');
-    const nodes    = Array.from(rail.querySelectorAll('.rail-node'));
-    const sections = nodes.map(n => document.getElementById(n.dataset.target));
-    function isMobile() { return window.matchMedia('(max-width: 900px)').matches; }
-    function update() {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const pct = docHeight > 0 ? Math.min(1, Math.max(0, scrollTop / docHeight)) : 0;
-      if (isMobile()) { fill.style.height = ''; fill.style.width = (pct*100)+'%'; }
-      else            { fill.style.width  = ''; fill.style.height = (pct*100)+'%'; }
-      const marker = window.innerHeight * 0.42;
-      let activeIdx = 0;
-      sections.forEach((sec, i) => {
-        if (sec && sec.getBoundingClientRect().top <= marker) activeIdx = i;
-      });
-      nodes.forEach((n, i) => {
-        n.classList.toggle('active', i === activeIdx);
-        n.classList.toggle('passed', i < activeIdx);
-      });
-    }
-    nodes.forEach(n => {
-      n.addEventListener('click', (e) => {
-        e.preventDefault();
-        const sec = document.getElementById(n.dataset.target);
-        if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    });
-    window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
-    update();
-  })();
 </script>
 
 </body>
