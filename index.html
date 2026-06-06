@@ -433,21 +433,151 @@
     height: 100%;
     object-fit: cover;
     object-position: center;
+    transition: filter 500ms ease;
   }
+
+  /* On light gradients boost contrast + saturation so the photo pops */
+  #hero.hero-light .hero-image {
+    filter: contrast(1.1) saturate(1.18) brightness(1.03);
+  }
+
+  /* Depth vignette — frames the photo edges when on a light gradient */
+  .hero-depth {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 500ms ease;
+    background:
+      radial-gradient(ellipse 55% 100% at 100% 50%, rgba(0,0,0,0.22) 0%, transparent 65%),
+      linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, transparent 22%, transparent 72%, rgba(0,0,0,0.14) 100%);
+  }
+  #hero.hero-light .hero-depth { opacity: 1; }
 
   .hero-bg {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to right, 
-      #2D3A2E 0%, 
-      #2D3A2E 15%,
-      rgba(45,58,46,0.9) 25%,
-      rgba(45,58,46,0.7) 40%,
-      rgba(45,58,46,0.3) 60%,
-      transparent 85%);
     animation: none;
     z-index: 1;
+    transition: background 500ms ease;
   }
+
+  /* ── Gradient variants (switched by JS) ── */
+  .hero-bg.grad-cedar {
+    background: linear-gradient(to right,
+      #2D3A2E 0%, #2D3A2E 15%,
+      rgba(45,58,46,0.9) 25%, rgba(45,58,46,0.7) 40%,
+      rgba(45,58,46,0.3) 60%, transparent 85%);
+  }
+  .hero-bg.grad-bark {
+    background: linear-gradient(to right,
+      #6B4A3A 0%, #6B4A3A 15%,
+      rgba(107,74,58,0.9) 25%, rgba(107,74,58,0.7) 40%,
+      rgba(107,74,58,0.3) 60%, transparent 85%);
+  }
+  .hero-bg.grad-seaglass {
+    background: linear-gradient(to right,
+      #B8D4CE 0%, #B8D4CE 15%,
+      rgba(184,212,206,0.92) 25%, rgba(184,212,206,0.75) 40%,
+      rgba(184,212,206,0.35) 60%, transparent 85%);
+  }
+  .hero-bg.grad-mist {
+    background: linear-gradient(to right,
+      #F0EDE8 0%, #F0EDE8 16%,
+      rgba(240,237,232,0.94) 26%, rgba(240,237,232,0.65) 36%,
+      rgba(240,237,232,0.12) 50%, transparent 62%);
+  }
+  .hero-bg.grad-drift {
+    background: linear-gradient(to right,
+      #C4B5A2 0%, #C4B5A2 15%,
+      rgba(196,181,162,0.92) 25%, rgba(196,181,162,0.75) 40%,
+      rgba(196,181,162,0.35) 60%, transparent 85%);
+  }
+
+  /* ── Light-gradient text overrides ── */
+  #hero.hero-light .hero-headline { color: var(--deep-cedar); }
+  #hero.hero-light .hero-sub      { color: rgba(45,58,46,0.7); }
+  #hero.hero-light .eyebrow       { color: var(--moss); }
+  #hero.hero-light .btn-ghost {
+    color: var(--deep-cedar);
+    border-color: rgba(45,58,46,0.45);
+  }
+  #hero.hero-light .btn-ghost:hover {
+    background: rgba(45,58,46,0.08);
+    box-shadow: 0 10px 28px rgba(45,58,46,0.15);
+  }
+
+  /* ── Gradient Picker ── */
+  #gradient-picker {
+    position: absolute;
+    bottom: 36px;
+    left: 80px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(13,26,14,0.38);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(240,237,232,0.14);
+    border-radius: 100px;
+    padding: 9px 16px 9px 14px;
+    transition: background 400ms ease, border-color 400ms ease;
+  }
+  #hero.hero-light #gradient-picker {
+    background: rgba(240,237,232,0.55);
+    border-color: rgba(45,58,46,0.18);
+  }
+  .picker-heading {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: rgba(240,237,232,0.55);
+    white-space: nowrap;
+    padding-right: 4px;
+    transition: color 300ms ease;
+  }
+  #hero.hero-light .picker-heading { color: rgba(45,58,46,0.5); }
+  .picker-divider {
+    width: 1px; height: 16px;
+    background: rgba(240,237,232,0.18);
+    transition: background 300ms ease;
+  }
+  #hero.hero-light .picker-divider { background: rgba(45,58,46,0.18); }
+  .picker-swatches { display: flex; gap: 7px; align-items: center; }
+  .picker-swatch {
+    width: 22px; height: 22px; border-radius: 50%;
+    cursor: pointer; border: 2px solid transparent;
+    outline: 2px solid transparent; outline-offset: 2px;
+    transition: transform 180ms ease, outline-color 180ms ease, border-color 180ms ease;
+    position: relative;
+  }
+  .picker-swatch:hover { transform: scale(1.2); }
+  .picker-swatch.active {
+    outline-color: rgba(240,237,232,0.9);
+    transform: scale(1.12);
+  }
+  #hero.hero-light .picker-swatch.active { outline-color: rgba(45,58,46,0.7); }
+  /* tooltip */
+  .picker-swatch::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    white-space: nowrap;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--mist-white);
+    background: rgba(13,26,14,0.88);
+    border: 1px solid rgba(184,212,206,0.18);
+    padding: 5px 10px; border-radius: 4px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 180ms ease, transform 180ms ease;
+  }
+  .picker-swatch:hover::after { opacity: 1; transform: translateX(-50%) translateY(0); }
 
   .hero-fog {
     display: none;
@@ -1463,7 +1593,8 @@
 
   <!-- Hero -->
   <section id="hero">
-    <div class="hero-bg"></div>
+    <div class="hero-bg grad-cedar"></div>
+    <div class="hero-depth"></div>
     <div class="hero-fog"></div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
@@ -1472,6 +1603,19 @@
       <p class="hero-sub" id="h-sub">We’re not just dog trainers, we’re relationship coaches. We help you learn how to better understand your dog's needs and behaviours, build trust and enhance communication.</p>
       <a href="#" class="btn-ghost" id="h-cta">Join our Pack</a>
     </div>
+    <!-- Gradient preview picker (design tool) -->
+    <div id="gradient-picker">
+      <span class="picker-heading">Gradient</span>
+      <div class="picker-divider"></div>
+      <div class="picker-swatches">
+        <div class="picker-swatch active" data-grad="cedar"    data-label="Deep Cedar"  style="background:#2D3A2E;"></div>
+        <div class="picker-swatch"        data-grad="bark"     data-label="Cedar Bark"  style="background:#6B4A3A;"></div>
+        <div class="picker-swatch"        data-grad="seaglass" data-label="Sea Glass"   style="background:#B8D4CE;"></div>
+        <div class="picker-swatch"        data-grad="mist"     data-label="Mist White"  style="background:#F0EDE8; border-color:rgba(45,58,46,0.2);"></div>
+        <div class="picker-swatch"        data-grad="drift"    data-label="Driftwood"   style="background:#C4B5A2;"></div>
+      </div>
+    </div>
+
     <!-- Hero Image - Replace src with your dog training photo URL -->
     <img src="personwithgerman.png" alt="Dog training" class="hero-image">
   </section>
@@ -1778,7 +1922,38 @@
   const pillsRow = document.getElementById('pills-row');
   if (pillsRow) pillsObserver.observe(pillsRow);
 
-  // ─── TRAIL PROGRESS RAIL ───
+  // ─── GRADIENT PICKER ───
+  (function () {
+    const GRADS = {
+      cedar:    { cls: 'grad-cedar',    light: false },
+      bark:     { cls: 'grad-bark',     light: false },
+      seaglass: { cls: 'grad-seaglass', light: true  },
+      mist:     { cls: 'grad-mist',     light: true  },
+      drift:    { cls: 'grad-drift',    light: true  },
+    };
+    const heroBg = document.querySelector('#hero .hero-bg');
+    const heroEl = document.getElementById('hero');
+    const swatches = document.querySelectorAll('.picker-swatch');
+
+    swatches.forEach(sw => {
+      sw.addEventListener('click', () => {
+        const key = sw.dataset.grad;
+        const g = GRADS[key];
+
+        // swap gradient class
+        Object.values(GRADS).forEach(x => heroBg.classList.remove(x.cls));
+        heroBg.classList.add(g.cls);
+
+        // swap text contrast
+        heroEl.classList.toggle('hero-light', g.light);
+
+        // update active swatch
+        swatches.forEach(s => s.classList.remove('active'));
+        sw.classList.add('active');
+      });
+    });
+  })();
+
   // Tracks scroll progress (fills the connecting line) and highlights the
   // icon for whichever section is currently in view. Vertical on desktop,
   // horizontal on mobile — the JS picks which dimension of the fill to set.
