@@ -356,6 +356,29 @@ nav#nav.scrolled {
   gap: 4px;
   list-style: none;
   margin: 0 8px;
+  position: relative;
+}
+
+/* The sliding underline indicator */
+.nav-links::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background: var(--sea-glass);
+  border-radius: 2px;
+  transition: left 300ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              width 300ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 200ms ease;
+  opacity: 0;
+  left: var(--ind-left, 0px);
+  width: var(--ind-width, 0px);
+}
+
+.nav-links.indicator-ready::after {
+  opacity: 1;
 }
 
 .nav-links a {
@@ -366,31 +389,16 @@ nav#nav.scrolled {
   text-decoration: none;
   padding: 7px 13px;
   border-radius: 100px;
-  transition: color 200ms ease, background 200ms ease;
+  transition: color 200ms ease;
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  position: relative;
 }
 
-.nav-links a:hover {
-  color: var(--nav-link-hover);
-  background: var(--nav-link-hover-bg);
-}
-
+.nav-links a:hover,
 .nav-links a.active {
   color: var(--nav-link-hover);
-}
-
-/* Dropdown chevron */
-.nav-links a.has-dropdown::after {
-  content: '';
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  border-right: 1.5px solid currentColor;
-  border-bottom: 1.5px solid currentColor;
-  transform: rotate(45deg) translateY(-2px);
-  opacity: 0.6;
 }
 
 /* Right side */
@@ -399,23 +407,6 @@ nav#nav.scrolled {
   align-items: center;
   gap: 4px;
   flex-shrink: 0;
-}
-
-/* Sign in */
-.nav-signin {
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.03em;
-  color: var(--nav-link-color);
-  text-decoration: none;
-  padding: 8px 14px;
-  border-radius: 100px;
-  transition: color 200ms ease, background 200ms ease;
-}
-
-.nav-signin:hover {
-  color: var(--nav-link-hover);
-  background: var(--nav-link-hover-bg);
 }
 
 /* Theme toggle */
@@ -442,26 +433,7 @@ nav#nav.scrolled {
 
 .theme-toggle:active { transform: scale(0.92); }
 
-/* Book CTA pill button */
-.nav-book {
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  color: var(--nav-cta-text);
-  text-decoration: none;
-  background: var(--nav-cta-bg);
-  padding: 9px 20px;
-  border-radius: 100px;
-  border: none;
-  transition: background 250ms ease, transform 200ms ease, box-shadow 200ms ease;
-  white-space: nowrap;
-}
 
-.nav-book:hover {
-  background: var(--nav-cta-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px var(--nav-cta-shadow);
-}
 
 /* Theme toggle button */
 .theme-toggle {
@@ -1447,13 +1419,11 @@ footer {
 
     <!-- Right side -->
     <div class="nav-right">
-      <a href="#" class="nav-signin">Sign in</a>
-      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
-        <svg id="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
-        <svg id="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M2 12h2m16 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-      </button>
-      <a href="#" class="nav-book">Book Free Consult</a>
-    </div>
+  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+    <svg id="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
+    <svg id="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M2 12h2m16 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+  </button>
+</div>
   </div>
 </nav>
 
@@ -1465,7 +1435,7 @@ footer {
       <div class="hero-overlay"></div>
       <div class="hero-content">
         <div class="eyebrow" id="h-eyebrow">Impackful K9 · Dog Training</div>
-        <h1 class="hero-headline" id="h-headline">Calm is<br>a skill.</h1>
+        <h1 class="hero-headline" id="h-headline">Seek connection,<br>chase adventure.</h1>
         <p class="hero-sub" id="h-sub">We’re not just dog trainers, we’re relationship coaches. We help you learn how to
           better understand your dog's needs and behaviours, build trust and enhance communication.</p>
         <a href="#" class="btn-ghost" id="h-cta">Join our Pack</a>
@@ -1649,7 +1619,53 @@ footer {
 
   </div><!-- /main-site -->
 
-  <script>
+  <script>// ── Nav sliding underline ──
+(function () {
+  const list = document.querySelector('.nav-links');
+  if (!list) return;
+
+  const links = Array.from(list.querySelectorAll('a'));
+  const indicator = { left: 0, width: 0 };
+
+  function moveIndicator(el) {
+    const listRect = list.getBoundingClientRect();
+    const elRect   = el.getBoundingClientRect();
+    const left  = elRect.left - listRect.left + (elRect.width / 2 - elRect.width / 2);
+    const width = elRect.width;
+
+    list.style.setProperty('--ind-left',  left  + 'px');
+    list.style.setProperty('--ind-width', width + 'px');
+    list.classList.add('indicator-ready');
+  }
+
+  // Position on the active link on load
+  const activeLink = list.querySelector('a.active') || links[0];
+  if (activeLink) {
+    // Delay until layout is settled
+    requestAnimationFrame(() => moveIndicator(activeLink));
+  }
+
+  // Follow hover
+  links.forEach(link => {
+    link.addEventListener('mouseenter', () => moveIndicator(link));
+  });
+
+  // On mouse leave, snap back to active
+  list.addEventListener('mouseleave', () => {
+    const active = list.querySelector('a.active');
+    if (active) moveIndicator(active);
+    else list.classList.remove('indicator-ready');
+  });
+
+  // Update active on click
+  links.forEach(link => {
+    link.addEventListener('click', () => {
+      links.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+      moveIndicator(link);
+    });
+  });
+})();
   // ── Theme toggle ──
   const root = document.documentElement;
   const toggleBtn = document.getElementById('theme-toggle');
