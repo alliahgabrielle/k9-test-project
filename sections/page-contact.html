@@ -1,0 +1,72 @@
+<!-- ── PAGE: CONTACT ── -->
+<div class="page" id="page-contact">
+  <div class="contact-page">
+    <div class="contact-inner">
+      <div class="contact-eyebrow">Get in touch</div>
+      <h2 class="contact-heading">Let's talk<br>about your dog.</h2>
+      <form class="contact-form" onsubmit="handleContact(event)">
+
+        <div class="contact-row">
+          <div class="contact-field">
+            <label class="contact-label">Your Name <span class="contact-required">*</span></label>
+            <input class="contact-input" type="text" placeholder="e.g. Sarah Mitchell" required>
+          </div>
+          <div class="contact-field">
+            <label class="contact-label">Your Dog's Name <span class="contact-required">*</span></label>
+            <input class="contact-input" type="text" placeholder="e.g. Max" required>
+          </div>
+        </div>
+
+        <div class="contact-row">
+          <div class="contact-field">
+            <label class="contact-label">Email <span class="contact-required">*</span></label>
+            <input class="contact-input" type="email" placeholder="your@email.com" required>
+          </div>
+          <div class="contact-field">
+            <label class="contact-label">Phone <span class="contact-required">*</span></label>
+            <input class="contact-input" type="tel" placeholder="e.g. 604-555-0123" required>
+          </div>
+        </div>
+
+        <div class="contact-row">
+          <div class="contact-field">
+            <label class="contact-label">Dog's Breed <span class="contact-required">*</span></label>
+            <input class="contact-input" type="text" placeholder="e.g. Belgian Malinois" required>
+          </div>
+          <div class="contact-field">
+            <label class="contact-label">Dog's Age <span class="contact-required">*</span></label>
+            <input class="contact-input" type="text" placeholder="e.g. 2 years" required>
+          </div>
+        </div>
+
+        <div class="contact-field">
+          <label class="contact-label">How can we help? <span class="contact-required">*</span></label>
+          <textarea class="contact-input" placeholder="Tell us what you're working on with your dog..."
+            required></textarea>
+        </div>
+
+        <div class="contact-field">
+          <label class="contact-label">How did you hear about us? <span class="contact-required">*</span></label>
+          <select class="contact-input contact-select" required>
+            <option value="" disabled selected>Select an option...</option>
+            <option>Instagram</option>
+            <option>TikTok</option>
+            <option>Google Search</option>
+            <option>Word of mouth</option>
+            <option>Pack walk / event</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="contact-consent" id="consent-row">
+  <div class="consent-box" id="consent-box"></div>
+  <input type="checkbox" id="consent-check" required style="display:none">
+  <span class="consent-text">By clicking this checkbox, you consent for us to contact you by mail, phone, text, or email.</span>
+</div>
+
+        <button type="submit" class="contact-submit">Send Message</button>
+
+      </form>
+    </div>
+  </div>
+</div>
