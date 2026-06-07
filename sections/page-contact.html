@@ -47,22 +47,14 @@
 
         <div class="contact-field">
           <label class="contact-label">How did you hear about us? <span class="contact-required">*</span></label>
-          <select class="contact-input contact-select" required>
-            <option value="" disabled selected>Select an option...</option>
-            <option>Instagram</option>
-            <option>TikTok</option>
-            <option>Google Search</option>
-            <option>Word of mouth</option>
-            <option>Pack walk / event</option>
-            <option>Other</option>
-          </select>
+          <input class="contact-input" type="text" placeholder="e.g. Instagram, word of mouth, Google..." required>
         </div>
 
         <div class="contact-consent" id="consent-row">
-  <div class="consent-box" id="consent-box"></div>
-  <input type="checkbox" id="consent-check" required style="display:none">
-  <span class="consent-text">By clicking this checkbox, you consent for us to contact you by mail, phone, text, or email.</span>
-</div>
+          <div class="consent-box" id="consent-box"></div>
+          <input type="checkbox" id="consent-check" required style="display:none">
+          <span class="consent-text">By clicking this checkbox, you consent for us to contact you by mail, phone, text, or email.</span>
+        </div>
 
         <button type="submit" class="contact-submit">Send Message</button>
 

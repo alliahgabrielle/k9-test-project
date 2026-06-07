@@ -2149,25 +2149,6 @@ textarea.contact-input {
   margin-left: 2px;
 }
 
-.contact-select {
-  appearance: none;
-  -webkit-appearance: none;
-  cursor: pointer;
-  background-image: var(--sel-arrow, url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 7L11 1' stroke='%232D3A2E' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"));
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  padding-right: 40px;
-}
-
-[data-theme="dark"] .contact-select {
-  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 7L11 1' stroke='%23F0EDE8' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-}
-
-.contact-select option {
-  background: var(--page-bg);
-  color: var(--text-primary);
-}
-
 /* Consent checkbox */
 .contact-consent {
   display: flex;

@@ -5,244 +5,81 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Impackful K9 — Calm is a skill.</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap"
-    rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
   <!-- ─── LIGHT BURST ─── -->
-  <div id="light-burst"></div>
+  <div id="slot-light-burst"></div>
 
   <!-- ─── INTRO OVERLAY ─── -->
-  <div id="intro-overlay">
-    <video id="intro-video" src="walking-vid.mp4" autoplay muted playsinline preload="auto"></video>
-    <div class="video-overlay"></div>
-    <div class="video-vignette"></div>
-    <div id="intro-content">
-      <div class="logo-ring">
-        <img src="logo.PNG" alt="Impackful K9 Logo">
-      </div>
-      <div class="intro-tagline">Seek Connection,<br>Chase Adventure</div>
-      <div class="intro-sub">Impackful K9 · Dog Training · Lower Mainland, BC</div>
-    </div>
-    <div class="scroll-hint" id="scroll-hint" onclick="triggerTransition()">
-      <span>Enter</span>
-      <div class="scroll-line"></div>
-    </div>
-  </div>
+  <div id="slot-intro-overlay"></div>
 
   <!-- ─── CROSSROADS ─── -->
-  <div id="crossroads">
-    <span class="crossroads-eyebrow">You've arrived.</span>
-    <h2 class="crossroads-heading">How would you like<br>to find your path?</h2>
-    <p class="crossroads-sub">Choose how you'd like to explore.</p>
-    <div class="crossroads-paths">
-      <div class="path-card" onclick="enterClassicMode()">
-        <div class="path-number">Path 01</div>
-        <div class="path-title">I Know Where<br>To Start</div>
-        <div class="path-sub">Classic Mode</div>
-        <div class="path-desc">Explore the full website at your own pace — programs, philosophy, community, and more.
-        </div>
-        <div class="path-arrow">Enter <span class="path-arrow-line"></span></div>
-      </div>
-      <div class="path-card" onclick="enterJourneyMode()">
-        <div class="path-number">Path 02</div>
-        <div class="path-title">Help Me Find<br>The Right Path</div>
-        <div class="path-sub">Take an interactive journey</div>
-        <div class="path-desc">Answer a few questions and we'll guide you to the right program — unlock a special bonus
-          at the end.</div>
-        <div class="path-arrow">Begin <span class="path-arrow-line"></span></div>
-      </div>
-    </div>
-    <button class="crossroads-skip" onclick="enterClassicMode()">
-      Skip — just take me to the website ↗
-    </button>
-  </div>
+  <div id="slot-crossroads"></div>
 
   <!-- ─── COMING SOON (journey) ─── -->
-  <div id="coming-soon">
-    <span class="coming-soon-label">Interactive Journey</span>
-    <h2 class="coming-soon-heading">Coming Soon.</h2>
-    <p class="coming-soon-sub">We're building a personalised path-finder that leads you to exactly the right program —
-      with a little something special at the end.</p>
-    <button class="coming-soon-back" onclick="hideCoomingSoon()">← Back to crossroads</button>
-  </div>
+  <div id="slot-coming-soon"></div>
 
   <!-- ─── MAIN SITE ─── -->
   <div id="main-site">
 
-    <nav id="nav">
-      <div class="nav-inner">
-        <a href="#" class="nav-logo" onclick="navigateTo('hero'); return false;">
-          <img src="logo.PNG" alt="Impackful K9 Logo">
-        </a>
-        <ul class="nav-links">
-          <li><a href="#" class="active" data-page="hero">Home</a></li>
-          <li><a href="#" data-page="programs">Programs</a></li>
-          <li><a href="#" data-page="philosophy">About</a></li>
-          <li><a href="#" data-page="community">Community</a></li>
-          <li><a href="#" data-page="contact">Contact</a></li>
-        </ul>
-        <div class="nav-right">
-          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
-            <svg id="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="1.8" stroke-linecap="round">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z" />
-            </svg>
-            <svg id="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="1.8" stroke-linecap="round" style="display:none">
-              <circle cx="12" cy="12" r="4" />
-              <path
-                d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M2 12h2m16 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-            </svg>
-          </button>
-        </div>
-      </div>
-    </nav>
+    <!-- NAV -->
+    <div id="slot-nav"></div>
 
     <!-- Page container -->
     <div class="snap-container" id="snap-container">
+      <div id="slot-page-hero"></div>
+      <div id="slot-page-programs"></div>
+      <div id="slot-page-philosophy"></div>
+      <div id="slot-page-community"></div>
+      <div id="slot-page-contact"></div>
+    </div>
 
-      <!-- ── PAGE: HERO ── -->
-      <div class="page active" id="page-hero">
-        <section id="hero">
-          <div class="hero-bg grad-cedar"></div>
-          <div class="hero-depth"></div>
-          <div class="hero-fog"></div>
-          <div class="hero-overlay"></div>
-          <div class="hero-content">
-            <div class="eyebrow" id="h-eyebrow">Impackful K9 · Dog Training</div>
-            <h1 class="hero-headline" id="h-headline">Seek connection,<br>chase adventure.</h1>
-            <p class="hero-sub" id="h-sub">We're not just dog trainers, we're relationship coaches. We help you learn
-              how to better understand your dog's needs and behaviours, build trust and enhance communication.</p>
-            <a href="#" class="btn-ghost" id="h-cta" onclick="navigateTo('programs'); return false;">Join our Pack</a>
-          </div>
-          <img src="personwithgerman.png" alt="Dog training" class="hero-image">
-        </section>
-      </div>
-
-      <!-- ── PAGE: PROGRAMS ── -->
-      <div class="page" id="page-programs">
-        <section id="programs">
-          <div class="coming-soon-page">
-            <span class="cs-eyebrow">Programs</span>
-            <div class="cs-line"></div>
-            <h2 class="cs-heading">Coming Soon.</h2>
-            <p class="cs-sub">Our full programs page is on its way — structured training, pack walks, café socials, and
-              more.</p>
-          </div>
-        </section>
-      </div>
-
-      <!-- ── PAGE: ABOUT ── -->
-      <div class="page" id="page-philosophy">
-        <section id="philosophy">
-          <div class="coming-soon-page">
-            <span class="cs-eyebrow">Our Approach</span>
-            <div class="cs-line"></div>
-            <h2 class="cs-heading">Coming Soon.</h2>
-            <p class="cs-sub">We're putting together the full story of how we train — the philosophy, the method, and
-              the team behind it.</p>
-          </div>
-        </section>
-      </div>
-
-      <!-- ── PAGE: COMMUNITY ── -->
-      <div class="page" id="page-community">
-        <section id="community">
-          <div class="coming-soon-page">
-            <span class="cs-eyebrow">The Community</span>
-            <div class="cs-line"></div>
-            <h2 class="cs-heading">Coming Soon.</h2>
-            <p class="cs-sub">Pack walks, café mornings, trail hikes — our community page is being built. Check back
-              soon.</p>
-          </div>
-        </section>
-      </div>
-
-      <!-- ── PAGE: CONTACT ── -->
-      <div class="page" id="page-contact">
-        <div class="contact-page">
-          <div class="contact-inner">
-            <div class="contact-eyebrow">Get in touch</div>
-            <h2 class="contact-heading">Let's talk<br>about your dog.</h2>
-            <form class="contact-form" onsubmit="handleContact(event)">
-
-              <div class="contact-row">
-                <div class="contact-field">
-                  <label class="contact-label">Your Name <span class="contact-required">*</span></label>
-                  <input class="contact-input" type="text" placeholder="e.g. Sarah Mitchell" required>
-                </div>
-                <div class="contact-field">
-                  <label class="contact-label">Your Dog's Name <span class="contact-required">*</span></label>
-                  <input class="contact-input" type="text" placeholder="e.g. Max" required>
-                </div>
-              </div>
-
-              <div class="contact-row">
-                <div class="contact-field">
-                  <label class="contact-label">Email <span class="contact-required">*</span></label>
-                  <input class="contact-input" type="email" placeholder="your@email.com" required>
-                </div>
-                <div class="contact-field">
-                  <label class="contact-label">Phone <span class="contact-required">*</span></label>
-                  <input class="contact-input" type="tel" placeholder="e.g. 604-555-0123" required>
-                </div>
-              </div>
-
-              <div class="contact-row">
-                <div class="contact-field">
-                  <label class="contact-label">Dog's Breed <span class="contact-required">*</span></label>
-                  <input class="contact-input" type="text" placeholder="e.g. Belgian Malinois" required>
-                </div>
-                <div class="contact-field">
-                  <label class="contact-label">Dog's Age <span class="contact-required">*</span></label>
-                  <input class="contact-input" type="text" placeholder="e.g. 2 years" required>
-                </div>
-              </div>
-
-              <div class="contact-field">
-                <label class="contact-label">How can we help? <span class="contact-required">*</span></label>
-                <textarea class="contact-input" placeholder="Tell us what you're working on with your dog..."
-                  required></textarea>
-              </div>
-
-              <div class="contact-field">
-                <label class="contact-label">How did you hear about us? <span class="contact-required">*</span></label>
-                <select class="contact-input contact-select" required>
-                  <option value="" disabled selected>Select an option...</option>
-                  <option>Instagram</option>
-                  <option>TikTok</option>
-                  <option>Google Search</option>
-                  <option>Word of mouth</option>
-                  <option>Pack walk / event</option>
-                  <option>Other</option>
-                </select>
-              </div>
-
-              <label class="contact-consent">
-                <div class="consent-box" id="consent-box"></div>
-                <input type="checkbox" id="consent-check" required style="display:none">
-                <span class="consent-text">By clicking this checkbox, you consent for us to contact you by mail, phone,
-                  text, or email.</span>
-              </label>
-
-              <button type="submit" class="contact-submit">Send Message</button>
-
-            </form>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /snap-container -->
   </div><!-- /main-site -->
 
-  <script src="main.js"></script>
+  <script>
+    // ── Load all section partials then boot main.js ──
+    const sections = [
+      { slot: 'slot-light-burst',    file: 'sections/light-burst.html' },
+      { slot: 'slot-intro-overlay',  file: 'sections/intro-overlay.html' },
+      { slot: 'slot-crossroads',     file: 'sections/crossroads.html' },
+      { slot: 'slot-coming-soon',    file: 'sections/coming-soon.html' },
+      { slot: 'slot-nav',            file: 'sections/nav.html' },
+      { slot: 'slot-page-hero',      file: 'sections/page-hero.html' },
+      { slot: 'slot-page-programs',  file: 'sections/page-programs.html' },
+      { slot: 'slot-page-philosophy',file: 'sections/page-philosophy.html' },
+      { slot: 'slot-page-community', file: 'sections/page-community.html' },
+      { slot: 'slot-page-contact',   file: 'sections/page-contact.html' },
+    ];
+
+    Promise.all(
+      sections.map(({ slot, file }) =>
+        fetch(file)
+          .then(r => {
+            if (!r.ok) throw new Error(`Failed to load ${file}: ${r.status}`);
+            return r.text();
+          })
+          .then(html => {
+            document.getElementById(slot).innerHTML = html;
+          })
+          .catch(err => {
+            console.error(err);
+            document.getElementById(slot).innerHTML =
+              `<!-- could not load ${file} -->`;
+          })
+      )
+    ).then(() => {
+      // All partials are in the DOM — now boot the app
+      const script = document.createElement('script');
+      script.src = 'main.js';
+      document.body.appendChild(script);
+    });
+  </script>
 
 </body>
-
 </html>
