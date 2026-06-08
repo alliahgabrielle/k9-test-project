@@ -227,3 +227,4 @@ if (consentRow) {
     consentCheck.checked = isChecked;
   });
 }
+
