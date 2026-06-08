@@ -26,6 +26,9 @@
   scroll-behavior: smooth;
 }
 
+[data-theme="light"] .logo-dark  { display: none; }
+[data-theme="dark"]  .logo-light { display: none; }
+
 /* ── Full page theme tokens ── */
 [data-theme="light"] {
   --page-bg: #F0EDE8;
