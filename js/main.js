@@ -63,16 +63,6 @@ document.querySelectorAll('.nav-links a[data-page]').forEach(link => {
   });
 });
 
-// ── Consent checkbox ──
-document.addEventListener('click', (e) => {
-  const box = e.target.closest('.contact-consent');
-  if (!box) return;
-  const visual = box.querySelector('.consent-box');
-  const hidden = box.querySelector('#consent-check');
-  hidden.checked = !hidden.checked;
-  visual.classList.toggle('checked', hidden.checked);
-});
-
 // ── Contact form ──
 function handleContact(e) {
   e.preventDefault();
