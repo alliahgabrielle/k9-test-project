@@ -1,3 +1,7 @@
+
+document.getElementById('intro-overlay').style.display = 'none';
+showCrossroads();
+
 // ── Theme toggle ──
 const root = document.documentElement;
 const toggleBtn = document.getElementById('theme-toggle');
@@ -114,8 +118,10 @@ function showCrossroads() {
   const cr = document.getElementById('crossroads');
   cr.classList.add('visible');
   setTimeout(() => {
-    cr.querySelector('.crossroads-eyebrow').classList.add('in');
-    cr.querySelector('.crossroads-heading').classList.add('in');
+    const eyebrow = cr.querySelector('.crossroads-eyebrow');
+    const heading = cr.querySelector('.crossroads-heading');
+    if (eyebrow) eyebrow.classList.add('in');
+    if (heading) heading.classList.add('in');
     cr.querySelector('.crossroads-sub').classList.add('in');
     cr.querySelector('.crossroads-paths').classList.add('in');
     cr.querySelector('.crossroads-skip').classList.add('in');
@@ -179,10 +185,6 @@ introVideo.addEventListener('ended', () => {
 setTimeout(() => {
   if (!transitionDone) triggerTransition(false);
 }, 9500);
-document.getElementById('intro-overlay').addEventListener('click', () => triggerTransition(false));
-document.addEventListener('keydown', () => {
-  if (!transitionDone) triggerTransition(false);
-});
 
 // ── Nav scroll (fade on scroll within active page) ──
 document.getElementById('snap-container').addEventListener('scroll', () => {
