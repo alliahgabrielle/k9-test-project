@@ -2479,3 +2479,380 @@ textarea.contact-input {
     font-size: 28px;
   }
 }
+/* ═══════════════════════════════════════════
+   DESTINATION · WHY TRAINING · MINDFUL METHOD
+   ═══════════════════════════════════════════ */
+
+/* ─── SHARED ─── */
+#destination,
+#why-training-fails,
+#mindful-method {
+  background: var(--page-bg);
+  transition: background 300ms ease;
+}
+
+.dest-kicker {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  transition: color 300ms ease;
+}
+
+.dest-headline {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(52px, 7vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  color: var(--text-primary);
+  text-transform: none;
+  margin: 0;
+  transition: color 300ms ease;
+}
+
+/* ─── DESTINATION ─── */
+.dest-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.dest-top {
+  padding: 120px 80px 80px;
+  transition: border-color 300ms ease;
+}
+
+.dest-bottom {
+  padding: 60px 80px 80px;
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: 60px;
+  align-items: start;
+  transition: border-color 300ms ease;
+}
+
+.dest-divider {
+  width: 1px;
+  background: var(--border-line);
+  align-self: stretch;
+  min-height: 80px;
+  transition: background 300ms ease;
+}
+
+.dest-pull {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-weight: 300;
+  line-height: 1.35;
+  color: var(--text-primary);
+  transition: color 300ms ease;
+}
+
+.dest-body-text {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.85;
+  color: var(--text-muted);
+  transition: color 300ms ease;
+}
+
+/* ─── DESTINATION GRID ─── */
+.dest-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 0px 80px;
+  gap: 2px;
+}
+
+.dest-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dest-tile-img {
+  aspect-ratio: 3/4;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--card-bg);
+  overflow: hidden;
+  transition: transform 600ms ease, background-color 300ms ease;
+}
+
+.dest-tile:hover .dest-tile-img {
+  transform: scale(1.02);
+}
+
+.dest-tile-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0 4px 16px;
+  transition: color 300ms ease;
+}
+
+/* ─── WHY TRAINING FAILS ─── */
+.wtf-wrap {
+  display: grid;
+  grid-template-columns: 550px 1fr;
+  transition: border-color 300ms ease;
+  padding-top: 30px;
+}
+
+.wtf-left {
+  padding: 100px 60px 100px 80px;
+  position: sticky;
+  top: 0;
+  height: fit-content;
+  transition: border-color 300ms ease;
+}
+
+.wtf-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  transition: border-color 300ms ease;
+}
+
+.wtf-item {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 28px;
+  padding: 52px 80px 52px 56px;
+  border-bottom: 1px solid var(--border-line);
+  transition: background 300ms ease, border-color 300ms ease;
+}
+
+.wtf-item:hover {
+  background: var(--card-bg);
+}
+
+.wtf-n {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  padding-top: 6px;
+  transition: color 300ms ease;
+}
+
+.wtf-item:hover .wtf-n {
+  color: var(--sea-glass);
+}
+
+.wtf-title {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(20px, 1.8vw, 26px);
+  font-weight: 300;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+  line-height: 1.2;
+  transition: color 300ms ease;
+}
+
+.wtf-desc {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-muted);
+  line-height: 1.85;
+  transition: color 300ms ease;
+}
+
+/* ─── MINDFUL METHOD ─── */
+.mm-wrap {
+  display: flex;
+  flex-direction: column;
+  transition: border-color 300ms ease;
+}
+
+.mm-top {
+  padding: 100px 80px 80px;
+  transition: border-color 300ms ease;
+}
+
+.mm-top-row {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 80px;
+  align-items: start;
+  margin-top: 32px;
+}
+
+.mm-headline {
+  font-size: clamp(56px, 8vw, 112px) !important;
+  line-height: 0.9 !important;
+  text-align: right;
+  align-self: start;
+}
+
+.mm-intro-block {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 8px;
+  width: 60%;
+}
+
+.mm-intro-lead {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+  transition: color 300ms ease;
+}
+
+.mm-intro {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.85;
+  color: var(--text-muted);
+  transition: color 300ms ease;
+}
+
+/* ─── MINDFUL METHOD PILLARS ─── */
+.mm-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  transition: border-color 300ms ease;
+  margin-bottom: 40px;
+}
+
+.mm-pillar {
+  padding: 56px 52px;
+  border-right: 1px solid var(--border-line);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: background 300ms ease, border-color 300ms ease;
+}
+
+.mm-pillar:hover {
+  background: var(--card-bg);
+}
+
+.mm-pillar:last-child {
+  border-right: none;
+}
+
+.mm-pillar-n {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--sea-glass);
+  transition: color 300ms ease;
+}
+
+.mm-pillar-title {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 300;
+  color: var(--text-primary);
+  line-height: 1.2;
+  transition: color 300ms ease;
+}
+
+.mm-pillar-desc {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-muted);
+  line-height: 1.85;
+  transition: color 300ms ease;
+}
+
+/* ─── TAGLINE ─── */
+.mm-tagline {
+  padding: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 300ms ease;
+}
+
+.mm-tagline span {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(32px, 5vw, 64px);
+  font-weight: 300;
+  color: var(--border-line);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 300ms ease;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  .dest-top,
+  .mm-top {
+    padding: 80px 24px 60px;
+  }
+
+  .dest-bottom {
+    padding: 48px 24px 64px;
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .dest-divider {
+    display: none;
+  }
+
+  .dest-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+  }
+
+  .dest-tile-label {
+    padding: 0 4px 12px;
+  }
+
+  .wtf-wrap {
+    grid-template-columns: 1fr;
+  }
+
+  .wtf-left {
+    padding: 72px 24px 48px;
+    position: static;
+    border-right: none;
+    border-bottom: 1px solid var(--border-line);
+  }
+
+  .wtf-item {
+    padding: 40px 24px;
+    grid-template-columns: 36px 1fr;
+    gap: 20px;
+  }
+
+  .mm-top-row {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .mm-headline {
+    font-size: clamp(48px, 14vw, 80px) !important;
+    text-align: left !important;
+  }
+
+  .mm-pillars {
+    grid-template-columns: 1fr;
+  }
+
+  .mm-pillar {
+    border-right: none;
+    border-bottom: 1px solid var(--border-line);
+    padding: 48px 24px;
+  }
+
+  .mm-pillar:last-child {
+    border-bottom: none;
+  }
+
+  .mm-tagline {
+    padding: 60px 24px;
+  }
+}
