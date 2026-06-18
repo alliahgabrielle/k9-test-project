@@ -29,6 +29,16 @@
 [data-theme="light"] .logo-dark  { display: none; }
 [data-theme="dark"]  .logo-light { display: none; }
 
+/* ─── HIDE SCROLLBAR ─── */
+.page {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.page::-webkit-scrollbar {
+  display: none;
+}
+
 /* ── Full page theme tokens ── */
 [data-theme="light"] {
   --page-bg: #F0EDE8;
@@ -2601,11 +2611,11 @@ textarea.contact-input {
   display: grid;
   grid-template-columns: 550px 1fr;
   transition: border-color 300ms ease;
-  padding-top: 30px;
+  padding: 60px 80px 80px;
+  gap: 40px;
 }
 
 .wtf-left {
-  padding: 100px 60px 100px 80px;
   position: sticky;
   top: 0;
   height: fit-content;
@@ -2616,7 +2626,7 @@ textarea.contact-input {
   list-style: none;
   display: flex;
   flex-direction: column;
-  padding: 0;
+  padding-left: 80px;
   transition: border-color 300ms ease;
 }
 
@@ -2687,8 +2697,9 @@ textarea.contact-input {
 .mm-headline {
   font-size: clamp(56px, 8vw, 112px) !important;
   line-height: 0.9 !important;
-  text-align: right;
+  text-align: left;
   align-self: start;
+  width: 50%;
 }
 
 .mm-intro-block {
