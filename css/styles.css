@@ -2686,12 +2686,18 @@ textarea.contact-input {
   transition: border-color 300ms ease;
 }
 
+.mm-top-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
 .mm-top-row {
   display: flex;
-  flex-direction: row-reverse;
   gap: 80px;
   align-items: start;
   margin-top: 32px;
+  width: 70%;
+  padding-top: 60px;
 }
 
 .mm-headline {
