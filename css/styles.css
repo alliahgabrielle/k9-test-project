@@ -2536,16 +2536,12 @@ textarea.contact-input {
   justify-content: space-between;
   padding: 120px 80px 80px;
   transition: border-color 300ms ease;
+  gap: 40px;
 }
 
 .dest-img {
   width: 50%;
-  filter: grayscale(1);
   border-radius: 90px 20px;
-}
-
-.dest-img:hover {
-  filter: unset;
 }
 
 .dest-bottom {
