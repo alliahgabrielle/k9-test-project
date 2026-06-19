@@ -2531,12 +2531,25 @@ textarea.contact-input {
 }
 
 .dest-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   padding: 120px 80px 80px;
   transition: border-color 300ms ease;
 }
 
+.dest-img {
+  width: 50%;
+  filter: grayscale(1);
+  border-radius: 90px 20px;
+}
+
+.dest-img:hover {
+  filter: unset;
+}
+
 .dest-bottom {
-  padding: 60px 80px 80px;
+  padding-top: 30px;
   display: grid;
   grid-template-columns: 1fr 1px 1fr;
   gap: 60px;
@@ -2567,6 +2580,7 @@ textarea.contact-input {
   line-height: 1.85;
   color: var(--text-muted);
   transition: color 300ms ease;
+  padding-top: 30px;
 }
 
 /* ─── DESTINATION GRID ─── */
