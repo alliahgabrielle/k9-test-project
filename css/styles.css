@@ -2542,6 +2542,7 @@ textarea.contact-input {
 .dest-img {
   width: 50%;
   border-radius: 90px 20px;
+  height: fit-content;
 }
 
 .dest-bottom {
@@ -2706,8 +2707,8 @@ textarea.contact-input {
   gap: 80px;
   align-items: start;
   margin-top: 32px;
-  width: 70%;
   padding-top: 60px;
+  align-items: center;
 }
 
 .mm-headline {
