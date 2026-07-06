@@ -1,12 +1,908 @@
+<style>
+.about-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sea-glass);
+  margin-bottom: 16px;
+  transition: color 300ms ease;
+}
+
+.about-eyebrow {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+  transition: color 300ms ease;
+}
+
+.about-section-headline {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  color: var(--text-primary);
+  transition: color 300ms ease;
+}
+
+/* ─── HERO ─── */
+.about-hero {
+  padding: 140px 80px 0;
+  transition: border-color 300ms ease;
+  margin-bottom: 80px;
+}
+
+.about-hero-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+  padding-bottom: 72px;
+}
+
+.about-hero-headline {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(48px, 6.5vw, 88px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  color: var(--text-primary);
+  margin-bottom: 28px;
+  transition: color 300ms ease;
+}
+
+.about-hero-sub {
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--text-muted);
+  max-width: 52ch;
+  margin: 0 auto;
+  transition: color 300ms ease;
+}
+
+/* ─── PHOTO COLLAGE ─── */
+.about-collage {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr 1fr;
+  grid-template-rows: 260px 260px;
+  gap: 2px;
+}
+
+.about-collage-item:nth-child(1) { grid-column: 1; grid-row: 1; }
+.about-collage-item:nth-child(2) { grid-column: 2; grid-row: 1 / 3; }
+.about-collage-item:nth-child(3) { grid-column: 3; grid-row: 1; }
+.about-collage-item:nth-child(4) { grid-column: 1; grid-row: 2; }
+.about-collage-item:nth-child(5) { grid-column: 3; grid-row: 2; }
+
+.about-collage-img {
+  background-size: cover;
+  background-position: center;
+  background-color: var(--card-bg);
+  overflow: hidden;
+  transition: background-color 300ms ease;
+}
+
+.about-collage-card {
+  background: var(--deep-cedar);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 40px;
+  gap: 16px;
+}
+
+[data-theme="light"] .about-collage-card {
+  background: #2D3A2E;
+}
+
+[data-theme="dark"] .about-collage-card {
+  background: #1a2819;
+}
+
+.about-collage-card-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(184, 212, 206, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--sea-glass);
+  margin-bottom: 8px;
+}
+
+.about-collage-card-headline {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(18px, 1.8vw, 24px);
+  font-weight: 300;
+  color: var(--mist-white);
+  line-height: 1.2;
+}
+
+.about-collage-card-body {
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(240, 237, 232, 0.65);
+  line-height: 1.75;
+}
+
+/* ─── JENN'S STORY ─── */
+.about-story {
+  transition: border-color 300ms ease;
+}
+
+.about-story-inner {
+  display: grid;
+  grid-template-columns: 1fr 480px;
+  align-items: start;
+}
+
+.about-story-text {
+  padding: 100px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: border-color 300ms ease;
+}
+
+.about-story-body {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.85;
+  color: var(--text-muted);
+  transition: color 300ms ease;
+}
+
+.about-stats {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding-top: 32px;
+  margin-top: 8px;
+  border-top: 1px solid var(--border-line);
+  flex-wrap: wrap;
+  transition: border-color 300ms ease;
+}
+
+.about-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.about-stat-num {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 300;
+  color: var(--text-primary);
+  line-height: 1;
+  transition: color 300ms ease;
+}
+
+.about-stat-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color 300ms ease;
+}
+
+.about-stat-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--border-line);
+  flex-shrink: 0;
+  transition: background 300ms ease;
+}
+
+.about-story-visual {
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+}
+
+.about-story-img {
+  height: 480px;
+  background-size: cover;
+  background-position: center top;
+  background-color: var(--card-bg);
+  transition: background-color 300ms ease;
+}
+
+.about-story-quote {
+  padding: 36px 40px;
+  border-top: 1px solid var(--border-line);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: border-color 300ms ease;
+}
+
+.about-story-quote-text {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(16px, 1.5vw, 20px);
+  font-weight: 300;
+  color: var(--text-primary);
+  line-height: 1.4;
+  font-style: italic;
+  transition: color 300ms ease;
+}
+
+.about-story-quote-attr {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color 300ms ease;
+}
+
+/* ─── BELIEFS ─── */
+.about-belief-num {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--sea-glass);
+  transition: color 300ms ease;
+}
+.about-beliefs {
+  border-bottom: 1px solid var(--border-line);
+  transition: border-color 300ms ease;
+}
+
+.about-beliefs-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: end;
+  padding: 100px 80px 56px;
+  transition: border-color 300ms ease;
+}
+
+.about-beliefs-header-right {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--text-muted);
+  padding-bottom: 6px;
+  transition: color 300ms ease;
+}
+
+.about-beliefs-card {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin: 0 80px 80px;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  transition: border-color 300ms ease, background 300ms ease;
+}
+
+.about-belief {
+  padding: 40px 32px;
+  border-right: 1px solid var(--card-border);
+  border-bottom: 1px solid var(--card-border);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: background 300ms ease, border-color 300ms ease;
+}
+
+.about-belief:nth-child(2n) {
+  border-right: none;
+}
+
+.about-belief:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  border-right: none;
+}
+
+.about-belief:hover {
+  background: var(--page-bg);
+}
+
+.about-belief-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(184, 212, 206, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--sea-glass);
+  flex-shrink: 0;
+  transition: background 300ms ease;
+}
+
+.about-belief-title {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(14px, 1.2vw, 17px);
+  font-weight: 300;
+  color: var(--text-primary);
+  line-height: 1.3;
+  transition: color 300ms ease;
+}
+
+.about-belief-body {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-muted);
+  line-height: 1.75;
+  transition: color 300ms ease;
+}
+
+/* ─── WHAT MAKES US DIFFERENT ─── */
+.about-different {
+  border-bottom: 1px solid var(--border-line);
+  transition: border-color 300ms ease;
+}
+
+.about-different-inner {
+  display: grid;
+  grid-template-columns: 480px 1fr;
+  align-items: stretch;
+}
+
+.about-different-visual {
+  overflow: hidden;
+}
+
+.about-different-img {
+  width: 100%;
+  height: 100%;
+  min-height: 480px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--card-bg);
+  transition: transform 800ms ease, background-color 300ms ease;
+}
+
+.about-different-visual:hover .about-different-img {
+  transform: scale(1.03);
+}
+
+.about-different-text {
+  padding: 100px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+}
+
+.about-different-body {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.85;
+  color: var(--text-muted);
+  transition: color 300ms ease;
+}
+
+.about-different-closing {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.7;
+  color: var(--text-primary);
+  padding-top: 24px;
+  border-top: 1px solid var(--border-line);
+  margin-top: 8px;
+  transition: color 300ms ease, border-color 300ms ease;
+}
+
+/* ─── REAL STORIES ─── */
+.about-stories {
+  padding: 100px 80px;
+  border-bottom: 1px solid var(--border-line);
+  transition: border-color 300ms ease;
+}
+
+.about-stories-header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.about-stories-headline {
+  margin-bottom: 16px;
+}
+
+.about-stories-sub {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text-muted);
+  transition: color 300ms ease;
+}
+
+.about-stories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.about-story-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--card-border);
+  overflow: hidden;
+  transition: border-color 300ms ease, transform 300ms ease;
+  cursor: pointer;
+}
+
+.about-story-card:hover {
+  border-color: var(--card-hover-border);
+  transform: translateY(-4px);
+}
+
+.about-story-card-img {
+  height: 260px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--card-bg);
+  transition: transform 600ms ease, background-color 300ms ease;
+}
+
+.about-story-card:hover .about-story-card-img {
+  transform: scale(1.03);
+}
+
+.about-story-card-body {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.about-story-tag {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sea-glass);
+  border: 1px solid rgba(184, 212, 206, 0.35);
+  padding: 4px 10px;
+  border-radius: 100px;
+  width: fit-content;
+  transition: color 300ms ease, border-color 300ms ease;
+}
+
+.about-story-card-quote {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(16px, 1.4vw, 19px);
+  font-weight: 300;
+  color: var(--text-primary);
+  line-height: 1.4;
+  font-style: italic;
+  flex: 1;
+  transition: color 300ms ease;
+}
+
+.about-story-card-attr {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  transition: color 300ms ease;
+}
+
+/* ─── LOCATIONS ─── */
+.about-locations {
+  border-bottom: 1px solid var(--border-line);
+  transition: border-color 300ms ease;
+}
+
+.about-locations-inner {
+  padding: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.about-location-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.about-location-pill {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border: 1px solid var(--card-border);
+  padding: 8px 18px;
+  border-radius: 100px;
+  transition: color 200ms ease, border-color 200ms ease, background 200ms ease;
+  cursor: default;
+}
+
+.about-location-pill:hover {
+  color: var(--text-primary);
+  border-color: var(--sea-glass);
+  background: rgba(184, 212, 206, 0.06);
+}
+
+/* ─── BOTTOM CTA ─── */
+.about-cta {
+  padding: 120px 80px;
+}
+
+.about-cta-inner {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.about-cta-headline {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 300;
+  line-height: 1.05;
+  color: var(--text-primary);
+  transition: color 300ms ease;
+}
+
+.about-cta-sub {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--text-muted);
+  max-width: 46ch;
+  transition: color 300ms ease;
+}
+
+.about-cta-btns {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.about-btn-primary {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--deep-cedar);
+  background: var(--sea-glass);
+  text-decoration: none;
+  padding: 14px 32px;
+  border-radius: 100px;
+  transition: background 250ms ease, transform 200ms ease, box-shadow 200ms ease;
+}
+
+.about-btn-primary:hover {
+  background: #a4c4be;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(184, 212, 206, 0.25);
+}
+
+.about-btn-ghost {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  background: transparent;
+  text-decoration: none;
+  padding: 14px 32px;
+  border-radius: 100px;
+  border: 1px solid var(--card-border);
+  transition: border-color 200ms ease, background 200ms ease, color 200ms ease;
+}
+
+.about-btn-ghost:hover {
+  border-color: var(--sea-glass);
+  color: var(--sea-glass);
+  background: rgba(184, 212, 206, 0.06);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  .about-hero {
+    padding: 120px 24px 0;
+  }
+
+  .about-collage {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 200px 200px 200px;
+  }
+
+  .about-collage-item:nth-child(1) { grid-column: 1; grid-row: 1; }
+  .about-collage-item:nth-child(2) { grid-column: 1 / 3; grid-row: 2; }
+  .about-collage-item:nth-child(3) { grid-column: 2; grid-row: 1; }
+  .about-collage-item:nth-child(4) { grid-column: 1; grid-row: 3; }
+  .about-collage-item:nth-child(5) { grid-column: 2; grid-row: 3; }
+
+  .about-story-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .about-story-text {
+    padding: 64px 24px;
+    border-right: none;
+    border-bottom: 1px solid var(--border-line);
+  }
+
+  .about-story-visual {
+    position: static;
+  }
+
+  .about-story-img {
+    height: 300px;
+  }
+
+  .about-story-quote {
+    padding: 28px 24px;
+  }
+
+  .about-beliefs-header {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 72px 24px 48px;
+  }
+
+  .about-beliefs-card {
+    grid-template-columns: 1fr;
+    margin: 0 24px 64px;
+  }
+
+  .about-belief {
+    border-right: none;
+    border-bottom: 1px solid var(--card-border);
+  }
+
+  .about-belief:last-child {
+    border-bottom: none;
+  }
+
+  .about-different-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .about-different-img {
+    min-height: 300px;
+  }
+
+  .about-different-text {
+    padding: 64px 24px;
+  }
+
+  .about-stories {
+    padding: 72px 24px;
+  }
+
+  .about-stories-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .about-story-card {
+    border-radius: 2px;
+  }
+
+  .about-locations-inner {
+    padding: 64px 24px;
+  }
+
+  .about-cta {
+    padding: 80px 24px;
+  }
+
+  .about-stats {
+    gap: 16px;
+  }
+
+  .about-stat-divider {
+    display: none;
+  }
+}
+</style>
 <!-- ── PAGE: ABOUT ── -->
 <div class="page" id="page-philosophy">
-  <section id="philosophy">
-    <div class="coming-soon-page">
-      <span class="cs-eyebrow">Our Approach</span>
-      <div class="cs-line"></div>
-      <h2 class="cs-heading">Coming Soon.</h2>
-      <p class="cs-sub">We're putting together the full story of how we train — the philosophy, the method, and
-        the team behind it.</p>
+
+  <!-- ── ABOUT HERO ── -->
+  <section class="about-hero">
+    <div class="about-hero-inner">
+      <span class="about-eyebrow" data-scroll>Impackful K9 · Our Story</span>
+      <h1 class="about-hero-headline" data-scroll>The dogs taught<br>me the most.</h1>
+      <p class="about-hero-sub" data-scroll>Over 20 years of working with thousands of dogs and their owners — and what surprised me most wasn't what I learned about dogs. It was what I learned about people.</p>
+    </div>
+
+    <div class="about-collage" data-scroll>
+      <div class="about-collage-item about-collage-img" style="background-image: url('/images/about1.png')"></div>
+      <div class="about-collage-item about-collage-card">
+        <div class="about-collage-card-icon">
+          <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path d="M12 21.5C12 21.5 3 14.5 3 8.5a9 9 0 0 1 18 0c0 6-9 13-9 13z"/>
+            <circle cx="12" cy="8.5" r="2.5"/>
+          </svg>
+        </div>
+        <h3 class="about-collage-card-headline">This has never been about just training dogs.</h3>
+        <p class="about-collage-card-body">It's about helping people reclaim the life they imagined when they first brought their dog home.</p>
+      </div>
+      <div class="about-collage-item about-collage-img" style="background-image: url('/images/about2.png')"></div>
+      <div class="about-collage-item about-collage-img" style="background-image: url('/images/about3.png')"></div>
+      <div class="about-collage-item about-collage-img" style="background-image: url('/images/about4.png')"></div>
     </div>
   </section>
+
+  <!-- ── JENN'S STORY ── -->
+  <section class="about-story">
+    <div class="about-story-inner">
+      <div class="about-story-text">
+        <span class="about-label" data-scroll>Jenn's Story</span>
+        <h2 class="about-section-headline" data-scroll>I didn't want to create<br>another dog training business.</h2>
+        <p class="about-story-body" data-scroll>I wanted to create a place where people could experience what life feels like when training becomes part of everyday living. Where confidence replaces frustration. Where adventures replace avoidance. Where owners stop feeling embarrassed and start feeling proud.</p>
+        <p class="about-story-body" data-scroll>Most people contact me not really asking for dog training. They're asking if there's hope. Hope that their dog can stop reacting. Hope that walks can become enjoyable again. Hope that life with their dog can become what they imagined it would be.</p>
+        <p class="about-story-body" data-scroll>For more than a decade, I've helped dog owners discover that the answer is yes. Not through shortcuts or quick fixes — but through learning a new set of skills and a different way of looking at the relationship between people and dogs.</p>
+        <div class="about-stats" data-scroll>
+          <div class="about-stat">
+            <span class="about-stat-num">20+</span>
+            <span class="about-stat-label">Years Experience</span>
+          </div>
+          <div class="about-stat-divider"></div>
+          <div class="about-stat">
+            <span class="about-stat-num">2006</span>
+            <span class="about-stat-label">Started Training</span>
+          </div>
+          <div class="about-stat-divider"></div>
+          <div class="about-stat">
+            <span class="about-stat-num">2015</span>
+            <span class="about-stat-label">Gone Professional</span>
+          </div>
+          <div class="about-stat-divider"></div>
+          <div class="about-stat">
+            <span class="about-stat-num">2k+</span>
+            <span class="about-stat-label">Dogs Helped</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-story-visual">
+        <div class="about-story-img" style="background-image: url('/images/jenn-story.png')"></div>
+        <div class="about-story-quote" data-scroll>
+          <p class="about-story-quote-text">"A struggling dog can make the world feel smaller. A confident dog can make the world feel bigger."</p>
+          <span class="about-story-quote-attr">— Jenn, Impackful K9</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BELIEFS ── -->
+  <section class="about-beliefs">
+    <div class="about-beliefs-header">
+      <div class="about-beliefs-header-left" data-scroll>
+        <span class="about-label">What We Believe</span>
+        <h2 class="about-section-headline">Guided by a few<br>simple beliefs.</h2>
+      </div>
+      <p class="about-beliefs-header-right" data-scroll>These principles shape every program, every meetup, and every experience we create. They're not rules — they're the foundation of how we work.</p>
+    </div>
+    <div class="about-beliefs-card" data-scroll>
+      <div class="about-belief">
+        <span class="about-belief-num">01</span>
+        <h3 class="about-belief-title">Calmness is created through clarity.</h3>
+        <p class="about-belief-body">Clear communication, clear expectations. When both the person and the dog understand what's being asked, calmness follows naturally.</p>
+      </div>
+      <div class="about-belief">
+        <span class="about-belief-num">02</span>
+        <h3 class="about-belief-title">Confidence is built through repetition.</h3>
+        <p class="about-belief-body">There are no shortcuts. Lasting change comes from consistent practice in the real environments where life actually happens.</p>
+      </div>
+      <div class="about-belief">
+        <span class="about-belief-num">03</span>
+        <h3 class="about-belief-title">Community accelerates growth.</h3>
+        <p class="about-belief-body">When you're surrounded by people who understand your journey, progress accelerates. Connection between owners is as important as the training itself.</p>
+      </div>
+      <div class="about-belief">
+        <span class="about-belief-num">04</span>
+        <h3 class="about-belief-title">Nature is an ideal classroom.</h3>
+        <p class="about-belief-body">Trails, parks, beaches, and cafés aren't distractions from training — they're the point. Real environments produce real results.</p>
+      </div>
+      <div class="about-belief">
+        <span class="about-belief-num">05</span>
+        <h3 class="about-belief-title">Both dogs and humans thrive together.</h3>
+        <p class="about-belief-body">When we support both the person and the dog together, the relationship changes. And when the relationship changes, an entirely new life together becomes possible.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── WHAT MAKES US DIFFERENT ── -->
+  <section class="about-different">
+    <div class="about-different-inner">
+      <div class="about-different-visual">
+        <div class="about-different-img" style="background-image: url('/images/jenn-training.png')"></div>
+      </div>
+      <div class="about-different-text">
+        <span class="about-label" data-scroll>What Makes This Different</span>
+        <h2 class="about-section-headline" data-scroll>Most trainers focus<br>on training dogs.</h2>
+        <p class="about-different-body" data-scroll>I focus on developing dogs and people together. Because when both are supported, the relationship changes.</p>
+        <p class="about-different-body" data-scroll>That's why you'll often find me teaching on trails, in parks, cafés, and public spaces throughout Vancouver and the Lower Mainland. Because life doesn't happen in a training facility. It happens in the real world.</p>
+        <p class="about-different-closing" data-scroll>Not perfect obedience. Not flawless behaviour. A life well lived together — for both you and your dog.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── REAL STORIES ── -->
+  <section class="about-stories">
+    <div class="about-stories-header" data-scroll>
+      <h2 class="about-section-headline about-stories-headline">Real Stories From<br>Our Community.</h2>
+      <p class="about-stories-sub">These aren't just training results. They're lives changed.</p>
+    </div>
+    <div class="about-stories-grid">
+      <div class="about-story-card" data-scroll>
+        <div class="about-story-card-img" style="background-image: url('/images/story1.png')"></div>
+        <div class="about-story-card-body">
+          <span class="about-story-tag">Reactivity</span>
+          <p class="about-story-card-quote">"I used to dread every walk. Now it's the best part of my day."</p>
+          <span class="about-story-card-attr">— Sarah & Milo, North Vancouver</span>
+        </div>
+      </div>
+      <div class="about-story-card" data-scroll>
+        <div class="about-story-card-img" style="background-image: url('/images/story2.png')"></div>
+        <div class="about-story-card-body">
+          <span class="about-story-tag">Leash Training</span>
+          <p class="about-story-card-quote">"We went from zero to hiking off leash in three months. I didn't think it was possible."</p>
+          <span class="about-story-card-attr">— James & Koda, Coquitlam</span>
+        </div>
+      </div>
+      <div class="about-story-card" data-scroll>
+        <div class="about-story-card-img" style="background-image: url('/images/story3.png')"></div>
+        <div class="about-story-card-body">
+          <span class="about-story-tag">Community</span>
+          <p class="about-story-card-quote">"I found my people. The community alone was worth it — the dog training was a bonus."</p>
+          <span class="about-story-card-attr">— Emma & Finn, Vancouver</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── WHERE WE TRAIN ── -->
+  <section class="about-locations">
+    <div class="about-locations-inner" data-scroll>
+      <span class="about-label">Where We Train</span>
+      <h2 class="about-section-headline">Serving the Lower Mainland.</h2>
+      <div class="about-location-pills">
+        <span class="about-location-pill">Vancouver</span>
+        <span class="about-location-pill">North Vancouver</span>
+        <span class="about-location-pill">West Vancouver</span>
+        <span class="about-location-pill">Burnaby</span>
+        <span class="about-location-pill">Coquitlam</span>
+        <span class="about-location-pill">Port Coquitlam</span>
+        <span class="about-location-pill">Port Moody</span>
+        <span class="about-location-pill">Surrey</span>
+        <span class="about-location-pill">Langley</span>
+        <span class="about-location-pill">Pitt Meadows</span>
+        <span class="about-location-pill">Maple Ridge</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BOTTOM CTA ── -->
+  <section class="about-cta">
+    <div class="about-cta-inner" data-scroll>
+      <h2 class="about-cta-headline">Ready to find out what's<br>possible for you and your dog?</h2>
+      <p class="about-cta-sub">You don't need to have it all figured out. The first step is simply starting the conversation.</p>
+      <div class="about-cta-btns">
+        <a class="about-btn-primary" href="#" onclick="navigateTo('contact'); return false;">Start the Conversation</a>
+        <a class="about-btn-ghost" href="#" onclick="navigateTo('programs'); return false;">Explore Programs</a>
+      </div>
+    </div>
+  </section>
+
 </div>

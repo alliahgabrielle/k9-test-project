@@ -1,6 +1,5 @@
-
-//document.getElementById('intro-overlay').style.display = 'none';
-//showCrossroads(); // remove to enable intro video and transition
+document.getElementById('intro-overlay').style.display = 'none';
+showCrossroads(); // remove to enable intro video and transition
 
 // ── Theme toggle ──
 const root = document.documentElement;
