@@ -1,12 +1,637 @@
+<style>
+/* ═══════════════════════════════════════════
+   COMMUNITY PAGE
+   ═══════════════════════════════════════════ */
+
+/* ─── SHARED ─── */
+.comm-eyebrow,
+.comm-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sea-glass);
+  margin-bottom: 16px;
+  transition: color 300ms ease;
+}
+
+.comm-eyebrow {
+  color: var(--text-muted);
+}
+
+.comm-section-headline {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  color: var(--text-primary);
+  transition: color 300ms ease;
+}
+
+/* ─── HERO ─── */
+.comm-hero {
+  padding-top: 120px;
+  border-bottom: 1px solid var(--border-line);
+  transition: border-color 300ms ease;
+}
+
+.comm-hero-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: end;
+  padding: 0 80px 72px;
+}
+
+.comm-hero-headline {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(52px, 7vw, 96px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  color: var(--text-primary);
+  margin-bottom: 0;
+  transition: color 300ms ease;
+}
+
+.comm-hero-desc {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.85;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  transition: color 300ms ease;
+}
+
+.comm-hero-cta {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sea-glass);
+  text-decoration: none;
+  transition: letter-spacing 200ms ease;
+}
+
+.comm-hero-cta:hover {
+  letter-spacing: 0.22em;
+}
+
+/* ─── PHOTO GRID ─── */
+.comm-photo-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 1fr;
+  grid-template-rows: 320px;
+  gap: 2px;
+}
+
+.comm-photo-item {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--card-bg);
+  overflow: hidden;
+  transition: background-color 300ms ease;
+}
+
+.comm-photo-item:hover .comm-photo-label {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.comm-photo-label {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mist-white);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+
+/* ─── ABOUT ─── */
+.comm-about {
+  transition: border-color 300ms ease;
+}
+
+.comm-about-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  padding: 100px 80px;
+  align-items: center;
+}
+
+.comm-about-left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.comm-about-body {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.85;
+  color: var(--text-muted);
+  transition: color 300ms ease;
+}
+
+.comm-about-right {
+  border-left: 1px solid var(--border-line);
+  padding-left: 80px;
+  transition: border-color 300ms ease;
+}
+
+.comm-about-statement {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(22px, 2.5vw, 34px);
+  font-weight: 300;
+  line-height: 1.3;
+  color: var(--text-primary);
+  transition: color 300ms ease;
+}
+
+.comm-about-statement em {
+  font-style: italic;
+  color: var(--sea-glass);
+  transition: color 300ms ease;
+}
+
+/* ─── EXPERIENCES ─── */
+.comm-experiences {
+  transition: border-color 300ms ease;
+}
+
+.comm-experiences-header {
+  padding: 100px 80px 56px;
+  transition: border-color 300ms ease;
+}
+
+.comm-exp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.comm-exp-item {
+  padding: 52px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: background 300ms ease, border-color 300ms ease;
+}
+
+.comm-exp-item:hover {
+  background: var(--card-bg);
+}
+
+.comm-exp-num {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--sea-glass);
+  transition: color 300ms ease;
+}
+
+.comm-exp-title {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 300;
+  color: var(--text-primary);
+  line-height: 1.2;
+  transition: color 300ms ease;
+}
+
+.comm-exp-desc {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-muted);
+  line-height: 1.8;
+  transition: color 300ms ease;
+}
+
+/* ─── STORIES ─── */
+.comm-stories {
+  padding: 100px 80px;
+
+  transition: border-color 300ms ease;
+}
+
+.comm-stories-header {
+  margin-bottom: 64px;
+}
+
+.comm-stories-sub {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-top: 12px;
+  transition: color 300ms ease;
+}
+
+.comm-stories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.comm-story-card {
+  padding: 40px 36px;
+  border: 1px solid var(--card-border);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: border-color 300ms ease, background 300ms ease, transform 300ms ease;
+  cursor: default;
+}
+
+.comm-story-card:hover {
+  border-color: var(--card-hover-border);
+  background: var(--card-bg);
+  transform: translateY(-4px);
+}
+
+.comm-story-category {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sea-glass);
+  border: 1px solid rgba(184, 212, 206, 0.35);
+  padding: 4px 10px;
+  border-radius: 100px;
+  width: fit-content;
+  transition: color 300ms ease, border-color 300ms ease;
+}
+
+.comm-story-quote {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(16px, 1.4vw, 19px);
+  font-weight: 300;
+  color: var(--text-primary);
+  line-height: 1.45;
+  font-style: italic;
+  flex: 1;
+  transition: color 300ms ease;
+}
+
+.comm-story-attr {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  transition: color 300ms ease;
+}
+
+/* ─── STATS ─── */
+.comm-stats {
+  border-bottom: 1px solid var(--border-line);
+  transition: border-color 300ms ease;
+}
+
+.comm-stats-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+  padding: 80px;
+  flex-wrap: wrap;
+}
+
+.comm-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.comm-stat-num {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(40px, 5vw, 64px);
+  font-weight: 300;
+  color: var(--text-primary);
+  line-height: 1;
+  transition: color 300ms ease;
+}
+
+.comm-stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color 300ms ease;
+}
+
+.comm-stat-divider {
+  width: 1px;
+  height: 60px;
+  background: var(--border-line);
+  flex-shrink: 0;
+  transition: background 300ms ease;
+}
+
+/* ─── LOCATIONS ─── */
+.comm-locations {
+  border-bottom: 1px solid var(--border-line);
+  transition: border-color 300ms ease;
+}
+
+.comm-locations-inner {
+  padding: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.comm-location-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.comm-location-pill {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border: 1px solid var(--card-border);
+  padding: 8px 18px;
+  border-radius: 100px;
+  transition: color 200ms ease, border-color 200ms ease, background 200ms ease;
+}
+
+.comm-location-pill:hover {
+  color: var(--text-primary);
+  border-color: var(--sea-glass);
+  background: rgba(184, 212, 206, 0.06);
+}
+
+/* ─── CTA ─── */
+.comm-cta {
+  padding: 120px 80px;
+}
+
+.comm-cta-inner {
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.comm-cta-headline {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(36px, 5vw, 68px);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 1.0;
+  color: var(--text-primary);
+  transition: color 300ms ease;
+}
+
+.comm-cta-sub {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.85;
+  color: var(--text-muted);
+  max-width: 48ch;
+  transition: color 300ms ease;
+}
+
+.comm-cta-btn {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--deep-cedar);
+  background: var(--sea-glass);
+  text-decoration: none;
+  padding: 14px 32px;
+  border-radius: 100px;
+  margin-top: 8px;
+  transition: background 250ms ease, transform 200ms ease, box-shadow 200ms ease;
+}
+
+.comm-cta-btn:hover {
+  background: #a4c4be;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(184, 212, 206, 0.25);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  .comm-hero-top {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 0 24px 56px;
+  }
+
+  .comm-photo-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 200px 200px;
+  }
+
+  .comm-about-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 72px 24px;
+  }
+
+  .comm-about-right {
+    border-left: none;
+    border-top: 1px solid var(--border-line);
+    padding-left: 0;
+    padding-top: 40px;
+  }
+
+  .comm-experiences-header {
+    padding: 72px 24px 48px;
+  }
+
+  .comm-exp-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .comm-exp-item {
+    padding: 40px 24px;
+  }
+
+  .comm-stories {
+    padding: 72px 24px;
+  }
+
+  .comm-stories-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .comm-stats-inner {
+    gap: 32px;
+    padding: 60px 24px;
+  }
+
+  .comm-stat-divider {
+    display: none;
+  }
+
+  .comm-locations-inner {
+    padding: 64px 24px;
+  }
+
+  .comm-cta {
+    padding: 80px 24px;
+  }
+}
+</style>
+
 <!-- ── PAGE: COMMUNITY ── -->
 <div class="page" id="page-community">
-  <section id="community">
-    <div class="coming-soon-page">
-      <span class="cs-eyebrow">The Community</span>
-      <div class="cs-line"></div>
-      <h2 class="cs-heading">Coming Soon.</h2>
-      <p class="cs-sub">Pack walks, café mornings, trail hikes — our community page is being built. Check back
-        soon.</p>
+
+  <!-- ── HERO ── -->
+  <section class="comm-hero">
+    <div class="comm-hero-top">
+      <div class="comm-hero-left">
+        <span class="comm-eyebrow" data-scroll>Mindful Meetups · Community</span>
+        <h1 class="comm-hero-headline" data-scroll>Where training<br>becomes a<br>lifestyle.</h1>
+      </div>
+      <div class="comm-hero-right" data-scroll>
+        <p class="comm-hero-desc">Mindful Meetups is not a training class. It's an ongoing membership where dogs and owners practice skills in real-world environments — and build something that lasts.</p>
+        <a class="comm-hero-cta" href="#" onclick="navigateTo('contact'); return false;">Join the Community →</a>
+      </div>
+    </div>
+
+    <!-- Photo grid -->
+    <div class="comm-photo-grid">
+      <div class="comm-photo-item comm-photo-tall" style="background-image: url('/images/comm1.png')">
+      </div>
+      <div class="comm-photo-item" style="background-image: url('/images/comm3.png')">
+      </div>
+      <div class="comm-photo-item" style="background-image: url('/images/comm2.png')">
+      </div>
+      <div class="comm-photo-item" style="background-image: url('/images/comm4.png')">
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ABOUT THE COMMUNITY ── -->
+  <section class="comm-about">
+    <div class="comm-about-inner">
+      <div class="comm-about-left" data-scroll>
+        <span class="comm-label">About Our Community</span>
+        <p class="comm-about-body">From reactive dogs to confident companions, every member of our community is part of something bigger — a shared journey toward a life they love with their dog.</p>
+        <p class="comm-about-body">This is where accountability, adventure, and connection come together. Not just for the dogs. For the people too.</p>
+      </div>
+      <div class="comm-about-right" data-scroll>
+        <p class="comm-about-statement">A place where dogs become <em>confident</em>, owners become <em>proud</em>, and training becomes <em>a life you actually want to live.</em></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── WHAT HAPPENS AT MEETUPS ── -->
+  <section class="comm-experiences">
+    <div class="comm-experiences-header" data-scroll>
+      <span class="comm-label">What We Do</span>
+      <h2 class="comm-section-headline">Every meetup is a real-world<br>training opportunity.</h2>
+    </div>
+    <div class="comm-exp-grid">
+      <div class="comm-exp-item" data-scroll>
+        <span class="comm-exp-num">01</span>
+        <h3 class="comm-exp-title">Adventure Hikes</h3>
+        <p class="comm-exp-desc">Trail environments that challenge dogs and build confidence in natural distractions — wildlife, terrain, off-leash opportunities.</p>
+      </div>
+      <div class="comm-exp-item" data-scroll>
+        <span class="comm-exp-num">02</span>
+        <h3 class="comm-exp-title">Pack Walks</h3>
+        <p class="comm-exp-desc">Structured group walks that develop leash skills, dog-to-dog manners, and the ability to move calmly in a pack.</p>
+      </div>
+      <div class="comm-exp-item" data-scroll>
+        <span class="comm-exp-num">03</span>
+        <h3 class="comm-exp-title">Café Socials</h3>
+        <p class="comm-exp-desc">The patio experience most owners dream about. Dogs practice calmness and settle skills in busy, real-world social environments.</p>
+      </div>
+      <div class="comm-exp-item" data-scroll>
+        <span class="comm-exp-num">04</span>
+        <h3 class="comm-exp-title">Urban Outings</h3>
+        <p class="comm-exp-desc">City streets, markets, and busy public spaces — the environments where real life actually happens.</p>
+      </div>
+      <div class="comm-exp-item" data-scroll>
+        <span class="comm-exp-num">05</span>
+        <h3 class="comm-exp-title">Recall Sessions</h3>
+        <p class="comm-exp-desc">Focused off-leash recall training in controlled environments — building the reliability that creates real freedom.</p>
+      </div>
+      <div class="comm-exp-item" data-scroll>
+        <span class="comm-exp-num">06</span>
+        <h3 class="comm-exp-title">Reactivity Sessions</h3>
+        <p class="comm-exp-desc">Specialized experiences for dogs working through triggers — structured, safe, and guided by Jenn throughout.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── REAL STORIES ── -->
+  <section class="comm-stories">
+    <div class="comm-stories-header" data-scroll>
+      <span class="comm-label">Real Stories</span>
+      <h2 class="comm-section-headline">From our community.</h2>
+      <p class="comm-stories-sub">These aren't just training results. They're lives changed.</p>
+    </div>
+
+    <div class="comm-stories-grid">
+
+      <div class="comm-story-card" data-scroll>
+        <span class="comm-story-category">I Was Embarrassed to Walk My Dog</span>
+        <p class="comm-story-quote">"I used to cross the street to avoid other dogs. Now we lead the pack on group hikes. I never thought this would be our life."</p>
+        <span class="comm-story-attr">— Community Member, Vancouver</span>
+      </div>
+
+      <div class="comm-story-card" data-scroll>
+        <span class="comm-story-category">I Had Stopped Taking My Dog Places</span>
+        <p class="comm-story-quote">"We hadn't been to a café or trail in over a year. Three months into Mindful Meetups and we're regulars at our favourite patio."</p>
+        <span class="comm-story-attr">— Community Member, North Vancouver</span>
+      </div>
+
+      <div class="comm-story-card" data-scroll>
+        <span class="comm-story-category">I Felt Completely Overwhelmed</span>
+        <p class="comm-story-quote">"I'd tried everything. YouTube, books, two other trainers. Nothing stuck until I found a community that actually trained in real life."</p>
+        <span class="comm-story-attr">— Community Member, Coquitlam</span>
+      </div>
+
+      <div class="comm-story-card" data-scroll>
+        <span class="comm-story-category">I Wanted a Better Relationship</span>
+        <p class="comm-story-quote">"It wasn't just about the pulling or the barking. I wanted to actually enjoy my dog. Now I do — every single day."</p>
+        <span class="comm-story-attr">— Community Member, Burnaby</span>
+      </div>
+
+      <div class="comm-story-card" data-scroll>
+        <span class="comm-story-category">I Was Looking for Support</span>
+        <p class="comm-story-quote">"I didn't expect to find my people in a dog training group. But here we are — hiking every weekend with dogs who actually listen."</p>
+        <span class="comm-story-attr">— Community Member, Port Moody</span>
+      </div>
+
+      <div class="comm-story-card" data-scroll>
+        <span class="comm-story-category">I Thought My Dog Needed More Socialization</span>
+        <p class="comm-story-quote">"Turns out my dog didn't need more dogs — she needed more structure. Reactivity sessions changed everything for us."</p>
+        <span class="comm-story-attr">— Community Member, West Vancouver</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── BOTTOM CTA ── -->
+  <section class="comm-cta">
+    <div class="comm-cta-inner" data-scroll>
+      <span class="comm-label">Ready to Join?</span>
+      <h2 class="comm-cta-headline">This is where the<br>real work happens.</h2>
+      <p class="comm-cta-sub">Not in a parking lot. Not in a training facility. Out in the world — on trails, in cafés, in the places that actually matter to you and your dog.</p>
+      <a class="comm-cta-btn" href="#" onclick="navigateTo('contact'); return false;">Join the Community</a>
     </div>
   </section>
 </div>
