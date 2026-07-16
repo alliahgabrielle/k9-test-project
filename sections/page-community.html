@@ -1,9 +1,4 @@
 <style>
-/* ═══════════════════════════════════════════
-   COMMUNITY PAGE
-   ═══════════════════════════════════════════ */
-
-/* ─── SHARED ─── */
 .comm-eyebrow,
 .comm-label {
   display: block;
@@ -33,7 +28,6 @@
 /* ─── HERO ─── */
 .comm-hero {
   padding-top: 120px;
-  border-bottom: 1px solid var(--border-line);
   transition: border-color 300ms ease;
 }
 
@@ -73,6 +67,11 @@
   color: var(--sea-glass);
   text-decoration: none;
   transition: letter-spacing 200ms ease;
+    border: solid 1px var(--sea-glass);
+  border-radius: 24px;
+  padding: 8px 12px;
+  width: fit-content;
+  background: var(--footer-bg);
 }
 
 .comm-hero-cta:hover {
@@ -93,12 +92,12 @@
   background-position: center;
   background-color: var(--card-bg);
   overflow: hidden;
-  transition: background-color 300ms ease;
+  transition: opacity 300ms ease, transform 300ms ease;
 }
 
-.comm-photo-item:hover .comm-photo-label {
+.comm-photo-item:hover {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(-4px);
 }
 
 .comm-photo-label {
@@ -237,7 +236,7 @@
 .comm-stories-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
+  gap: 12px;
 }
 
 .comm-story-card {
@@ -248,6 +247,7 @@
   gap: 16px;
   transition: border-color 300ms ease, background 300ms ease, transform 300ms ease;
   cursor: default;
+  border-radius: 12px;
 }
 
 .comm-story-card:hover {
@@ -262,7 +262,7 @@
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--sea-glass);
-  border: 1px solid rgba(184, 212, 206, 0.35);
+  border: 1px solid var(--sea-glass);
   padding: 4px 10px;
   border-radius: 100px;
   width: fit-content;

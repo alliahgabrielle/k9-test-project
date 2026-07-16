@@ -1,5 +1,36 @@
+<style>
+  .crossroads-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+    transition: opacity 300ms ease;
+  }
+
+  .crossroads-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: rgba(13, 26, 14, 0.62);
+  }
+
+  [data-theme="light"] .crossroads-overlay {
+    background: rgba(240, 237, 232, 0.72);
+  }
+
+  /* Push all crossroads content above the overlay */
+  #crossroads > *:not(.crossroads-bg):not(.crossroads-overlay) {
+    position: relative;
+    z-index: 2;
+  }
+</style>
+
 <!-- ─── CROSSROADS ─── -->
 <div id="crossroads">
+  <div class="crossroads-bg" style="background-image: url('/images/landscapes/crossroads-bg.png')"></div>
+  <div class="crossroads-overlay"></div>
+
   <img src="/images/logo.png"       alt="Impackful K9 Logo" class="logo-dark crossroads-logo">
   <img src="/images/green-logo.png" alt="Impackful K9 Logo" class="logo-light crossroads-logo">
   

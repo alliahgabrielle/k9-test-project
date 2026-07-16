@@ -1,5 +1,5 @@
-//document.getElementById('intro-overlay').style.display = 'none';
-//showCrossroads(); // remove to enable intro video and transition
+document.getElementById('intro-overlay').style.display = 'none';
+showCrossroads(); // remove to enable intro video and transition
 
 // ── Theme toggle ──
 const root = document.documentElement;
@@ -241,3 +241,36 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.15 });
 
 scrollEls.forEach(el => observer.observe(el));
+
+// ─── STAT COUNTER ───
+function initStatCounter() {
+  const el = document.querySelector('.about-stat-num[data-count]');
+  if (!el) return;
+
+  const start = parseInt(el.getAttribute('data-start') || '2000');
+  const end = parseInt(el.getAttribute('data-end') || '3000');
+  const duration = parseInt(el.getAttribute('data-duration') || '2000');
+  const step = Math.ceil((end - start) / (duration / 16));
+
+  let current = start;
+  el.textContent = current.toLocaleString() + '+';
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const timer = setInterval(() => {
+          current += step;
+          if (current >= end) {
+            current = end;
+            clearInterval(timer);
+          }
+          el.textContent = current.toLocaleString() + '+';
+        }, 16);
+        observer.disconnect();
+      }
+    });
+  }, { threshold: 0.5 });
+
+  observer.observe(el);
+}
+initStatCounter();

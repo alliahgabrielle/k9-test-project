@@ -34,6 +34,7 @@
     <div class="snap-container" id="snap-container">
       <div id="slot-page-hero"></div>
       <div id="slot-page-programs"></div>
+      <div id="slot-page-library"></div>
       <div id="slot-page-philosophy"></div>
       <div id="slot-page-community"></div>
       <div id="slot-page-contact"></div>
@@ -51,6 +52,7 @@
       { slot: 'slot-nav',            file: 'sections/nav.html' },
       { slot: 'slot-page-hero',      file: 'sections/page-hero.html' },
       { slot: 'slot-page-programs',  file: 'sections/page-programs.html' },
+      { slot: 'slot-page-library',   file: 'sections/page-library.html' },
       { slot: 'slot-page-philosophy',file: 'sections/page-philosophy.html' },
       { slot: 'slot-page-community', file: 'sections/page-community.html' },
       { slot: 'slot-page-contact',   file: 'sections/page-contact.html' },
@@ -73,10 +75,20 @@
           })
       )
     ).then(() => {
-      // All partials are in the DOM — now boot the app
+  // Inject footer into every page
+  fetch('sections/footer.html')
+    .then(r => r.text())
+    .then(html => {
+      document.querySelectorAll('.page').forEach(page => {
+        const footer = document.createElement('div');
+        footer.innerHTML = html;
+        page.appendChild(footer);
+      });
+    });
       const script = document.createElement('script');
       script.src = '/js/main.js';
       document.body.appendChild(script);
+      initStatCounter();
     });
   </script>
 

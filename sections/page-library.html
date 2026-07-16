@@ -1,0 +1,624 @@
+<style>
+/* ─── LIBRARY PAGE ─── */
+.lib-hero {
+  padding: 160px 80px 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+  transition: border-color 300ms ease;
+}
+
+.lib-hero-inner {
+  max-width: 640px;
+}
+
+.lib-eyebrow {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+  transition: color 300ms ease;
+}
+
+.lib-hero-headline {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(48px, 6vw, 80px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  color: var(--text-primary);
+  margin-bottom: 32px;
+  transition: color 300ms ease;
+}
+
+.lib-hero-sub {
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--text-muted);
+  max-width: 52ch;
+  transition: color 300ms ease;
+}
+
+.lib-hero-img {
+  width: 420px;
+  flex-shrink: 0;
+  height: 500px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 90px 20px;
+}
+
+/* ─── COURSES ─── */
+.lib-courses {
+  padding: 100px 80px;
+  transition: border-color 300ms ease;
+}
+
+.lib-courses-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: end;
+  margin-bottom: 64px;
+}
+
+.lib-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sea-glass);
+  margin-bottom: 16px;
+  transition: color 300ms ease;
+}
+
+.lib-section-headline {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  color: var(--text-primary);
+  transition: color 300ms ease;
+}
+
+.lib-courses-desc {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.85;
+  color: var(--text-muted);
+  padding-bottom: 6px;
+  transition: color 300ms ease;
+}
+
+.lib-courses-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.lib-course-card {
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: border-color 300ms ease, background 300ms ease, transform 300ms ease;
+  border-radius: 16px; 
+}
+
+.lib-course-card:hover {
+  border-color: var(--card-hover-border);
+  transform: translateY(-4px);
+}
+
+.lib-course-card-soon {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.lib-course-card-soon:hover {
+  transform: none;
+  border-color: var(--card-border);
+}
+
+.lib-course-status {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 100px;
+  width: fit-content;
+}
+
+.lib-status-live {
+  background: rgba(184, 212, 206, 0.2);
+  color: var(--sea-glass);
+  border: 1px solid rgba(184, 212, 206, 0.4);
+}
+
+.lib-status-soon {
+  background: var(--card-bg);
+  color: var(--text-muted);
+  border: 1px solid var(--card-border);
+}
+
+.lib-course-title {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(20px, 1.8vw, 26px);
+  font-weight: 300;
+  color: var(--text-primary);
+  line-height: 1.2;
+  transition: color 300ms ease;
+}
+
+.lib-course-desc {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-muted);
+  line-height: 1.8;
+  flex: 1;
+  transition: color 300ms ease;
+}
+
+.lib-course-link {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sea-glass);
+  text-decoration: none;
+  transition: letter-spacing 200ms ease;
+  border: solid 1px var(--sea-glass);
+  border-radius: 24px;
+  padding: 8px 12px;
+  width: fit-content;
+  background: var(--footer-bg);
+}
+
+.lib-course-card:hover .lib-course-link {
+  letter-spacing: 0.18em;
+}
+
+/* ─── WHY ONLINE ─── */
+.lib-why {
+  transition: border-color 300ms ease;
+}
+
+.lib-why-inner {
+  display: grid;
+  grid-template-columns: 480px 1fr;
+  align-items: stretch;
+}
+
+.lib-why-visual {
+  overflow: hidden;
+}
+
+.lib-why-img {
+  width: 100%;
+  height: 100%;
+  min-height: 440px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--card-bg);
+  transition: transform 800ms ease, background-color 300ms ease;
+}
+
+.lib-why-visual:hover .lib-why-img {
+  transform: scale(1.03);
+}
+
+.lib-why-text {
+  padding: 100px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+}
+
+.lib-why-body {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.85;
+  color: var(--text-muted);
+  transition: color 300ms ease;
+}
+
+.lib-why-closing {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.7;
+  color: var(--text-primary);
+  padding-top: 24px;
+  border-top: 1px solid var(--border-line);
+  transition: color 300ms ease, border-color 300ms ease;
+}
+
+/* ─── MENTORSHIP TEASER ─── */
+.lib-mentorship {
+  transition: border-color 300ms ease;
+}
+
+.lib-mentorship-inner {
+  padding: 100px 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.lib-mentorship-text {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.lib-mentorship-headline {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(32px, 3.5vw, 52px);
+  font-weight: 300;
+  line-height: 1.05;
+  color: var(--text-primary);
+  transition: color 300ms ease;
+}
+
+.lib-mentorship-body {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.85;
+  color: var(--text-muted);
+  transition: color 300ms ease;
+}
+
+.lib-mentorship-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px 0;
+  border-top: 1px solid var(--border-line);
+  transition: border-color 300ms ease;
+}
+
+.lib-mentorship-list li {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-primary);
+  padding-left: 16px;
+  position: relative;
+  line-height: 1.5;
+  transition: color 300ms ease;
+}
+
+.lib-mentorship-list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--sea-glass);
+  font-size: 12px;
+}
+
+.lib-mentorship-link {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sea-glass);
+  text-decoration: none;
+  transition: letter-spacing 200ms ease;
+  border-radius: 24px;
+  padding: 8px 12px;
+  width: fit-content;
+  background: var(--footer-bg);
+  border: solid 1px var(--sea-glass);
+}
+
+.lib-mentorship-link:hover {
+  letter-spacing: 0.22em;
+}
+
+.lib-mentorship-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 60px;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  text-align: center;
+  transition: border-color 300ms ease, background 300ms ease;
+}
+
+.lib-mentorship-badge-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sea-glass);
+  transition: color 300ms ease;
+}
+
+.lib-mentorship-badge-text {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(24px, 2.5vw, 36px);
+  font-weight: 300;
+  color: var(--text-primary);
+  line-height: 1.1;
+  transition: color 300ms ease;
+}
+
+.lib-mentorship-badge-sub {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 32ch;
+  transition: color 300ms ease;
+}
+
+/* ─── BOTTOM CTA ─── */
+.lib-cta {
+  padding: 120px 80px;
+  text-align: center;
+}
+
+.lib-cta-inner {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.lib-cta-headline {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 300;
+  color: var(--text-primary);
+  line-height: 1.05;
+  transition: color 300ms ease;
+}
+
+.lib-cta-sub {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--text-muted);
+  max-width: 48ch;
+  transition: color 300ms ease;
+}
+
+.lib-cta-btn {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--deep-cedar);
+  background: var(--sea-glass);
+  text-decoration: none;
+  padding: 14px 32px;
+  border-radius: 100px;
+  margin-top: 8px;
+  transition: background 250ms ease, transform 200ms ease, box-shadow 200ms ease;
+}
+
+.lib-cta-btn:hover {
+  background: #a4c4be;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(184, 212, 206, 0.25);
+}
+
+.lib-cta-ghost {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: 14px 32px;
+  border-radius: 100px;
+  border: 1px solid var(--card-border);
+  transition: border-color 200ms ease, color 200ms ease;
+  margin-top: 8px;
+}
+
+.lib-cta-ghost:hover {
+  border-color: var(--sea-glass);
+  color: var(--sea-glass);
+}
+
+.lib-cta-btns {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  .lib-hero {
+    flex-direction: column;
+    padding: 120px 24px 72px;
+    gap: 40px;
+  }
+
+  .lib-hero-img {
+    width: 100%;
+    height: 360px;
+    border-radius: 40px 10px;
+  }
+
+  .lib-courses {
+    padding: 72px 24px;
+  }
+
+  .lib-courses-header {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .lib-courses-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lib-why-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .lib-why-img {
+    min-height: 300px;
+  }
+
+  .lib-why-text {
+    padding: 64px 24px;
+  }
+
+  .lib-mentorship-inner {
+    grid-template-columns: 1fr;
+    padding: 72px 24px;
+    gap: 40px;
+  }
+
+  .lib-cta {
+    padding: 80px 24px;
+  }
+}
+</style>
+
+<!-- ── PAGE: LIBRARY ── -->
+<div class="page" id="page-library">
+
+  <!-- ── HERO ── -->
+  <section class="lib-hero">
+    <div class="lib-hero-inner">
+      <span class="lib-eyebrow" data-scroll>Impackful K9 · Online Training</span>
+      <h1 class="lib-hero-headline" data-scroll>Train anywhere.<br>Learn worldwide.</h1>
+      <p class="lib-hero-sub" data-scroll>The same philosophy, systems, and training principles taught inside every Impackful K9 program — now available wherever you are in the world.</p>
+    </div>
+    <img class="dest-img" src="/images/library-hero.png" alt="Online Training" />
+  </section>
+
+  <!-- ── COURSES ── -->
+  <section class="lib-courses">
+    <div class="lib-courses-header" data-scroll>
+      <div>
+        <span class="lib-label">The Learning Library</span>
+        <h2 class="lib-section-headline">Programs that are<br>built for real life.</h2>
+      </div>
+      <p class="lib-courses-desc">Every course is built around the same belief that drives every Impackful K9 program — training should prepare you and your dog for the life you actually want to live, not just a parking lot.</p>
+    </div>
+
+    <div class="lib-courses-grid">
+
+      <div class="lib-course-card" data-scroll>
+        <div class="lib-course-status lib-status-live">Available Now</div>
+        <h3 class="lib-course-title">Focused Foundations™ Online</h3>
+        <p class="lib-course-desc">The foundational leash communication system that forms the backbone of everything we do. Learn how to create engagement, improve focus, and develop a dog that wants to work with you.</p>
+        <a class="lib-course-link" href="#" onclick="navigateTo('contact'); return false;">Enrol Now →</a>
+      </div>
+
+      <div class="lib-course-card lib-course-card-soon" data-scroll>
+        <div class="lib-course-status lib-status-soon">Coming Soon</div>
+        <h3 class="lib-course-title">The Mindful Puppy™</h3>
+        <p class="lib-course-desc">Start your puppy's journey the right way. Build the habits, communication, and confidence that create a calm, connected companion from day one.</p>
+        <span class="lib-course-link">Join the Waitlist →</span>
+      </div>
+
+      <div class="lib-course-card lib-course-card-soon" data-scroll>
+        <div class="lib-course-status lib-status-soon">Coming Soon</div>
+        <h3 class="lib-course-title">Reliable Recall™</h3>
+        <p class="lib-course-desc">The off-leash freedom most dog owners dream about. Build a recall that holds up in the real world — on trails, at beaches, and in busy parks.</p>
+        <span class="lib-course-link">Join the Waitlist →</span>
+      </div>
+
+      <div class="lib-course-card lib-course-card-soon" data-scroll>
+        <div class="lib-course-status lib-status-soon">Coming Soon</div>
+        <h3 class="lib-course-title">Reactivity Remedy™</h3>
+        <p class="lib-course-desc">Help your reactive dog learn to process their environment more calmly. Understand what's driving the reaction and create a path toward confidence.</p>
+        <span class="lib-course-link">Join the Waitlist →</span>
+      </div>
+
+      <div class="lib-course-card lib-course-card-soon" data-scroll>
+        <div class="lib-course-status lib-status-soon">Coming Soon</div>
+        <h3 class="lib-course-title">Calm Is A Skill™</h3>
+        <p class="lib-course-desc">Settle training for dogs who can't switch off. Teach your dog to be calm on cue — at cafés, at home, and everywhere in between.</p>
+        <span class="lib-course-link">Join the Waitlist →</span>
+      </div>
+
+      <div class="lib-course-card lib-course-card-soon" data-scroll>
+        <div class="lib-course-status lib-status-soon">Coming Soon</div>
+        <h3 class="lib-course-title">More Coming Soon</h3>
+        <p class="lib-course-desc">Additional specialty courses and workshops are in development. Each one built around the real-world environments where life actually happens.</p>
+        <span class="lib-course-link">Stay Updated →</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── WHY ONLINE ── -->
+  <section class="lib-why">
+    <div class="lib-why-inner">
+      <div class="lib-why-visual">
+        <div class="lib-why-img" style="background-image: url('/images/library-why.png'); border-radius: 0px 16px 16px 0px;"></div>
+      </div>
+      <div class="lib-why-text">
+        <span class="lib-label" data-scroll>Why Online</span>
+        <h2 class="lib-section-headline" data-scroll>Same philosophy.<br>No boundaries.</h2>
+        <p class="lib-why-body" data-scroll>Whether you're in Vancouver or Vancouver Island, Toronto or Tokyo — the principles that create calm, confident dogs don't change with location.</p>
+        <p class="lib-why-body" data-scroll>The Learning Library was built for owners outside British Columbia, those who prefer to learn at their own pace, and existing clients who want to go deeper between sessions.</p>
+        <p class="lib-why-closing" data-scroll>Every course is built on the same foundation. Real life. Real environments. Real results.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MENTORSHIP ── -->
+  <section class="lib-mentorship">
+    <div class="lib-mentorship-inner">
+      <div class="lib-mentorship-text" data-scroll>
+        <span class="lib-label">For Dog Trainers</span>
+        <h2 class="lib-mentorship-headline">The Mindful Dog<br>Trainer Mentorship.</h2>
+        <p class="lib-mentorship-body">A mentorship program for aspiring and developing dog trainers who want to learn both dog training and business development. An online coaching experience designed to help trainers build something that reflects who they are.</p>
+        <ul class="lib-mentorship-list">
+          <li>Dog training philosophy and methodology</li>
+          <li>Real client coaching sessions</li>
+          <li>Website and brand development</li>
+          <li>Business systems and program design</li>
+          <li>Community building and client acquisition</li>
+          <li>Creating a sustainable dog training career</li>
+        </ul>
+        <a class="lib-mentorship-link" href="#" onclick="navigateTo('contact'); return false;">Join the Waitlist →</a>
+      </div>
+      <div class="lib-mentorship-badge" data-scroll>
+        <span class="lib-mentorship-badge-label">Coming Soon</span>
+        <p class="lib-mentorship-badge-text">The Mindful Dog Trainer Mentorship™</p>
+        <p class="lib-mentorship-badge-sub">Not to create trainers who copy someone else's business — but to help trainers build their own.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BOTTOM CTA ── -->
+  <section class="lib-cta">
+    <div class="lib-cta-inner" data-scroll>
+      <h2 class="lib-cta-headline">Ready to start<br>wherever you are?</h2>
+      <p class="lib-cta-sub">Enrol in Focused Foundations™ Online today, or join the waitlist for upcoming courses.</p>
+      <div class="lib-cta-btns">
+        <a class="lib-cta-btn" href="#" onclick="navigateTo('contact'); return false;">Enrol Now</a>
+        <a class="lib-cta-ghost" href="#" onclick="navigateTo('programs'); return false;">View In-Person Programs</a>
+      </div>
+    </div>
+  </section>
+
+</div>

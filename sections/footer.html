@@ -1,0 +1,178 @@
+<style>
+    .site-footer {
+    background: var(--page-bg);
+    border-top: 1px solid var(--border-line);
+    transition: background 300ms ease, border-color 300ms ease;
+    }
+
+    .footer-wrap {
+    padding: 80px 80px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    }
+
+    .footer-top {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+    }
+
+    .footer-logo {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    margin-bottom: 16px;
+    display: block;
+    }
+
+    [data-theme="light"] .footer-logo {
+    filter: brightness(0.78) saturate(1.2);
+    }
+
+    [data-theme="dark"] .footer-logo {
+    filter: brightness(1.35) saturate(0.9);
+    }
+
+    .footer-tagline {
+    font-family: 'The Seasons', serif;
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    transition: color 300ms ease;
+    }
+
+    .footer-location {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-muted);
+    line-height: 1.6;
+    transition: color 300ms ease;
+    }
+
+    .footer-nav-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    }
+
+    .footer-nav-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    transition: color 300ms ease;
+    }
+
+    .footer-nav-link {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 200ms ease, transform 200ms ease;
+    display: inline-block;
+    }
+
+    .footer-nav-link:hover {
+    color: var(--text-primary);
+    transform: translateX(3px);
+    }
+
+    .footer-social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    }
+
+    .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 32px;
+    border-top: 1px solid var(--border-line);
+    transition: border-color 300ms ease;
+    }
+
+    .footer-copy {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    transition: color 300ms ease;
+    }
+
+    @media (max-width: 900px) {
+    .footer-wrap {
+        padding: 60px 24px 32px;
+        gap: 40px;
+    }
+
+    .footer-top {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+    }
+
+    .footer-brand {
+        grid-column: 1 / -1;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    }
+</style>
+
+<!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <div class="footer-wrap">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <img src="/images/logo.png" alt="Impackful K9" class="logo-dark footer-logo">
+          <img src="/images/green-logo.png" alt="Impackful K9" class="logo-light footer-logo">
+          <p class="footer-tagline">Calm is a skill.</p>
+          <p class="footer-location">Lower Mainland, BC · Vancouver & surrounding areas</p>
+        </div>
+        <div class="footer-nav-group">
+          <span class="footer-nav-label">Programs</span>
+          <a class="footer-nav-link" href="#" onclick="navigateTo('programs'); return false;">Focused Foundations</a>
+          <a class="footer-nav-link" href="#" onclick="navigateTo('programs'); return false;">Mindful Meetups</a>
+          <a class="footer-nav-link" href="#" onclick="navigateTo('programs'); return false;">The Mindful Reset</a>
+          <a class="footer-nav-link" href="#" onclick="navigateTo('library'); return false;">The Learning Library</a>
+        </div>
+        <div class="footer-nav-group">
+          <span class="footer-nav-label">Explore</span>
+          <a class="footer-nav-link" href="#" onclick="navigateTo('philosophy'); return false;">About</a>
+          <a class="footer-nav-link" href="#" onclick="navigateTo('community'); return false;">Community</a>
+          <a class="footer-nav-link" href="#" onclick="navigateTo('contact'); return false;">Contact</a>
+          <a class="footer-nav-link" href="#" onclick="navigateTo('shop'); return false;">Shop</a>
+        </div>
+        <div class="footer-nav-group">
+          <span class="footer-nav-label">Follow Along</span>
+          <a class="footer-nav-link footer-social-link" href="https://instagram.com/impackfulk9" target="_blank" rel="noopener">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+            </svg>
+            Instagram
+          </a>
+          <a class="footer-nav-link footer-social-link" href="https://facebook.com/impackfulk9" target="_blank" rel="noopener">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+            </svg>
+            Facebook
+          </a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2025 Impackful K9. All rights reserved.</span>
+        <span class="footer-copy">Helping people build a life they love sharing with their dog.</span>
+      </div>
+    </div>
+  </footer>
