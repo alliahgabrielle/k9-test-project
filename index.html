@@ -75,16 +75,17 @@
           })
       )
     ).then(() => {
-  // Inject footer into every page
-  fetch('sections/footer.html')
-    .then(r => r.text())
-    .then(html => {
-      document.querySelectorAll('.page').forEach(page => {
-        const footer = document.createElement('div');
-        footer.innerHTML = html;
-        page.appendChild(footer);
+    // Inject footer into every page
+    fetch('sections/footer.html')
+      .then(r => r.text())
+      .then(html => {
+        document.querySelectorAll('.page').forEach(page => {
+          const footer = document.createElement('div');
+          footer.innerHTML = html;
+          page.appendChild(footer);
+        });
       });
-    });
+      
       const script = document.createElement('script');
       script.src = '/js/main.js';
       document.body.appendChild(script);
