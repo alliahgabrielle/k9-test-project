@@ -240,20 +240,48 @@
 }
 
 .comm-story-card {
+  position: relative;
   padding: 40px 36px;
-  border: 1px solid var(--card-border);
+  background-size: cover;
+  background-position: center;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  transition: border-color 300ms ease, background 300ms ease, transform 300ms ease;
+  transition: transform 300ms ease;
   cursor: default;
-  border-radius: 12px;
+  min-height: 360px;
+  overflow: hidden;
+  border-radius: 16px;
 }
 
 .comm-story-card:hover {
-  border-color: var(--card-hover-border);
-  background: var(--card-bg);
-  transform: translateY(-4px);
+  transform: translateY(-4px) scale(1.01);
+}
+
+.comm-story-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(13, 26, 14, 0.88) 0%,
+    rgba(13, 26, 14, 0.5) 50%,
+    rgba(13, 26, 14, 0.2) 100%
+  );
+  transition: background 300ms ease;
+}
+
+.comm-story-card:hover .comm-story-overlay {
+  background: linear-gradient(
+    to top,
+    rgba(13, 26, 14, 0.92) 0%,
+    rgba(13, 26, 14, 0.6) 50%,
+    rgba(13, 26, 14, 0.3) 100%
+  );
+}
+
+.comm-story-card > *:not(.comm-story-overlay) {
+  position: relative;
+  z-index: 1;
 }
 
 .comm-story-category {
@@ -261,31 +289,28 @@
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--sea-glass);
-  border: 1px solid var(--sea-glass);
+  color: var(--mist-white);
+  border: 1px solid rgba(184, 212, 206, 0.4);
   padding: 4px 10px;
   border-radius: 100px;
   width: fit-content;
-  transition: color 300ms ease, border-color 300ms ease;
+  margin-top: auto;
 }
 
 .comm-story-quote {
   font-family: 'The Seasons', serif;
   font-size: clamp(16px, 1.4vw, 19px);
   font-weight: 300;
-  color: var(--text-primary);
+  color: var(--mist-white);
   line-height: 1.45;
   font-style: italic;
-  flex: 1;
-  transition: color 300ms ease;
 }
 
 .comm-story-attr {
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.1em;
-  color: var(--text-muted);
-  transition: color 300ms ease;
+  color: rgba(240, 237, 232, 0.65);
 }
 
 /* ─── STATS ─── */
@@ -586,40 +611,46 @@
 
     <div class="comm-stories-grid">
 
-      <div class="comm-story-card" data-scroll>
+      <div class="comm-story-card" data-scroll style="background-image: url('/images/landscapes/story-1.png')">
+        <div class="comm-story-overlay"></div>
         <span class="comm-story-category">I Was Embarrassed to Walk My Dog</span>
-        <p class="comm-story-quote">"I used to cross the street to avoid other dogs. Now we lead the pack on group hikes. I never thought this would be our life."</p>
-        <span class="comm-story-attr">— Community Member, Vancouver</span>
+        <p class="comm-story-quote">"My friend hadn't seen Nora in a while and said — I can't believe this is the same dog. She's so different."</p>
+        <span class="comm-story-attr">— Melissa & Nora, Vancouver</span>
       </div>
 
-      <div class="comm-story-card" data-scroll>
+      <div class="comm-story-card" data-scroll style="background-image: url('/images/landscapes/story-2.png')">
+        <div class="comm-story-overlay"></div>
         <span class="comm-story-category">I Had Stopped Taking My Dog Places</span>
-        <p class="comm-story-quote">"We hadn't been to a café or trail in over a year. Three months into Mindful Meetups and we're regulars at our favourite patio."</p>
-        <span class="comm-story-attr">— Community Member, North Vancouver</span>
+        <p class="comm-story-quote">"We just finished baseball with the boys and it was like night and day. She was able to just sit and settle. I'm so happy."</p>
+        <span class="comm-story-attr">— Chloe's Owner</span>
       </div>
 
-      <div class="comm-story-card" data-scroll>
+      <div class="comm-story-card" data-scroll style="background-image: url('/images/landscapes/story-3.png')">
+        <div class="comm-story-overlay"></div>
         <span class="comm-story-category">I Felt Completely Overwhelmed</span>
-        <p class="comm-story-quote">"I'd tried everything. YouTube, books, two other trainers. Nothing stuck until I found a community that actually trained in real life."</p>
-        <span class="comm-story-attr">— Community Member, Coquitlam</span>
+        <p class="comm-story-quote">"I had been through other programs that didn't work. I was beginning to feel hopeless — then Jenn changed my life."</p>
+        <span class="comm-story-attr">— Marissa, Vancouver</span>
       </div>
 
-      <div class="comm-story-card" data-scroll>
+      <div class="comm-story-card" data-scroll style="background-image: url('/images/landscapes/story-4.png')">
+        <div class="comm-story-overlay"></div>
         <span class="comm-story-category">I Wanted a Better Relationship</span>
-        <p class="comm-story-quote">"It wasn't just about the pulling or the barking. I wanted to actually enjoy my dog. Now I do — every single day."</p>
-        <span class="comm-story-attr">— Community Member, Burnaby</span>
+        <p class="comm-story-quote">"This journey has never been about a perfect dog. It's been about helping Mia feel safe, confident, and understood."</p>
+        <span class="comm-story-attr">— Elaine & Mia</span>
       </div>
 
-      <div class="comm-story-card" data-scroll>
+      <div class="comm-story-card" data-scroll style="background-image: url('/images/landscapes/story-5.png')">
+        <div class="comm-story-overlay"></div>
         <span class="comm-story-category">I Was Looking for Support</span>
-        <p class="comm-story-quote">"I didn't expect to find my people in a dog training group. But here we are — hiking every weekend with dogs who actually listen."</p>
-        <span class="comm-story-attr">— Community Member, Port Moody</span>
+        <p class="comm-story-quote">"There was no judgment. Everyone was so kind and supportive. Jenn gave us so much confidence to keep trying."</p>
+        <span class="comm-story-attr">— Brenda</span>
       </div>
 
-      <div class="comm-story-card" data-scroll>
+      <div class="comm-story-card" data-scroll style="background-image: url('/images/landscapes/story-6.png')">
+        <div class="comm-story-overlay"></div>
         <span class="comm-story-category">I Thought My Dog Needed More Socialization</span>
-        <p class="comm-story-quote">"Turns out my dog didn't need more dogs — she needed more structure. Reactivity sessions changed everything for us."</p>
-        <span class="comm-story-attr">— Community Member, West Vancouver</span>
+        <p class="comm-story-quote">"I've seen a 180 in Daisy's behaviour. Jenn's approach instills confidence in both the owner and the dog."</p>
+        <span class="comm-story-attr">— Heather & Daisy</span>
       </div>
 
     </div>
