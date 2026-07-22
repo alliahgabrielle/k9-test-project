@@ -274,3 +274,11 @@ function initStatCounter() {
   observer.observe(el);
 }
 initStatCounter();
+
+function navigateToSection(page, sectionId) {
+  navigateTo(page);
+  setTimeout(() => {
+    const el = document.getElementById(sectionId);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }, 400);
+}
