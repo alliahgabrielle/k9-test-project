@@ -104,29 +104,57 @@
 }
 
 .lib-course-card {
-  border: 1px solid var(--card-border);
-  background: var(--card-bg);
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--card-bg);
   padding: 48px 40px;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  transition: border-color 300ms ease, background 300ms ease, transform 300ms ease;
-  border-radius: 16px; 
+  transition: transform 300ms ease;
+  overflow: hidden;
+  min-height: 380px;
+  border-radius: 16px;
 }
 
 .lib-course-card:hover {
-  border-color: var(--card-hover-border);
-  transform: translateY(-4px);
+  transform: translateY(-4px) scale(1.01);
 }
 
 .lib-course-card-soon {
-  opacity: 0.6;
   cursor: default;
 }
 
 .lib-course-card-soon:hover {
   transform: none;
-  border-color: var(--card-border);
+}
+
+.lib-course-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(13, 26, 14, 0.92) 0%,
+    rgba(13, 26, 14, 0.6) 50%,
+    rgba(13, 26, 14, 0.3) 100%
+  );
+  z-index: 0;
+  transition: background 300ms ease;
+}
+
+.lib-course-card:hover .lib-course-overlay {
+  background: linear-gradient(
+    to top,
+    rgba(13, 26, 14, 0.96) 0%,
+    rgba(13, 26, 14, 0.7) 50%,
+    rgba(13, 26, 14, 0.4) 100%
+  );
+}
+
+.lib-course-card > *:not(.lib-course-overlay) {
+  position: relative;
+  z-index: 1;
 }
 
 .lib-course-status {
@@ -141,32 +169,30 @@
 
 .lib-status-live {
   background: rgba(184, 212, 206, 0.2);
-  color: var(--sea-glass);
+  color: var(--mist-white);
   border: 1px solid rgba(184, 212, 206, 0.4);
 }
 
 .lib-status-soon {
-  background: var(--card-bg);
-  color: var(--text-muted);
-  border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(240, 237, 232, 0.6);
+  border: 1px solid rgba(240, 237, 232, 0.15);
 }
 
 .lib-course-title {
   font-family: 'The Seasons', serif;
   font-size: clamp(20px, 1.8vw, 26px);
   font-weight: 300;
-  color: var(--text-primary);
+  color: var(--mist-white);
   line-height: 1.2;
-  transition: color 300ms ease;
 }
 
 .lib-course-desc {
   font-size: 13px;
   font-weight: 400;
-  color: var(--text-muted);
+  color: rgba(240, 237, 232, 0.7);
   line-height: 1.8;
   flex: 1;
-  transition: color 300ms ease;
 }
 
 .lib-course-link {
@@ -174,14 +200,13 @@
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--sea-glass);
+  color: #B8D4CE;
   text-decoration: none;
   transition: letter-spacing 200ms ease;
-  border: solid 1px var(--sea-glass);
-  border-radius: 24px;
-  padding: 8px 12px;
+  border: solid 1px #B8D4CE;
   width: fit-content;
-  background: var(--footer-bg);
+  padding: 8px 12px;
+  border-radius: 24px;
 }
 
 .lib-course-card:hover .lib-course-link {
@@ -327,17 +352,35 @@
 }
 
 .lib-mentorship-badge {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 24px;
   padding: 60px;
-  border: 1px solid var(--card-border);
-  background: var(--card-bg);
+  background-size: cover;
+  background-position: center;
   text-align: center;
-  transition: border-color 300ms ease, background 300ms ease;
+  overflow: hidden;
+  transition: border-color 300ms ease;
   border-radius: 16px;
+}
+
+.lib-mentorship-badge-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(13, 26, 14, 0.55) 0%,
+    rgba(13, 26, 14, 0.72) 100%
+  );
+  z-index: 0;
+}
+
+.lib-mentorship-badge > *:not(.lib-mentorship-badge-overlay) {
+  position: relative;
+  z-index: 1;
 }
 
 .lib-mentorship-badge-label {
@@ -345,35 +388,63 @@
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--sea-glass);
-  transition: color 300ms ease;
+  color: var(--mist-white);
 }
 
 .lib-mentorship-badge-text {
   font-family: 'The Seasons', serif;
   font-size: clamp(24px, 2.5vw, 36px);
   font-weight: 300;
-  color: var(--text-primary);
+  color: var(--mist-white);
   line-height: 1.1;
-  transition: color 300ms ease;
 }
 
 .lib-mentorship-badge-sub {
   font-size: 13px;
   font-weight: 400;
-  color: var(--text-muted);
+  color: rgba(240, 237, 232, 0.75);
   line-height: 1.7;
   max-width: 32ch;
-  transition: color 300ms ease;
 }
 
 /* ─── BOTTOM CTA ─── */
 .lib-cta {
+  position: relative;
   padding: 120px 80px;
   text-align: center;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  overflow: hidden;
+}
+
+.lib-cta-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    var(--page-bg) 0%,
+    rgba(13, 26, 14, 0.82) 15%,
+    rgba(13, 26, 14, 0.82) 85%,
+    var(--page-bg) 100%
+  );
+  z-index: 0;
+  pointer-events: none;
+}
+
+[data-theme="light"] .lib-cta-overlay {
+  background: linear-gradient(
+    to bottom,
+    var(--page-bg) 0%,
+    rgba(240, 237, 232, 0.88) 15%,
+    rgba(240, 237, 232, 0.88) 85%,
+    var(--page-bg) 100%
+  );
 }
 
 .lib-cta-inner {
+  position: relative;
+  z-index: 1;
   max-width: 600px;
   margin: 0 auto;
   display: flex;
@@ -386,18 +457,24 @@
   font-family: 'The Seasons', serif;
   font-size: clamp(32px, 4vw, 52px);
   font-weight: 300;
-  color: var(--text-primary);
+  color: var(--mist-white);
   line-height: 1.05;
-  transition: color 300ms ease;
+}
+
+[data-theme="light"] .lib-cta-headline {
+  color: var(--text-primary);
 }
 
 .lib-cta-sub {
   font-size: 15px;
   font-weight: 400;
   line-height: 1.8;
-  color: var(--text-muted);
+  color: rgba(240, 237, 232, 0.75);
   max-width: 48ch;
-  transition: color 300ms ease;
+}
+
+[data-theme="light"] .lib-cta-sub {
+  color: var(--text-muted);
 }
 
 .lib-cta-btn {
@@ -524,42 +601,48 @@
 
     <div class="lib-courses-grid">
 
-      <div class="lib-course-card" data-scroll>
+      <div class="lib-course-card" data-scroll style="background-image: url('/images/landscapes/library-2.png')">
+        <div class="lib-course-overlay"></div>
         <div class="lib-course-status lib-status-live">Available Now</div>
-        <h3 class="lib-course-title">Focused Foundations™ Online</h3>
+        <h3 class="lib-course-title">Focused Foundations Online</h3>
         <p class="lib-course-desc">The foundational leash communication system that forms the backbone of everything we do. Learn how to create engagement, improve focus, and develop a dog that wants to work with you.</p>
         <a class="lib-course-link" href="#" onclick="navigateTo('contact'); return false;">Enrol Now →</a>
       </div>
 
-      <div class="lib-course-card lib-course-card-soon" data-scroll>
+      <div class="lib-course-card lib-course-card-soon" data-scroll style="background-image: url('/images/landscapes/library-3.png')">
+        <div class="lib-course-overlay"></div>
         <div class="lib-course-status lib-status-soon">Coming Soon</div>
-        <h3 class="lib-course-title">The Mindful Puppy™</h3>
+        <h3 class="lib-course-title">The Mindful Puppy</h3>
         <p class="lib-course-desc">Start your puppy's journey the right way. Build the habits, communication, and confidence that create a calm, connected companion from day one.</p>
         <span class="lib-course-link">Join the Waitlist →</span>
       </div>
 
-      <div class="lib-course-card lib-course-card-soon" data-scroll>
+      <div class="lib-course-card lib-course-card-soon" data-scroll style="background-image: url('/images/landscapes/library-4.png')">
+        <div class="lib-course-overlay"></div>
         <div class="lib-course-status lib-status-soon">Coming Soon</div>
-        <h3 class="lib-course-title">Reliable Recall™</h3>
+        <h3 class="lib-course-title">Reliable Recall</h3>
         <p class="lib-course-desc">The off-leash freedom most dog owners dream about. Build a recall that holds up in the real world — on trails, at beaches, and in busy parks.</p>
         <span class="lib-course-link">Join the Waitlist →</span>
       </div>
 
-      <div class="lib-course-card lib-course-card-soon" data-scroll>
+      <div class="lib-course-card lib-course-card-soon" data-scroll style="background-image: url('/images/landscapes/library-5.png')">
+        <div class="lib-course-overlay"></div>
         <div class="lib-course-status lib-status-soon">Coming Soon</div>
-        <h3 class="lib-course-title">Reactivity Remedy™</h3>
+        <h3 class="lib-course-title">Reactivity Remedy</h3>
         <p class="lib-course-desc">Help your reactive dog learn to process their environment more calmly. Understand what's driving the reaction and create a path toward confidence.</p>
         <span class="lib-course-link">Join the Waitlist →</span>
       </div>
 
-      <div class="lib-course-card lib-course-card-soon" data-scroll>
+      <div class="lib-course-card lib-course-card-soon" data-scroll style="background-image: url('/images/landscapes/library-6.png')">
+        <div class="lib-course-overlay"></div>
         <div class="lib-course-status lib-status-soon">Coming Soon</div>
-        <h3 class="lib-course-title">Calm Is A Skill™</h3>
+        <h3 class="lib-course-title">Calm Is A Skill</h3>
         <p class="lib-course-desc">Settle training for dogs who can't switch off. Teach your dog to be calm on cue — at cafés, at home, and everywhere in between.</p>
         <span class="lib-course-link">Join the Waitlist →</span>
       </div>
 
-      <div class="lib-course-card lib-course-card-soon" data-scroll>
+      <div class="lib-course-card lib-course-card-soon" data-scroll style="background-image: url('/images/landscapes/library-7.png')">
+        <div class="lib-course-overlay"></div>
         <div class="lib-course-status lib-status-soon">Coming Soon</div>
         <h3 class="lib-course-title">More Coming Soon</h3>
         <p class="lib-course-desc">Additional specialty courses and workshops are in development. Each one built around the real-world environments where life actually happens.</p>
@@ -578,9 +661,9 @@
       <div class="lib-why-text">
         <span class="lib-label" data-scroll>Why Online</span>
         <h2 class="lib-section-headline" data-scroll>Same philosophy.<br>No boundaries.</h2>
-        <p class="lib-why-body" data-scroll>Whether you're in Vancouver or Vancouver Island, Toronto or Tokyo — the principles that create calm, confident dogs don't change with location.</p>
-        <p class="lib-why-body" data-scroll>The Learning Library was built for owners outside British Columbia, those who prefer to learn at their own pace, and existing clients who want to go deeper between sessions.</p>
-        <p class="lib-why-closing" data-scroll>Every course is built on the same foundation. Real life. Real environments. Real results.</p>
+        <p class="lib-why-body" data-scroll>Whether you're in Vancouver or anywhere else in the world— the principles that create calm, confident dogs don't change with location.</p>
+        <p class="lib-why-body" data-scroll>The learning library was built for owners who prefer to learn at their own pace, and existing clients who want to go deeper between sessions.</p>
+        <p class="lib-why-closing" data-scroll>Every program is built on the same foundation. Real life. Real environments. Real results.</p>
       </div>
     </div>
   </section>
@@ -602,19 +685,21 @@
         </ul>
         <a class="lib-mentorship-link" href="#" onclick="navigateTo('contact'); return false;">Join the Waitlist →</a>
       </div>
-      <div class="lib-mentorship-badge" data-scroll>
+      <div class="lib-mentorship-badge" data-scroll style="background-image: url('/images/landscapes/library-1.png')">
+        <div class="lib-mentorship-badge-overlay"></div>
         <span class="lib-mentorship-badge-label">Coming Soon</span>
-        <p class="lib-mentorship-badge-text">The Mindful Dog Trainer Mentorship™</p>
+        <p class="lib-mentorship-badge-text">The Mindful Dog Trainer Mentorship</p>
         <p class="lib-mentorship-badge-sub">Not to create trainers who copy someone else's business — but to help trainers build their own.</p>
       </div>
     </div>
   </section>
 
   <!-- ── BOTTOM CTA ── -->
-  <section class="lib-cta">
+  <section class="lib-cta" style="background-image: url('/images/landscapes/library-8.png')">
+    <div class="lib-cta-overlay"></div>
     <div class="lib-cta-inner" data-scroll>
       <h2 class="lib-cta-headline">Ready to start<br>wherever you are?</h2>
-      <p class="lib-cta-sub">Enrol in Focused Foundations™ Online today, or join the waitlist for upcoming courses.</p>
+      <p class="lib-cta-sub">Enrol in Focused Foundations Online today, or join the waitlist for upcoming courses.</p>
       <div class="lib-cta-btns">
         <a class="lib-cta-btn" href="#" onclick="navigateTo('contact'); return false;">Enrol Now</a>
         <a class="lib-cta-ghost" href="#" onclick="navigateTo('programs'); return false;">View In-Person Programs</a>

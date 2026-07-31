@@ -305,10 +305,40 @@
   transition: color 300ms ease;
 }
 .about-beliefs {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   transition: border-color 300ms ease;
 }
 
+.about-beliefs-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    var(--page-bg) 0%,
+    rgba(13, 26, 14, 0.82) 15%,
+    rgba(13, 26, 14, 0.82) 85%,
+    var(--page-bg) 100%
+  );
+  z-index: 0;
+  pointer-events: none;
+}
+
+[data-theme="light"] .about-beliefs-overlay {
+  background: linear-gradient(
+    to bottom,
+    var(--page-bg) 0%,
+    rgba(240, 237, 232, 0.88) 15%,
+    rgba(240, 237, 232, 0.88) 85%,
+    var(--page-bg) 100%
+  );
+}
+
 .about-beliefs-header {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 80px;
@@ -317,33 +347,30 @@
   transition: border-color 300ms ease;
 }
 
-.about-beliefs-header-right {
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 1.8;
-  color: var(--text-muted);
-  padding-bottom: 6px;
-  transition: color 300ms ease;
-}
-
 .about-beliefs-card {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   margin: 0 80px 80px;
   border: 1px solid var(--card-border);
-  background: var(--card-bg);
-  transition: border-color 300ms ease, background 300ms ease;
   border-radius: 24px;
+  overflow: hidden;
 }
 
 .about-belief {
   padding: 40px 32px;
-  border-right: 1px solid var(--card-border);
-  border-bottom: 1px solid var(--card-border);
+  border-right: 1px solid rgba(240, 237, 232, 0.12);
+  border-bottom: 1px solid rgba(240, 237, 232, 0.12);
   display: flex;
   flex-direction: column;
   gap: 14px;
-  transition: background 300ms ease, border-color 300ms ease;
+  transition: background 300ms ease;
+}
+
+[data-theme="light"] .about-belief {
+  border-right: 1px solid rgba(13, 26, 14, 0.1);
+  border-bottom: 1px solid rgba(13, 26, 14, 0.1);
 }
 
 .about-belief:nth-child(2n) {
@@ -356,37 +383,45 @@
 }
 
 .about-belief:hover {
-  background: var(--page-bg);
-}
-
-.about-belief-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: rgba(184, 212, 206, 0.12);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--sea-glass);
-  flex-shrink: 0;
-  transition: background 300ms ease;
+  background: rgba(184, 212, 206, 0.06);
 }
 
 .about-belief-title {
   font-family: 'The Seasons', serif;
   font-size: clamp(14px, 1.2vw, 17px);
   font-weight: 300;
-  color: var(--text-primary);
+  color: var(--mist-white);
   line-height: 1.3;
   transition: color 300ms ease;
+}
+
+[data-theme="light"] .about-belief-title {
+  color: var(--text-primary);
 }
 
 .about-belief-body {
   font-size: 13px;
   font-weight: 400;
-  color: var(--text-muted);
+  color: rgba(240, 237, 232, 0.7);
   line-height: 1.75;
   transition: color 300ms ease;
+}
+
+[data-theme="light"] .about-belief-body {
+  color: var(--text-muted);
+}
+
+.about-beliefs-header-right {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: rgba(240, 237, 232, 0.7);
+  padding-bottom: 6px;
+  transition: color 300ms ease;
+}
+
+[data-theme="light"] .about-beliefs-header-right {
+  color: var(--text-muted);
 }
 
 /* ─── WHAT MAKES US DIFFERENT ─── */
@@ -821,7 +856,8 @@
   </section>
 
   <!-- ── BELIEFS ── -->
-  <section class="about-beliefs">
+  <section class="about-beliefs" style="background-image: url('/images/landscapes/about-1.png')">
+    <div class="about-beliefs-overlay"></div>
     <div class="about-beliefs-header">
       <div class="about-beliefs-header-left" data-scroll>
         <span class="about-label">What We Believe</span>
@@ -850,7 +886,7 @@
         <h3 class="about-belief-title">Nature is an ideal classroom.</h3>
         <p class="about-belief-body">Trails, parks, beaches, and cafés aren't distractions from training — they're the point. Real environments produce real results.</p>
       </div>
-      <div class="about-belief" style = "border-bottom: none;">
+      <div class="about-belief" style="border-bottom: none;">
         <span class="about-belief-num">05</span>
         <h3 class="about-belief-title">Both dogs and humans thrive together.</h3>
         <p class="about-belief-body">When we support both the person and the dog together, the relationship changes. And when the relationship changes, an entirely new life together becomes possible.</p>
@@ -912,7 +948,7 @@
   <section class="about-locations">
     <div class="about-locations-inner" data-scroll>
       <span class="about-label">Where We Train</span>
-      <h2 class="about-section-headline">Serving the Lower Mainland.</h2>
+      <h2 class="about-section-headline">Serving the Lower Mainland and Online.</h2>
       <div class="about-location-pills">
         <span class="about-location-pill">Vancouver</span>
         <span class="about-location-pill">North Vancouver</span>

@@ -1,4 +1,20 @@
 <style>
+  :root {
+  --exp-scrim: linear-gradient(
+    to bottom,
+    rgba(13, 26, 14, 0.90),
+    rgba(13, 26, 14, 0.96)
+  );
+}
+
+[data-theme='light'] {
+  --exp-scrim: linear-gradient(
+    to bottom,
+    rgba(240, 237, 232, 0.93),
+    rgba(240, 237, 232, 0.97)
+  );
+}
+
 .comm-eyebrow,
 .comm-label {
   display: block;
@@ -175,18 +191,42 @@
 .comm-exp-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.comm-exp-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(13, 26, 14, 0.78);
+  z-index: 0;
+}
+
+[data-theme="light"] .comm-exp-grid-overlay {
+  background: rgba(240, 237, 232, 0.82);
 }
 
 .comm-exp-item {
+  position: relative;
+  z-index: 1;
   padding: 52px 48px;
+  border-right: 1px solid rgba(240, 237, 232, 0.1);
+  border-bottom: 1px solid rgba(240, 237, 232, 0.1);
   display: flex;
   flex-direction: column;
   gap: 14px;
-  transition: background 300ms ease, border-color 300ms ease;
+  transition: background 300ms ease;
+}
+
+[data-theme="light"] .comm-exp-item {
+  border-right: 1px solid rgba(13, 26, 14, 0.1);
+  border-bottom: 1px solid rgba(13, 26, 14, 0.1);
 }
 
 .comm-exp-item:hover {
-  background: var(--card-bg);
+  background: rgba(184, 212, 206, 0.06);
 }
 
 .comm-exp-num {
@@ -201,17 +241,24 @@
   font-family: 'The Seasons', serif;
   font-size: clamp(18px, 1.6vw, 22px);
   font-weight: 300;
-  color: var(--text-primary);
+  color: var(--mist-white);
   line-height: 1.2;
-  transition: color 300ms ease;
+}
+
+[data-theme="light"] .comm-exp-title {
+  color: var(--text-primary);
 }
 
 .comm-exp-desc {
   font-size: 13px;
   font-weight: 400;
-  color: var(--text-muted);
+  color: rgba(240, 237, 232, 0.7);
   line-height: 1.8;
   transition: color 300ms ease;
+}
+
+[data-theme="light"] .comm-exp-desc {
+  color: var(--text-muted);
 }
 
 /* ─── STORIES ─── */
@@ -402,6 +449,9 @@
 /* ─── CTA ─── */
 .comm-cta {
   padding: 120px 80px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .comm-cta-inner {
@@ -567,7 +617,8 @@
       <span class="comm-label">What We Do</span>
       <h2 class="comm-section-headline">Every meetup is a real-world<br>training opportunity.</h2>
     </div>
-    <div class="comm-exp-grid">
+    <div class="comm-exp-grid" style="background-image: url('/images/landscapes/community-1.png')">
+      <div class="comm-exp-grid-overlay"></div>
       <div class="comm-exp-item" data-scroll>
         <span class="comm-exp-num">01</span>
         <h3 class="comm-exp-title">Adventure Hikes</h3>
@@ -664,5 +715,6 @@
       <p class="comm-cta-sub">Not in a parking lot. Not in a training facility. Out in the world — on trails, in cafés, in the places that actually matter to you and your dog.</p>
       <a class="comm-cta-btn" href="#" onclick="navigateTo('contact'); return false;">Join the Community</a>
     </div>
+    <img class = "dest-img" src="/images/beach/community-1.png" alt="Dog training">
   </section>
 </div>

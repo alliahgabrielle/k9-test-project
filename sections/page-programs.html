@@ -81,20 +81,49 @@
 }
 
 .prog-path-card {
+  position: relative;
   padding: 40px 32px;
-  border: 1px solid var(--card-border);
-  background: var(--card-bg);
+  background-size: cover;
+  background-position: center;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  transition: border-color 300ms ease, background 300ms ease, transform 300ms ease;
+  transition: transform 300ms ease;
   cursor: pointer;
+  min-height: 360px;
+  overflow: hidden;
   border-radius: 16px;
 }
 
 .prog-path-card:hover {
-  border-color: var(--card-hover-border);
-  transform: translateY(-4px);
+  transform: translateY(-4px) scale(1.01);
+}
+
+.prog-path-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(13, 26, 14, 0.92) 0%,
+    rgba(13, 26, 14, 0.55) 50%,
+    rgba(13, 26, 14, 0.25) 100%
+  );
+  transition: background 300ms ease;
+  z-index: 0;
+}
+
+.prog-path-card:hover .prog-path-overlay {
+  background: linear-gradient(
+    to top,
+    rgba(13, 26, 14, 0.96) 0%,
+    rgba(13, 26, 14, 0.65) 50%,
+    rgba(13, 26, 14, 0.35) 100%
+  );
+}
+
+.prog-path-card > *:not(.prog-path-overlay) {
+  position: relative;
+  z-index: 1;
 }
 
 .prog-path-num {
@@ -109,18 +138,16 @@
   font-family: 'The Seasons', serif;
   font-size: clamp(16px, 1.4vw, 20px);
   font-weight: 300;
-  color: var(--text-primary);
+  color: var(--mist-white);
   line-height: 1.2;
-  transition: color 300ms ease;
 }
 
 .prog-path-desc {
   font-size: 13px;
   font-weight: 400;
-  color: var(--text-muted);
+  color: rgba(240, 237, 232, 0.7);
   line-height: 1.75;
   flex: 1;
-  transition: color 300ms ease;
 }
 
 .prog-path-link {
@@ -131,7 +158,7 @@
   color: var(--sea-glass);
   text-decoration: none;
   margin-top: 8px;
-  transition: color 200ms ease, letter-spacing 200ms ease;
+  transition: letter-spacing 200ms ease;
 }
 
 .prog-path-card:hover .prog-path-link {
@@ -383,17 +410,17 @@
 
 .prog-online-inner {
   padding: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  align-items: stretch;
 }
 
 .prog-online-text {
+  padding: 80px;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  max-width: 560px;
 }
 
 .prog-online-headline {
@@ -421,6 +448,10 @@
   color: var(--sea-glass);
   text-decoration: none;
   transition: letter-spacing 200ms ease, color 200ms ease;
+  border: solid 1px var(--sea-glass);
+  border-radius: 24px;
+  padding: 8px 12px;
+  width: fit-content;
 }
 
 .prog-online-link:hover {
@@ -445,13 +476,105 @@
   transition: color 300ms ease, border-color 300ms ease;
 }
 
+.prog-online-visual {
+  position: relative;
+  height: 420px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--card-bg);
+  overflow: hidden;
+  border-radius: 16px;
+  transition: background-color 300ms ease;
+}
+
+.prog-online-visual-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(13, 26, 14, 0.88) 0%,
+    rgba(13, 26, 14, 0.4) 60%,
+    rgba(13, 26, 14, 0.15) 100%
+  );
+  z-index: 0;
+}
+
+.prog-online-visual-content {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.prog-online-visual-num {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(64px, 8vw, 100px);
+  font-weight: 300;
+  color: var(--mist-white);
+  line-height: 1;
+}
+
+.prog-online-visual-label {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(18px, 2vw, 26px);
+  font-weight: 300;
+  color: var(--mist-white);
+  line-height: 1.1;
+}
+
+.prog-online-visual-sub {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sea-glass);
+}
+
 /* ─── BOTTOM CTA ─── */
 .prog-bottom-cta {
+  position: relative;
   padding: 120px 80px;
   text-align: center;
+  overflow: hidden;
+}
+
+.prog-bottom-cta-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+.prog-bottom-cta-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    var(--page-bg) 0%,
+    rgba(13, 26, 14, 0.6) 40%,
+    rgba(13, 26, 14, 0.6) 60%,
+    var(--page-bg) 100%
+  );
+}
+
+[data-theme="light"] .prog-bottom-cta-overlay {
+  background: linear-gradient(
+    to bottom,
+    var(--page-bg) 0%,
+    rgba(240, 237, 232, 0.55) 40%,
+    rgba(240, 237, 232, 0.55) 60%,
+    var(--page-bg) 100%
+  );
 }
 
 .prog-bottom-cta-inner {
+  position: relative;
+  z-index: 2;
   max-width: 600px;
   margin: 0 auto;
   display: flex;
@@ -464,18 +587,16 @@
   font-family: 'The Seasons', serif;
   font-size: clamp(32px, 4vw, 52px);
   font-weight: 300;
-  color: var(--text-primary);
+  color: var(--sea-glass);
   line-height: 1.05;
-  transition: color 300ms ease;
 }
 
 .prog-bottom-sub {
   font-size: 15px;
   font-weight: 400;
   line-height: 1.8;
-  color: var(--text-muted);
+  color: var(--mist-white);
   max-width: 48ch;
-  transition: color 300ms ease;
 }
 
 /* ─── RESPONSIVE ─── */
@@ -545,19 +666,22 @@
         <h2 class="prog-section-headline">Where do I start?</h2>
       </div>
       <div class="prog-paths">
-        <div class="prog-path-card" data-scroll>
+        <div class="prog-path-card" data-scroll style="background-image: url('/images/landscapes/program-1.png')">
+          <div class="prog-path-overlay"></div>
           <span class="prog-path-num">01</span>
           <h3 class="prog-path-title">New to training or starting fresh</h3>
           <p class="prog-path-desc">Begin with the communication system that forms the foundation of everything we do. Focused Foundations gives you and your dog a shared language.</p>
           <a class="prog-path-link" href="#focused-foundations">Focused Foundations →</a>
         </div>
-        <div class="prog-path-card" data-scroll>
+        <div class="prog-path-card" data-scroll style="background-image: url('/images/landscapes/program-2.png')">
+          <div class="prog-path-overlay"></div>
           <span class="prog-path-num">02</span>
           <h3 class="prog-path-title">Ready for real-world practice and community</h3>
           <p class="prog-path-desc">Take your skills into the environments that actually matter. Mindful Meetups is where training becomes a lifestyle.</p>
           <a class="prog-path-link" href="#mindful-meetups">Mindful Meetups →</a>
         </div>
-        <div class="prog-path-card" data-scroll>
+        <div class="prog-path-card" data-scroll style="background-image: url('/images/landscapes/program-3.png')">
+          <div class="prog-path-overlay"></div>
           <span class="prog-path-num">03</span>
           <h3 class="prog-path-title">Need an intensive head start</h3>
           <p class="prog-path-desc">One dog at a time. Your dog lives in my home and receives individualized attention in real-world environments.</p>
@@ -703,11 +827,23 @@
         </div>
         <a class="prog-online-link" href="#" onclick="navigateTo('library'); return false;">Explore Online Programs →</a>
       </div>
+
+      <div class="prog-online-visual" style="background-image: url('/images/landscapes/library-visual.png')">
+        <div class="prog-online-visual-overlay"></div>
+        <div class="prog-online-visual-content">
+          <span class="prog-online-visual-num">5</span>
+          <span class="prog-online-visual-label">Online Programs</span>
+          <span class="prog-online-visual-sub">Available worldwide</span>
+        </div>
+      </div>
+
     </div>
   </section>
 
   <!-- ── BOTTOM CTA ── -->
   <section class="prog-bottom-cta">
+    <div class="prog-bottom-cta-bg" style="background-image: url('/images/landscapes/program-4.png')"></div>
+    <div class="prog-bottom-cta-overlay"></div>
     <div class="prog-bottom-cta-inner" data-scroll>
       <h2 class="prog-bottom-headline">Not sure where to start?</h2>
       <p class="prog-bottom-sub">You don't need to have everything figured out before reaching out. Tell us about your dog and we'll help you find the right path forward.</p>
