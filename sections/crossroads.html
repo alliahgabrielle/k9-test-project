@@ -24,6 +24,63 @@
     position: relative;
     z-index: 2;
   }
+  /* ── BONUS TEASER ── */
+.crossroads-bonus {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(184, 212, 206, 0.12);
+  border: 1px solid rgba(184, 212, 206, 0.3);
+  padding: 10px 20px;
+  border-radius: 100px;
+  margin-bottom: 32px;
+  width: fit-content;
+  align-self: center;
+}
+
+.crossroads-bonus-icon {
+  font-size: 11px;
+  color: var(--sea-glass);
+  flex-shrink: 0;
+}
+
+.crossroads-bonus-text {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(240, 237, 232, 0.85);
+  line-height: 1.5;
+}
+
+[data-theme="light"] .crossroads-bonus-text {
+  color: var(--text-muted);
+}
+
+.crossroads-bonus-text strong {
+  color: var(--sea-glass);
+  font-weight: 600;
+}
+
+/* ── FEATURED PATH CARD ── */
+.path-card-featured {
+  position: relative;
+  border-color: rgba(184, 212, 206, 0.5) !important;
+}
+
+.path-card-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--deep-cedar);
+  background: var(--sea-glass);
+  padding: 4px 14px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
 </style>
 
 <!-- ─── CROSSROADS ─── -->
@@ -31,25 +88,31 @@
   <div class="crossroads-bg" style="background-image: url('/images/landscapes/crossroads-bg.png')"></div>
   <div class="crossroads-overlay"></div>
 
-  <img src="/images/logo.png"       alt="Impackful K9 Logo" class="logo-dark crossroads-logo">
+  <img src="/images/logo.png" alt="Impackful K9 Logo" class="logo-dark crossroads-logo">
   <img src="/images/green-logo.png" alt="Impackful K9 Logo" class="logo-light crossroads-logo">
   
   <p class="crossroads-sub">Choose how you'd like to explore.</p>
+
+  <!-- ── BONUS TEASER ── -->
+  <div class="crossroads-bonus">
+    <span class="crossroads-bonus-icon">★</span>
+    <p class="crossroads-bonus-text">Answer all 5 questions on the interactive path and receive a <strong>free personalized training plan</strong> for you and your dog.</p>
+  </div>
+
   <div class="crossroads-paths">
     <div class="path-card" onclick="enterClassicMode()">
       <div class="path-number">Path 01</div>
       <div class="path-title">I Know Where To Start</div>
       <div class="path-sub">Classic Mode</div>
-      <div class="path-desc">Explore the full website at your own pace — programs, philosophy, community, and more.
-      </div>
+      <div class="path-desc">Explore the full website at your own pace — programs, philosophy, community, and more.</div>
       <div class="path-arrow">Enter <span class="path-arrow-line"></span></div>
     </div>
-    <div class="path-card" onclick="enterJourneyMode()">
+    <div class="path-card path-card-featured" onclick="enterJourneyMode()">
+      <div class="path-card-badge">Free Training Plan</div>
       <div class="path-number">Path 02</div>
       <div class="path-title">Help Me Find The Right Path</div>
       <div class="path-sub">Take an interactive journey</div>
-      <div class="path-desc">Answer a few questions and we'll guide you to the right program — unlock a special bonus
-        at the end.</div>
+      <div class="path-desc">Answer a few questions and we'll guide you to the right program — unlock a special bonus at the end.</div>
       <div class="path-arrow">Begin <span class="path-arrow-line"></span></div>
     </div>
   </div>
