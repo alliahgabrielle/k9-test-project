@@ -1,0 +1,260 @@
+/* ═══════════════════════════════════════════════════════════
+   JOURNEY MODE — journey.css
+   Load: <link rel="stylesheet" href="/css/journey.css">
+   ═══════════════════════════════════════════════════════════
+
+   SECTIONS:
+   1. Base Container       — #page-journey wrapper
+   2. Close Button         — reusable across all pages
+   3. Hero (Page 1)        — background, foreground PNG, content
+   4. Text Reveal (Page 2) — [TODO]
+   5. Questions (Pages 3–7)— [TODO]
+   6. Result (Page 8)      — [TODO]
+   7. Shared Components    — [TODO]
+   8. Responsive
+
+   ═══════════════════════════════════════════════════════════ */
+
+
+/* ─────────────────────────────────────────────
+   1. BASE CONTAINER
+   ───────────────────────────────────────────── */
+
+#page-journey {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: var(--page-bg);
+  display: none;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+
+#page-journey::-webkit-scrollbar {
+  display: none;
+}
+
+#page-journey.journey-active {
+  display: block;
+}
+
+
+/* ─────────────────────────────────────────────
+   2. CLOSE BUTTON — reusable across all pages
+   ───────────────────────────────────────────── */
+
+#j-close {
+  position: fixed;
+  top: 24px;
+  left: 28px;
+  z-index: 9500;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: 'Montserrat', sans-serif;
+  transition: color 200ms ease;
+}
+
+#j-close:hover {
+  color: var(--text-primary);
+}
+
+
+/* ─────────────────────────────────────────────
+   3. HERO — PAGE 1
+   Tall wrapper gives scroll distance for
+   the typewriter text animation.
+   Sticky inner stays fullscreen while scrolling.
+   ───────────────────────────────────────────── */
+
+/* Tall container — scroll distance for typewriter */
+#j-hero-wrap {
+  position: relative;
+  height: 400vh;
+}
+
+/* Sticky hero — stays in view while wrapper scrolls */
+#j-hero {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Background image — GSAP breathe animation */
+#j-bg {
+  position: absolute;
+  inset: -8%;
+  background-size: cover;
+  background-position: center;
+  will-change: transform;
+}
+
+/* Radial vignette — darkens edges regardless of theme */
+#j-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 20%,
+    rgba(13,26,14,0.75) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Bottom gradient — uses theme variable so it blends
+   into page-bg in both light and dark mode */
+#j-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 40%,
+    var(--page-bg) 100%
+  );
+  z-index: 2;
+  pointer-events: none;
+  transition: background 300ms ease;
+}
+
+/* Foreground PNG — GSAP float + mouse parallax */
+#j-fg {
+  position: absolute;
+  bottom: -3%;
+  right: -2%;
+  width: clamp(320px, 100vw, 700px);
+  z-index: 3;
+  will-change: transform;
+  filter: drop-shadow(0 30px 50px rgba(0,0,0,0.5));
+}
+
+/* Text content block */
+#j-content {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 0 80px;
+  max-width: 680px;
+  margin-right: clamp(0px, 22vw, 360px);
+}
+
+/* Eyebrow — GSAP fades in on load */
+#j-eyebrow {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: #5B6B4A;
+    font-family: 'Montserrat', sans-serif;
+    opacity: 0;
+    border: solid 1px var(--sea-glass);
+    border-radius: 24px;
+    padding: 8px 12px;
+    width: fit-content;
+    background: #b8d4ce;
+}
+
+/* Title — chars built by JS, each animates individually */
+#j-title {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(22px, 3vw, 42px);
+  font-weight: 300;
+  color: #F0EDE8;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  max-width: 540px;
+  margin: 0;
+  opacity: 1;
+}
+
+/* Individual chars — GSAP scroll-driven reveal */
+.j-char {
+  display: inline-block;
+  will-change: opacity, filter, transform;
+}
+
+/* Scroll hint — GSAP fades in on load */
+#j-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  margin-top: 4px;
+}
+
+#j-hint-text {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Animated scroll indicator line */
+#j-hint-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--sea-glass), transparent);
+  animation: hintPulse 2s ease-in-out infinite;
+}
+
+@keyframes hintPulse {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 1;   }
+}
+
+
+/* ─────────────────────────────────────────────
+   4. TEXT REVEAL — PAGE 2  [TODO]
+   ───────────────────────────────────────────── */
+
+
+/* ─────────────────────────────────────────────
+   5. QUESTIONS — PAGES 3–7  [TODO]
+   ───────────────────────────────────────────── */
+
+
+/* ─────────────────────────────────────────────
+   6. RESULT — PAGE 8  [TODO]
+   ───────────────────────────────────────────── */
+
+
+/* ─────────────────────────────────────────────
+   7. SHARED COMPONENTS  [TODO]
+   ───────────────────────────────────────────── */
+
+
+/* ─────────────────────────────────────────────
+   8. RESPONSIVE
+   ───────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  #j-fg {
+    width: 85vw;
+    right: -4%;
+  }
+
+  #j-content {
+    padding: 0 24px;
+    margin-right: 0;
+    align-items: center;
+    text-align: center;
+  }
+}

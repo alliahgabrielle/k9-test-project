@@ -123,7 +123,8 @@ function showCrossroads() {
     if (heading) heading.classList.add('in');
     cr.querySelector('.crossroads-sub').classList.add('in');
     cr.querySelector('.crossroads-paths').classList.add('in');
-    cr.querySelector('.crossroads-skip').classList.add('in');
+    const skip = cr.querySelector('.crossroads-skip');
+    if (skip) skip.classList.add('in');
   }, 60);
 }
 
@@ -142,13 +143,9 @@ function enterClassicMode() {
 }
 
 function enterJourneyMode() {
-  const cr = document.getElementById('crossroads');
-  const cs = document.getElementById('coming-soon');
-  cr.classList.add('exiting');
-  setTimeout(() => {
-    cr.style.display = 'none';
-    cs.classList.add('visible');
-  }, 400);
+  if (typeof openJourneyMode === 'function') {
+    openJourneyMode();
+  }
 }
 
 function hideCoomingSoon() {

@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/journey.css">
 </head>
 
 <body>
@@ -42,8 +43,10 @@
 
   </div><!-- /main-site -->
 
+  <!-- ─── JOURNEY MODE (fixed overlay, outside snap) ─── -->
+  <div id="slot-page-journey"></div>
+
   <script>
-    // ── Load all section partials then boot main.js ──
     const sections = [
       { slot: 'slot-light-burst',    file: 'sections/light-burst.html' },
       { slot: 'slot-intro-overlay',  file: 'sections/intro-overlay.html' },
@@ -56,6 +59,7 @@
       { slot: 'slot-page-philosophy',file: 'sections/page-philosophy.html' },
       { slot: 'slot-page-community', file: 'sections/page-community.html' },
       { slot: 'slot-page-contact',   file: 'sections/page-contact.html' },
+      { slot: 'slot-page-journey',   file: 'sections/page-journey.html' },
     ];
 
     Promise.all(
@@ -75,21 +79,32 @@
           })
       )
     ).then(() => {
-    // Inject footer into every page
-    fetch('sections/footer.html')
-      .then(r => r.text())
-      .then(html => {
-        document.querySelectorAll('.page').forEach(page => {
-          const footer = document.createElement('div');
-          footer.innerHTML = html;
-          page.appendChild(footer);
+
+      // Inject footer into every page
+      fetch('sections/footer.html')
+        .then(r => r.text())
+        .then(html => {
+          document.querySelectorAll('.page').forEach(page => {
+            const footer = document.createElement('div');
+            footer.innerHTML = html;
+            page.appendChild(footer);
+          });
         });
-      });
-      
+
+      // Boot main.js first
       const script = document.createElement('script');
       script.src = '/js/main.js';
+      script.onload = () => {
+        // Only call after main.js has fully loaded
+        if (typeof initStatCounter === 'function') initStatCounter();
+      };
       document.body.appendChild(script);
-      initStatCounter();
+
+      // Load journey.js independently
+      const journeyScript = document.createElement('script');
+      journeyScript.src = '/js/journey.js';
+      document.body.appendChild(journeyScript);
+
     });
   </script>
 
