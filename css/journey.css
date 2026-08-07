@@ -7,10 +7,12 @@
    1. Base Container       — #page-journey wrapper
    2. Close Button         — reusable across all pages
    3. Hero (Page 1)        — background, foreground PNG, content
-   4. Text Reveal (Page 2) — [TODO]
-   5. Questions (Pages 3–7)— [TODO]
-   6. Result (Page 8)      — [TODO]
-   7. Shared Components    — [TODO]
+   4. Deck + Page Shell    — Pages 2–18 fixed card stack
+   5. Questions            — Pages 3, 6, 8, 11, 14 (pills + Continue)
+   6. Email Capture        — Page 18 (form + success)
+   7. Shared Components     — eyebrow, titles, body, pillars, points,
+                             program cards, chips, lists, stats, quote,
+                             progress bar + step counter
    8. Responsive
 
    ═══════════════════════════════════════════════════════════ */
@@ -222,23 +224,749 @@
 
 
 /* ─────────────────────────────────────────────
-   4. TEXT REVEAL — PAGE 2  [TODO]
+   4. DECK + PAGE SHELL — PAGES 2–18
+   Each .j-page is a fixed, full-viewport card.
+   journey.js sets them off-screen (yPercent:100)
+   and pops the next one up with back.out(1.4).
+   These pages are always dark (photo + scrim),
+   independent of the site's light/dark theme.
    ───────────────────────────────────────────── */
+
+/* Deck wrapper — fixed children stay out of the hero's
+   scroll flow, so Page 1 scroll distance is untouched. */
+#j-deck {
+  position: relative;
+}
+
+/* A single page card */
+.j-page {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  z-index: 10;
+  background: #0d1a0e;
+  /* Off-screen until GSAP takes over — prevents first-paint flash */
+  transform: translate3d(0, 100%, 0);
+  will-change: transform;
+}
+
+/* Background photo — subtle Ken-Burns via GSAP on reveal */
+.j-page-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+  will-change: transform;
+}
+
+/* Scrim — darkens the left/bottom so light text stays legible */
+.j-page-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(105deg,
+      rgba(13, 26, 14, 0.94) 0%,
+      rgba(13, 26, 14, 0.80) 34%,
+      rgba(13, 26, 14, 0.50) 66%,
+      rgba(13, 26, 14, 0.38) 100%),
+    linear-gradient(to bottom,
+      rgba(13, 26, 14, 0.55) 0%,
+      rgba(13, 26, 14, 0.10) 26%,
+      rgba(13, 26, 14, 0.10) 62%,
+      rgba(13, 26, 14, 0.85) 100%);
+}
+
+/* Question + capture pages read centered, so darken evenly */
+.j-page[data-type="question"] .j-page-scrim,
+.j-page[data-type="capture"] .j-page-scrim {
+  background:
+    radial-gradient(ellipse at center,
+      rgba(13, 26, 14, 0.70) 0%,
+      rgba(13, 26, 14, 0.92) 100%);
+}
+
+.j-page[data-type="question"],
+.j-page[data-type="capture"] {
+  justify-content: center;
+}
+
+/* Content column */
+.j-page-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 720px;
+  padding: 0 clamp(28px, 8vw, 96px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+  color: var(--mist-white);
+}
+
+/* Centered variant — questions & capture */
+.j-inner-center {
+  max-width: 760px;
+  margin: 0 auto;
+  align-items: center;
+  text-align: center;
+}
+
+/* Wide variant — side-by-side program cards (Page 12) */
+.j-inner-wide {
+  max-width: 940px;
+}
 
 
 /* ─────────────────────────────────────────────
-   5. QUESTIONS — PAGES 3–7  [TODO]
+   5. QUESTIONS — PAGES 3, 6, 8, 11, 14
+   Pill options · one selects · Continue appears.
    ───────────────────────────────────────────── */
+
+.j-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 580px;
+  margin-top: 4px;
+}
+
+.j-pill {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: #F0EDE8;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(240, 237, 232, 0.18);
+  border-radius: 100px;
+  padding: 16px 26px;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  transition: background 220ms ease, border-color 220ms ease,
+              color 220ms ease, transform 220ms ease;
+}
+
+.j-pill:hover {
+  border-color: var(--sea-glass);
+  background: rgba(184, 212, 206, 0.12);
+  transform: translateY(-1px);
+}
+
+.j-pill.selected {
+  background: #B8D4CE;
+  border-color: #B8D4CE;
+  color: #2D3A2E;
+  font-weight: 600;
+}
+
+/* Continue — hidden until an option is picked (JS adds .shown) */
+.j-continue {
+  margin-top: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #2D3A2E;
+  background: #B8D4CE;
+  border: none;
+  border-radius: 100px;
+  padding: 15px 46px;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 200ms ease, box-shadow 200ms ease,
+              background 200ms ease;
+}
+
+.j-continue.shown {
+  pointer-events: auto;
+}
+
+.j-continue:hover {
+  transform: translateY(-2px);
+  background: #c8e0da;
+  box-shadow: 0 12px 30px rgba(184, 212, 206, 0.32);
+}
 
 
 /* ─────────────────────────────────────────────
-   6. RESULT — PAGE 8  [TODO]
+   6. EMAIL CAPTURE — PAGE 18
+   No result on screen — plan is sent to email.
    ───────────────────────────────────────────── */
+
+.j-capture-sub {
+  font-size: clamp(15px, 1.6vw, 18px);
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(240, 237, 232, 0.85);
+  max-width: 46ch;
+}
+
+.j-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 420px;
+  margin-top: 8px;
+}
+
+.j-input {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  color: #F5F2EC;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(240, 237, 232, 0.20);
+  border-radius: 12px;
+  padding: 16px 20px;
+  transition: border-color 200ms ease, background 200ms ease;
+}
+
+.j-input::placeholder { color: rgba(240, 237, 232, 0.5); }
+
+.j-input:focus {
+  outline: none;
+  border-color: #B8D4CE;
+  background: rgba(255, 255, 255, 0.10);
+}
+
+.j-input.invalid { border-color: #d98a7a; }
+
+.j-submit {
+  margin-top: 2px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #2D3A2E;
+  background: #B8D4CE;
+  border: none;
+  border-radius: 100px;
+  padding: 16px;
+  cursor: pointer;
+  transition: transform 200ms ease, box-shadow 200ms ease,
+              background 200ms ease;
+}
+
+.j-submit:hover {
+  transform: translateY(-2px);
+  background: #c8e0da;
+  box-shadow: 0 12px 30px rgba(184, 212, 206, 0.32);
+}
+
+.j-form-note {
+  font-size: 12px;
+  font-weight: 300;
+  color: rgba(240, 237, 232, 0.6);
+  text-align: center;
+  margin-top: 2px;
+}
+
+/* Success state — replaces the form after submit */
+.j-form-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  max-width: 420px;
+  margin-top: 8px;
+}
+
+.j-form-success[hidden] { display: none; }
+
+.j-success-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: #B8D4CE;
+  color: #2D3A2E;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.j-success-title {
+  font-family: 'The Seasons', serif;
+  font-weight: 300;
+  font-size: clamp(22px, 3vw, 32px);
+  color: #F5F2EC;
+}
+
+.j-success-text {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(240, 237, 232, 0.8);
+}
 
 
 /* ─────────────────────────────────────────────
-   7. SHARED COMPONENTS  [TODO]
+   7. SHARED COMPONENTS
+   Reused across the informational pages.
    ───────────────────────────────────────────── */
+
+/* Eyebrow pill — mirrors the hero eyebrow for continuity */
+.j-eyebrow-pill {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #5B6B4A;
+  font-family: 'Montserrat', sans-serif;
+  border: 1px solid #B8D4CE;
+  border-radius: 24px;
+  padding: 8px 14px;
+  width: fit-content;
+  background: #b8d4ce;
+}
+
+/* Page headline */
+.j-page-title {
+  font-family: 'The Seasons', serif;
+  font-weight: 300;
+  font-size: clamp(30px, 4.4vw, 60px);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  color: #F5F2EC;
+  margin: 0;
+  max-width: 16ch;
+}
+
+/* Smaller headline for long sentences */
+.j-page-title-sm {
+  font-size: clamp(24px, 3.2vw, 42px);
+  line-height: 1.14;
+  max-width: 22ch;
+}
+
+/* Question headline */
+.j-q-title {
+  font-size: clamp(23px, 3.1vw, 40px);
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  max-width: 22ch;
+}
+
+/* Body copy */
+.j-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 54ch;
+}
+
+.j-line {
+  font-size: clamp(15px, 1.5vw, 18px);
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(240, 237, 232, 0.88);
+}
+
+.j-line-emph {
+  color: #F5F2EC;
+  font-weight: 400;
+}
+
+.j-body-block {
+  font-size: clamp(15px, 1.5vw, 18px);
+  font-weight: 300;
+  line-height: 1.8;
+  color: rgba(240, 237, 232, 0.88);
+  max-width: 56ch;
+}
+
+/* Program / duration tag line */
+.j-tag {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #B8D4CE;
+}
+
+/* Closing tagline */
+.j-tagline {
+  font-family: 'The Seasons', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(17px, 2vw, 24px);
+  line-height: 1.4;
+  color: #B8D4CE;
+  max-width: 44ch;
+}
+
+/* Numbered points — Page 5 */
+.j-points {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 52ch;
+}
+
+.j-point {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.j-point-num {
+  font-family: 'The Seasons', serif;
+  font-size: 22px;
+  line-height: 1;
+  color: #B8D4CE;
+  opacity: 0.85;
+  min-width: 36px;
+}
+
+.j-point-text {
+  font-size: clamp(15px, 1.6vw, 19px);
+  font-weight: 300;
+  line-height: 1.55;
+  color: #F0EDE8;
+}
+
+/* Pillars — Page 7 */
+.j-pillars {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 56ch;
+}
+
+.j-pillar {
+  border-left: 2px solid rgba(184, 212, 206, 0.55);
+  padding-left: 18px;
+}
+
+.j-pillar-title {
+  font-family: 'The Seasons', serif;
+  font-weight: 300;
+  font-size: clamp(18px, 2vw, 24px);
+  color: #F5F2EC;
+  margin-bottom: 6px;
+}
+
+.j-pillar-desc {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: rgba(240, 237, 232, 0.8);
+}
+
+/* "Who it's for" mini-block — Page 9 */
+.j-mini {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.j-mini-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(240, 237, 232, 0.55);
+}
+
+.j-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.j-list-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-size: 15px;
+  font-weight: 300;
+  color: rgba(240, 237, 232, 0.9);
+}
+
+.j-list-item::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #B8D4CE;
+  flex: none;
+}
+
+/* Chip / pill groups — Pages 10 & 17 */
+.j-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-width: 60ch;
+}
+
+.j-chip {
+  font-size: 12px;
+  font-weight: 500;
+  color: #F0EDE8;
+  border: 1px solid rgba(184, 212, 206, 0.4);
+  background: rgba(184, 212, 206, 0.09);
+  padding: 7px 15px;
+  border-radius: 100px;
+}
+
+/* Program cards — Page 12 */
+.j-programs {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.j-prog-card {
+  flex: 1 1 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(240, 237, 232, 0.12);
+  border-radius: 16px;
+  padding: 26px;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.j-prog-kicker {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #B8D4CE;
+}
+
+.j-prog-title {
+  font-family: 'The Seasons', serif;
+  font-weight: 300;
+  font-size: clamp(20px, 2.2vw, 26px);
+  color: #F5F2EC;
+}
+
+.j-prog-body {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: rgba(240, 237, 232, 0.82);
+}
+
+.j-prog-tag {
+  margin-top: auto;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(240, 237, 232, 0.6);
+}
+
+/* Course list — Page 13 */
+.j-courses {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 480px;
+}
+
+.j-course {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  font-weight: 300;
+  color: rgba(240, 237, 232, 0.6);
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(240, 237, 232, 0.1);
+}
+
+.j-course-mark {
+  color: rgba(240, 237, 232, 0.4);
+  font-size: 14px;
+}
+
+.j-course-on {
+  color: #F5F2EC;
+  font-weight: 400;
+}
+
+.j-course-on .j-course-mark { color: #B8D4CE; }
+
+.j-course-state {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(240, 237, 232, 0.4);
+}
+
+.j-course-on .j-course-state { color: #B8D4CE; }
+
+/* Stats — Page 15 */
+.j-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+}
+
+.j-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.j-stat-num {
+  font-family: 'The Seasons', serif;
+  font-weight: 300;
+  font-size: clamp(24px, 3vw, 36px);
+  color: #F5F2EC;
+  line-height: 1;
+}
+
+.j-stat-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(240, 237, 232, 0.6);
+}
+
+/* Pull-quote — Page 15 */
+.j-quote {
+  font-family: 'The Seasons', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(18px, 2.1vw, 26px);
+  line-height: 1.4;
+  color: #F5F2EC;
+  border-left: 2px solid #B8D4CE;
+  padding-left: 20px;
+  max-width: 48ch;
+}
+
+/* Story categories — Page 16 */
+.j-stories {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  max-width: 56ch;
+}
+
+.j-story {
+  font-family: 'The Seasons', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(16px, 1.9vw, 22px);
+  line-height: 1.3;
+  color: rgba(245, 242, 236, 0.9);
+  padding-left: 16px;
+  border-left: 2px solid rgba(184, 212, 206, 0.4);
+}
+
+/* Divider + online note — Page 17 */
+.j-divider {
+  width: 100%;
+  max-width: 300px;
+  height: 1px;
+  background: rgba(240, 237, 232, 0.18);
+  margin: 4px 0;
+}
+
+.j-online-note {
+  color: #B8D4CE;
+}
+
+/* Scroll hint — informational pages */
+.j-scroll-hint {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+  opacity: 0.85;
+}
+
+.j-scroll-hint span {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(240, 237, 232, 0.7);
+}
+
+.j-scroll-hint .j-hint-line {
+  width: 36px;
+  height: 1px;
+  background: linear-gradient(to right, #B8D4CE, transparent);
+  animation: hintPulse 2s ease-in-out infinite;
+}
+
+/* Progress bar — visible only in the deck */
+#j-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 9400;
+  background: rgba(240, 237, 232, 0.08);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 400ms ease;
+}
+
+#j-progress.visible { opacity: 1; }
+
+#j-progress-fill {
+  height: 100%;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: linear-gradient(to right, #B8D4CE, #5B6B4A);
+}
+
+/* Step counter — top-right */
+#j-step {
+  position: fixed;
+  top: 22px;
+  right: 28px;
+  z-index: 9400;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: rgba(240, 237, 232, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 400ms ease;
+}
+
+#j-step.visible { opacity: 1; }
+
+/* Reduced motion — calm the ambient loops */
+@media (prefers-reduced-motion: reduce) {
+  .j-scroll-hint .j-hint-line { animation: none; }
+}
 
 
 /* ─────────────────────────────────────────────
@@ -246,6 +974,8 @@
    ───────────────────────────────────────────── */
 
 @media (max-width: 768px) {
+
+  /* Hero (Page 1) — unchanged behavior */
   #j-fg {
     width: 85vw;
     right: -4%;
@@ -256,5 +986,54 @@
     margin-right: 0;
     align-items: center;
     text-align: center;
+  }
+
+  /* Deck (Pages 2–18) */
+  .j-page-inner {
+    padding: 0 24px;
+    gap: 18px;
+  }
+
+  .j-page-title { max-width: 100%; }
+
+  .j-q-title { max-width: 100%; }
+
+  /* Left-align info pages on mobile keeps the scrim legible;
+     questions & capture stay centered. */
+  .j-page-scrim {
+    background:
+      linear-gradient(to bottom,
+        rgba(13, 26, 14, 0.78) 0%,
+        rgba(13, 26, 14, 0.62) 42%,
+        rgba(13, 26, 14, 0.90) 100%);
+  }
+
+  .j-programs { flex-direction: column; }
+
+  .j-options { max-width: 100%; }
+
+  .j-pill {
+    font-size: 14px;
+    padding: 14px 20px;
+  }
+
+  .j-stats { gap: 20px; }
+
+  .j-course-state { display: none; }
+
+  #j-step { top: 20px; right: 20px; }
+
+  #j-close { top: 20px; left: 20px; }
+}
+
+/* Short viewports — let tall pages scroll internally if needed */
+@media (max-height: 620px) {
+  .j-page {
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+  .j-page-inner {
+    padding-top: 84px;
+    padding-bottom: 48px;
   }
 }
