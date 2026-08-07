@@ -162,6 +162,7 @@
     let gesture   = false;
     let settleT   = null;
     let touchY    = null;
+    let motionStop = null; // teardown fn for the active [data-motion] page
 
     function isActive() { return page.classList.contains('journey-active'); }
 
@@ -200,6 +201,53 @@
       }
     }
 
+    // ── cinematic cut-out motion — pages tagged [data-motion] ──
+    // Continuous background drift + a floating transparent-PNG subject,
+    // with pointer parallax that pushes the two planes in opposite
+    // directions so the cut-out reads as closer to the viewer (3D depth).
+    // Mirrors the Page 1 hero. Bg tweens x/y (parallax) and scale (drift)
+    // on separate properties, so they compose instead of fighting.
+    function startMotion(p) {
+      if (reduce) return;
+      const bg   = p.querySelector('.j-page-bg');
+      const cut  = p.querySelector('.j-cutout');
+      const wrap = p.querySelector('.j-cutout-wrap');
+
+      if (bg)  gsap.to(bg,  { scale: 1.16, duration: 20, ease: 'sine.inOut', repeat: -1, yoyo: true, overwrite: 'auto' });
+      if (cut) gsap.fromTo(cut, { y: 0 }, { y: -16, duration: 4.6, ease: 'sine.inOut', repeat: -1, yoyo: true });
+
+      let raf = null, dx = 0, dy = 0;
+      function onMove(e) {
+        const r = p.getBoundingClientRect();
+        dx = (e.clientX - r.left - r.width / 2) / (r.width / 2);
+        dy = (e.clientY - r.top - r.height / 2) / (r.height / 2);
+        if (!raf) raf = requestAnimationFrame(apply);
+      }
+      function apply() {
+        raf = null;
+        if (bg)   gsap.to(bg,   { x: dx * -28, y: dy * -18, duration: 1.1, ease: 'power2.out', overwrite: 'auto' });
+        if (wrap) gsap.to(wrap, { x: dx * 34,  y: dy * 20,  duration: 0.8, ease: 'power2.out', overwrite: 'auto' });
+      }
+      p.addEventListener('mousemove', onMove);
+
+      motionStop = function () {
+        p.removeEventListener('mousemove', onMove);
+        if (raf) cancelAnimationFrame(raf);
+        gsap.killTweensOf([bg, cut, wrap].filter(Boolean));
+        if (bg)   gsap.set(bg,   { x: 0, y: 0 });
+        if (cut)  gsap.set(cut,  { y: 0 });
+        if (wrap) gsap.set(wrap, { x: 0, y: 0 });
+        motionStop = null;
+      };
+    }
+
+    // Stop whatever page was moving, then start the active one if it's tagged.
+    function syncMotion() {
+      if (motionStop) motionStop();
+      const cur = pages[index];
+      if (cur && cur.hasAttribute('data-motion')) startMotion(cur);
+    }
+
     function afterSettle(i) {
       const p = pages[i];
       if (p && p.dataset.type === 'capture') {
@@ -213,6 +261,9 @@
       if (animating) return;
       if (nextIndex < -1 || nextIndex >= total) return;
       animating = true;
+
+      // Freeze the outgoing page's drift/parallax during the transition.
+      if (motionStop) motionStop();
 
       // Entering the deck locks the hero's native scroll.
       if (nextIndex >= 0) page.style.overflow = 'hidden';
@@ -238,6 +289,7 @@
             index = nextIndex;
             animating = false;
             updateChrome();
+            syncMotion();
             afterSettle(index);
           }
         });
@@ -253,6 +305,7 @@
             animating = false;
             if (index < 0) page.style.overflow = ''; // back at hero → native scroll
             updateChrome();
+            syncMotion();
           }
         });
       }
@@ -407,10 +460,15 @@
       zTop = 20;
       gesture = false;
       page.style.overflow = '';
+      if (motionStop) motionStop();
 
       gsap.set(pages, { y: 0, yPercent: 100, scale: 1 });
       pages.forEach(function (p) {
         p.style.zIndex = '';
+        // Clear any leftover cut-out / background parallax offsets
+        var cut = p.querySelector('.j-cutout');       if (cut)  gsap.set(cut,  { y: 0 });
+        var wrap = p.querySelector('.j-cutout-wrap');  if (wrap) gsap.set(wrap, { x: 0, y: 0 });
+        var bgi = p.querySelector('.j-page-bg');       if (bgi)  gsap.set(bgi, { x: 0, y: 0 });
         if (p.dataset.type === 'question') {
           delete p.dataset.answered;
           p.querySelectorAll('.j-pill').forEach(function (x) { x.classList.remove('selected'); });
