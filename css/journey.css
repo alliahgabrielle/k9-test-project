@@ -23,6 +23,21 @@
    ───────────────────────────────────────────── */
 
 #page-journey {
+  /* ── Deck design tokens ──
+     The journey deck renders always-dark, independent of the site's
+     light/dark theme, so these are fixed values (not the theme-driven
+     --sea-glass / --page-bg). Change a brand colour here, once. */
+  --j-glass:  #B8D4CE;
+  --j-moss:   #5B6B4A;
+  --j-cedar:  #2D3A2E;
+  --j-ink:    #0d1a0e;
+  --j-text:   #F0EDE8;
+  --j-ink-rgb:   13, 26, 14;
+  --j-text-rgb:  240, 237, 232;
+  --j-glass-rgb: 184, 212, 206;
+  /* reusable line styles — applied via border: var(--j-hairline) etc. */
+  --j-hairline:    1px solid rgba(var(--j-text-rgb), 0.15);
+  --j-accent-line: 2px solid rgba(var(--j-glass-rgb), 0.5);
   position: fixed;
   inset: 0;
   z-index: 9000;
@@ -161,14 +176,14 @@
     font-weight: 700;
     letter-spacing: 0.26em;
     text-transform: uppercase;
-    color: #5B6B4A;
+    color: var(--j-moss);
     font-family: 'Montserrat', sans-serif;
     opacity: 0;
     border: solid 1px var(--sea-glass);
     border-radius: 24px;
     padding: 8px 12px;
     width: fit-content;
-    background: #b8d4ce;
+    background: var(--j-glass);
 }
 
 /* Title — chars built by JS, each animates individually */
@@ -176,7 +191,7 @@
   font-family: 'The Seasons', serif;
   font-size: clamp(22px, 3vw, 42px);
   font-weight: 300;
-  color: #F0EDE8;
+  color: var(--j-text);
   line-height: 1.4;
   letter-spacing: -0.01em;
   max-width: 540px;
@@ -250,7 +265,7 @@
   align-items: center;
   justify-content: flex-start;
   z-index: 10;
-  background: #0d1a0e;
+  background: var(--j-ink);
   /* Off-screen until GSAP takes over — prevents first-paint flash */
   transform: translate3d(0, 100%, 0);
   will-change: transform;
@@ -259,7 +274,7 @@
 /* Background photo — subtle Ken-Burns via GSAP on reveal */
 .j-page-bg {
   position: absolute;
-  inset: 0;
+  inset: -6%;              /* bleed room so drift + parallax never expose a panel edge */
   background-size: cover;
   background-position: center;
   z-index: 0;
@@ -274,15 +289,15 @@
   pointer-events: none;
   background:
     linear-gradient(105deg,
-      rgba(13, 26, 14, 0.94) 0%,
-      rgba(13, 26, 14, 0.80) 34%,
-      rgba(13, 26, 14, 0.50) 66%,
-      rgba(13, 26, 14, 0.38) 100%),
+      rgba(var(--j-ink-rgb), 0.94) 0%,
+      rgba(var(--j-ink-rgb), 0.80) 34%,
+      rgba(var(--j-ink-rgb), 0.50) 66%,
+      rgba(var(--j-ink-rgb), 0.38) 100%),
     linear-gradient(to bottom,
-      rgba(13, 26, 14, 0.55) 0%,
-      rgba(13, 26, 14, 0.10) 26%,
-      rgba(13, 26, 14, 0.10) 62%,
-      rgba(13, 26, 14, 0.85) 100%);
+      rgba(var(--j-ink-rgb), 0.55) 0%,
+      rgba(var(--j-ink-rgb), 0.10) 26%,
+      rgba(var(--j-ink-rgb), 0.10) 62%,
+      rgba(var(--j-ink-rgb), 0.85) 100%);
 }
 
 /* Question + capture pages read centered, so darken evenly */
@@ -290,8 +305,8 @@
 .j-page[data-type="capture"] .j-page-scrim {
   background:
     radial-gradient(ellipse at center,
-      rgba(13, 26, 14, 0.70) 0%,
-      rgba(13, 26, 14, 0.92) 100%);
+      rgba(var(--j-ink-rgb), 0.70) 0%,
+      rgba(var(--j-ink-rgb), 0.92) 100%);
 }
 
 .j-page[data-type="question"],
@@ -346,10 +361,10 @@
   font-size: 15px;
   font-weight: 400;
   line-height: 1.4;
-  color: #F0EDE8;
+  color: var(--j-text);
   text-align: left;
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(240, 237, 232, 0.18);
+  border: var(--j-hairline);
   border-radius: 100px;
   padding: 16px 26px;
   cursor: pointer;
@@ -361,46 +376,51 @@
 
 .j-pill:hover {
   border-color: var(--sea-glass);
-  background: rgba(184, 212, 206, 0.12);
+  background: rgba(var(--j-glass-rgb), 0.12);
   transform: translateY(-1px);
 }
 
 .j-pill.selected {
-  background: #B8D4CE;
-  border-color: #B8D4CE;
-  color: #2D3A2E;
+  background: var(--j-glass);
+  border-color: var(--j-glass);
+  color: var(--j-cedar);
   font-weight: 600;
 }
 
-/* Continue — hidden until an option is picked (JS adds .shown) */
-.j-continue {
-  margin-top: 10px;
+/* Continue + Submit share one CTA button design (see also .j-submit).
+   JS adds .shown to Continue once an option is picked. */
+.j-continue,
+.j-submit {
   font-family: 'Montserrat', sans-serif;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #2D3A2E;
-  background: #B8D4CE;
+  color: var(--j-cedar);
+  background: var(--j-glass);
   border: none;
   border-radius: 100px;
-  padding: 15px 46px;
   cursor: pointer;
-  opacity: 0;
-  pointer-events: none;
   transition: transform 200ms ease, box-shadow 200ms ease,
               background 200ms ease;
 }
 
-.j-continue.shown {
-  pointer-events: auto;
-}
-
-.j-continue:hover {
+.j-continue:hover,
+.j-submit:hover {
   transform: translateY(-2px);
   background: #c8e0da;
-  box-shadow: 0 12px 30px rgba(184, 212, 206, 0.32);
+  box-shadow: 0 12px 30px rgba(var(--j-glass-rgb), 0.32);
 }
+
+/* Continue — hidden until an option is picked */
+.j-continue {
+  margin-top: 10px;
+  padding: 15px 46px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.j-continue.shown { pointer-events: auto; }
 
 
 /* ─────────────────────────────────────────────
@@ -412,7 +432,7 @@
   font-size: clamp(15px, 1.6vw, 18px);
   font-weight: 300;
   line-height: 1.7;
-  color: rgba(240, 237, 232, 0.85);
+  color: rgba(var(--j-text-rgb), 0.85);
   max-width: 46ch;
 }
 
@@ -428,51 +448,34 @@
 .j-input {
   font-family: 'Montserrat', sans-serif;
   font-size: 15px;
-  color: #F5F2EC;
+  color: var(--j-text);
   background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(240, 237, 232, 0.20);
+  border: var(--j-hairline);
   border-radius: 12px;
   padding: 16px 20px;
   transition: border-color 200ms ease, background 200ms ease;
 }
 
-.j-input::placeholder { color: rgba(240, 237, 232, 0.5); }
+.j-input::placeholder { color: rgba(var(--j-text-rgb), 0.5); }
 
 .j-input:focus {
   outline: none;
-  border-color: #B8D4CE;
+  border-color: var(--j-glass);
   background: rgba(255, 255, 255, 0.10);
 }
 
 .j-input.invalid { border-color: #d98a7a; }
 
+/* Submit — shares the CTA design above; only its box metrics differ */
 .j-submit {
   margin-top: 2px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #2D3A2E;
-  background: #B8D4CE;
-  border: none;
-  border-radius: 100px;
   padding: 16px;
-  cursor: pointer;
-  transition: transform 200ms ease, box-shadow 200ms ease,
-              background 200ms ease;
-}
-
-.j-submit:hover {
-  transform: translateY(-2px);
-  background: #c8e0da;
-  box-shadow: 0 12px 30px rgba(184, 212, 206, 0.32);
 }
 
 .j-form-note {
   font-size: 12px;
   font-weight: 300;
-  color: rgba(240, 237, 232, 0.6);
+  color: rgba(var(--j-text-rgb), 0.6);
   text-align: center;
   margin-top: 2px;
 }
@@ -497,24 +500,22 @@
   width: 54px;
   height: 54px;
   border-radius: 50%;
-  background: #B8D4CE;
-  color: #2D3A2E;
+  background: var(--j-glass);
+  color: var(--j-cedar);
   font-size: 26px;
   font-weight: 700;
 }
 
 .j-success-title {
-  font-family: 'The Seasons', serif;
-  font-weight: 300;
   font-size: clamp(22px, 3vw, 32px);
-  color: #F5F2EC;
+  color: var(--j-text);
 }
 
 .j-success-text {
   font-size: 15px;
   font-weight: 300;
   line-height: 1.7;
-  color: rgba(240, 237, 232, 0.8);
+  color: rgba(var(--j-text-rgb), 0.8);
 }
 
 
@@ -523,29 +524,41 @@
    Reused across the informational pages.
    ───────────────────────────────────────────── */
 
+/* Every serif heading & accent shares the one display face */
+.j-page-title,
+.j-pillar-title,
+.j-prog-title,
+.j-stat-num,
+.j-success-title,
+.j-point-num,
+.j-tagline,
+.j-quote,
+.j-story {
+  font-family: 'The Seasons', serif;
+  font-weight: 300;
+}
+
 /* Eyebrow pill — mirrors the hero eyebrow for continuity */
 .j-eyebrow-pill {
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: #5B6B4A;
+  color: var(--j-moss);
   font-family: 'Montserrat', sans-serif;
-  border: 1px solid #B8D4CE;
+  border: 1px solid var(--j-glass);
   border-radius: 24px;
   padding: 8px 14px;
   width: fit-content;
-  background: #b8d4ce;
+  background: var(--j-glass);
 }
 
 /* Page headline */
 .j-page-title {
-  font-family: 'The Seasons', serif;
-  font-weight: 300;
   font-size: clamp(30px, 4.4vw, 60px);
   line-height: 1.06;
   letter-spacing: -0.02em;
-  color: #F5F2EC;
+  color: var(--j-text);
   margin: 0;
   max-width: 16ch;
 }
@@ -577,11 +590,11 @@
   font-size: clamp(15px, 1.5vw, 18px);
   font-weight: 300;
   line-height: 1.7;
-  color: rgba(240, 237, 232, 0.88);
+  color: rgba(var(--j-text-rgb), 0.88);
 }
 
 .j-line-emph {
-  color: #F5F2EC;
+  color: var(--j-text);
   font-weight: 400;
 }
 
@@ -589,7 +602,7 @@
   font-size: clamp(15px, 1.5vw, 18px);
   font-weight: 300;
   line-height: 1.8;
-  color: rgba(240, 237, 232, 0.88);
+  color: rgba(var(--j-text-rgb), 0.88);
   max-width: 56ch;
 }
 
@@ -599,17 +612,15 @@
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #B8D4CE;
+  color: var(--j-glass);
 }
 
 /* Closing tagline */
 .j-tagline {
-  font-family: 'The Seasons', serif;
   font-style: italic;
-  font-weight: 300;
   font-size: clamp(17px, 2vw, 24px);
   line-height: 1.4;
-  color: #B8D4CE;
+  color: var(--j-glass);
   max-width: 44ch;
 }
 
@@ -628,10 +639,9 @@
 }
 
 .j-point-num {
-  font-family: 'The Seasons', serif;
   font-size: 22px;
   line-height: 1;
-  color: #B8D4CE;
+  color: var(--j-glass);
   opacity: 0.85;
   min-width: 36px;
 }
@@ -640,7 +650,7 @@
   font-size: clamp(15px, 1.6vw, 19px);
   font-weight: 300;
   line-height: 1.55;
-  color: #F0EDE8;
+  color: var(--j-text);
 }
 
 /* Pillars — Page 7 */
@@ -652,15 +662,13 @@
 }
 
 .j-pillar {
-  border-left: 2px solid rgba(184, 212, 206, 0.55);
+  border-left: var(--j-accent-line);
   padding-left: 18px;
 }
 
 .j-pillar-title {
-  font-family: 'The Seasons', serif;
-  font-weight: 300;
   font-size: clamp(18px, 2vw, 24px);
-  color: #F5F2EC;
+  color: var(--j-text);
   margin-bottom: 6px;
 }
 
@@ -668,7 +676,7 @@
   font-size: 14px;
   font-weight: 300;
   line-height: 1.6;
-  color: rgba(240, 237, 232, 0.8);
+  color: rgba(var(--j-text-rgb), 0.8);
 }
 
 /* "Who it's for" mini-block — Page 9 */
@@ -683,7 +691,7 @@
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(240, 237, 232, 0.55);
+  color: rgba(var(--j-text-rgb), 0.55);
 }
 
 .j-list {
@@ -698,7 +706,7 @@
   gap: 11px;
   font-size: 15px;
   font-weight: 300;
-  color: rgba(240, 237, 232, 0.9);
+  color: rgba(var(--j-text-rgb), 0.9);
 }
 
 .j-list-item::before {
@@ -706,7 +714,7 @@
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #B8D4CE;
+  background: var(--j-glass);
   flex: none;
 }
 
@@ -721,9 +729,9 @@
 .j-chip {
   font-size: 12px;
   font-weight: 500;
-  color: #F0EDE8;
-  border: 1px solid rgba(184, 212, 206, 0.4);
-  background: rgba(184, 212, 206, 0.09);
+  color: var(--j-text);
+  border: 1px solid rgba(var(--j-glass-rgb), 0.4);
+  background: rgba(var(--j-glass-rgb), 0.09);
   padding: 7px 15px;
   border-radius: 100px;
 }
@@ -742,7 +750,7 @@
   flex-direction: column;
   gap: 12px;
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(240, 237, 232, 0.12);
+  border: var(--j-hairline);
   border-radius: 16px;
   padding: 26px;
   -webkit-backdrop-filter: blur(6px);
@@ -754,21 +762,19 @@
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #B8D4CE;
+  color: var(--j-glass);
 }
 
 .j-prog-title {
-  font-family: 'The Seasons', serif;
-  font-weight: 300;
   font-size: clamp(20px, 2.2vw, 26px);
-  color: #F5F2EC;
+  color: var(--j-text);
 }
 
 .j-prog-body {
   font-size: 14px;
   font-weight: 300;
   line-height: 1.65;
-  color: rgba(240, 237, 232, 0.82);
+  color: rgba(var(--j-text-rgb), 0.82);
 }
 
 .j-prog-tag {
@@ -777,7 +783,7 @@
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(240, 237, 232, 0.6);
+  color: rgba(var(--j-text-rgb), 0.6);
 }
 
 /* Course list — Page 13 */
@@ -795,22 +801,22 @@
   gap: 12px;
   font-size: 15px;
   font-weight: 300;
-  color: rgba(240, 237, 232, 0.6);
+  color: rgba(var(--j-text-rgb), 0.6);
   padding-bottom: 10px;
-  border-bottom: 1px solid rgba(240, 237, 232, 0.1);
+  border-bottom: 1px solid rgba(var(--j-text-rgb), 0.1);
 }
 
 .j-course-mark {
-  color: rgba(240, 237, 232, 0.4);
+  color: rgba(var(--j-text-rgb), 0.4);
   font-size: 14px;
 }
 
 .j-course-on {
-  color: #F5F2EC;
+  color: var(--j-text);
   font-weight: 400;
 }
 
-.j-course-on .j-course-mark { color: #B8D4CE; }
+.j-course-on .j-course-mark { color: var(--j-glass); }
 
 .j-course-state {
   margin-left: auto;
@@ -818,10 +824,10 @@
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(240, 237, 232, 0.4);
+  color: rgba(var(--j-text-rgb), 0.4);
 }
 
-.j-course-on .j-course-state { color: #B8D4CE; }
+.j-course-on .j-course-state { color: var(--j-glass); }
 
 /* Stats — Page 15 */
 .j-stats {
@@ -837,10 +843,8 @@
 }
 
 .j-stat-num {
-  font-family: 'The Seasons', serif;
-  font-weight: 300;
   font-size: clamp(24px, 3vw, 36px);
-  color: #F5F2EC;
+  color: var(--j-text);
   line-height: 1;
 }
 
@@ -849,18 +853,16 @@
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(240, 237, 232, 0.6);
+  color: rgba(var(--j-text-rgb), 0.6);
 }
 
 /* Pull-quote — Page 15 */
 .j-quote {
-  font-family: 'The Seasons', serif;
   font-style: italic;
-  font-weight: 300;
   font-size: clamp(18px, 2.1vw, 26px);
   line-height: 1.4;
-  color: #F5F2EC;
-  border-left: 2px solid #B8D4CE;
+  color: var(--j-text);
+  border-left: var(--j-accent-line);
   padding-left: 20px;
   max-width: 48ch;
 }
@@ -874,14 +876,12 @@
 }
 
 .j-story {
-  font-family: 'The Seasons', serif;
   font-style: italic;
-  font-weight: 300;
   font-size: clamp(16px, 1.9vw, 22px);
   line-height: 1.3;
-  color: rgba(245, 242, 236, 0.9);
+  color: rgba(var(--j-text-rgb), 0.9);
   padding-left: 16px;
-  border-left: 2px solid rgba(184, 212, 206, 0.4);
+  border-left: var(--j-accent-line);
 }
 
 /* Divider + online note — Page 17 */
@@ -889,12 +889,12 @@
   width: 100%;
   max-width: 300px;
   height: 1px;
-  background: rgba(240, 237, 232, 0.18);
+  background: rgba(var(--j-text-rgb), 0.18);
   margin: 4px 0;
 }
 
 .j-online-note {
-  color: #B8D4CE;
+  color: var(--j-glass);
 }
 
 /* Scroll hint — informational pages */
@@ -911,13 +911,13 @@
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(240, 237, 232, 0.7);
+  color: rgba(var(--j-text-rgb), 0.7);
 }
 
 .j-scroll-hint .j-hint-line {
   width: 36px;
   height: 1px;
-  background: linear-gradient(to right, #B8D4CE, transparent);
+  background: linear-gradient(to right, var(--j-glass), transparent);
   animation: hintPulse 2s ease-in-out infinite;
 }
 
@@ -929,7 +929,7 @@
   width: 100%;
   height: 3px;
   z-index: 9400;
-  background: rgba(240, 237, 232, 0.08);
+  background: rgba(var(--j-text-rgb), 0.08);
   opacity: 0;
   pointer-events: none;
   transition: opacity 400ms ease;
@@ -942,7 +942,7 @@
   width: 100%;
   transform: scaleX(0);
   transform-origin: left center;
-  background: linear-gradient(to right, #B8D4CE, #5B6B4A);
+  background: linear-gradient(to right, var(--j-glass), var(--j-moss));
 }
 
 /* Step counter — top-right */
@@ -955,7 +955,7 @@
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.2em;
-  color: rgba(240, 237, 232, 0.6);
+  color: rgba(var(--j-text-rgb), 0.6);
   opacity: 0;
   pointer-events: none;
   transition: opacity 400ms ease;
@@ -1003,9 +1003,9 @@
   .j-page-scrim {
     background:
       linear-gradient(to bottom,
-        rgba(13, 26, 14, 0.78) 0%,
-        rgba(13, 26, 14, 0.62) 42%,
-        rgba(13, 26, 14, 0.90) 100%);
+        rgba(var(--j-ink-rgb), 0.78) 0%,
+        rgba(var(--j-ink-rgb), 0.62) 42%,
+        rgba(var(--j-ink-rgb), 0.90) 100%);
   }
 
   .j-programs { flex-direction: column; }

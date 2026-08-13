@@ -162,6 +162,7 @@
     let gesture   = false;
     let settleT   = null;
     let touchY    = null;
+    let motionStop = null; // teardown fn for the active page's background motion
 
     function isActive() { return page.classList.contains('journey-active'); }
 
@@ -192,12 +193,51 @@
         stagger: reduce ? 0.03 : 0.11,
         delay: reduce ? 0.05 : 0.26
       });
+    }
+
+    // ── background motion ──
+    // Drift (a slow, continuous zoom) runs on EVERY page — no input needed.
+    // Parallax (a depth nudge that follows the cursor) runs on question
+    // pages only. Drift tweens scale; parallax tweens x/y — separate
+    // transform properties, so the two compose instead of fighting.
+    function startMotion(p) {
+      if (reduce) return;
       const bg = p.querySelector('.j-page-bg');
-      if (bg && !reduce) {
-        gsap.fromTo(bg,
-          { scale: 1.05 },
-          { scale: 1.13, duration: 18, ease: 'sine.inOut', overwrite: 'auto' });
+      if (!bg) return;
+
+      // Drift — always on
+      gsap.fromTo(bg, { scale: 1.06 },
+        { scale: 1.18, duration: 22, ease: 'sine.inOut', repeat: -1, yoyo: true, overwrite: 'auto' });
+
+      // Parallax — question pages only
+      const parallax = p.dataset.type === 'question';
+      let raf = null, dx = 0, dy = 0;
+      function apply() {
+        raf = null;
+        gsap.to(bg, { x: dx * -26, y: dy * -18, duration: 1.1, ease: 'power2.out', overwrite: 'auto' });
       }
+      function onMove(e) {
+        const r = p.getBoundingClientRect();
+        dx = (e.clientX - r.left - r.width / 2) / (r.width / 2);
+        dy = (e.clientY - r.top - r.height / 2) / (r.height / 2);
+        if (!raf) raf = requestAnimationFrame(apply);
+      }
+      if (parallax) p.addEventListener('mousemove', onMove);
+
+      motionStop = function () {
+        if (parallax) p.removeEventListener('mousemove', onMove);
+        if (raf) cancelAnimationFrame(raf);
+        gsap.killTweensOf(bg);
+        gsap.set(bg, { x: 0, y: 0 });
+        motionStop = null;
+      };
+    }
+
+    // Stop the previous page's motion, then start the active page's.
+    function syncMotion() {
+      if (motionStop) motionStop();
+      const cur = pages[index];
+      if (cur) startMotion(cur);
     }
 
     function afterSettle(i) {
@@ -213,6 +253,9 @@
       if (animating) return;
       if (nextIndex < -1 || nextIndex >= total) return;
       animating = true;
+
+      // Freeze the outgoing page's drift/parallax during the transition.
+      if (motionStop) motionStop();
 
       // Entering the deck locks the hero's native scroll.
       if (nextIndex >= 0) page.style.overflow = 'hidden';
@@ -238,6 +281,7 @@
             index = nextIndex;
             animating = false;
             updateChrome();
+            syncMotion();
             afterSettle(index);
           }
         });
@@ -253,6 +297,7 @@
             animating = false;
             if (index < 0) page.style.overflow = ''; // back at hero → native scroll
             updateChrome();
+            syncMotion();
           }
         });
       }
@@ -407,10 +452,13 @@
       zTop = 20;
       gesture = false;
       page.style.overflow = '';
+      if (motionStop) motionStop();
 
       gsap.set(pages, { y: 0, yPercent: 100, scale: 1 });
       pages.forEach(function (p) {
         p.style.zIndex = '';
+        // Clear any leftover background drift / parallax offsets
+        var bgi = p.querySelector('.j-page-bg'); if (bgi) gsap.set(bgi, { x: 0, y: 0, scale: 1 });
         if (p.dataset.type === 'question') {
           delete p.dataset.answered;
           p.querySelectorAll('.j-pill').forEach(function (x) { x.classList.remove('selected'); });
