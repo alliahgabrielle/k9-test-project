@@ -162,7 +162,7 @@
     let gesture   = false;
     let settleT   = null;
     let touchY    = null;
-    let motionStop = null; // teardown fn for the active [data-motion] page
+    let motionStop = null; // teardown fn for the active page's background motion
 
     function isActive() { return page.classList.contains('journey-active'); }
 
@@ -193,59 +193,51 @@
         stagger: reduce ? 0.03 : 0.11,
         delay: reduce ? 0.05 : 0.26
       });
-      const bg = p.querySelector('.j-page-bg');
-      if (bg && !reduce) {
-        gsap.fromTo(bg,
-          { scale: 1.05 },
-          { scale: 1.13, duration: 18, ease: 'sine.inOut', overwrite: 'auto' });
-      }
     }
 
-    // ── cinematic cut-out motion — pages tagged [data-motion] ──
-    // Continuous background drift + a floating transparent-PNG subject,
-    // with pointer parallax that pushes the two planes in opposite
-    // directions so the cut-out reads as closer to the viewer (3D depth).
-    // Mirrors the Page 1 hero. Bg tweens x/y (parallax) and scale (drift)
-    // on separate properties, so they compose instead of fighting.
+    // ── background motion ──
+    // Drift (a slow, continuous zoom) runs on EVERY page — no input needed.
+    // Parallax (a depth nudge that follows the cursor) runs on question
+    // pages only. Drift tweens scale; parallax tweens x/y — separate
+    // transform properties, so the two compose instead of fighting.
     function startMotion(p) {
       if (reduce) return;
-      const bg   = p.querySelector('.j-page-bg');
-      const cut  = p.querySelector('.j-cutout');
-      const wrap = p.querySelector('.j-cutout-wrap');
+      const bg = p.querySelector('.j-page-bg');
+      if (!bg) return;
 
-      if (bg)  gsap.to(bg,  { scale: 1.16, duration: 20, ease: 'sine.inOut', repeat: -1, yoyo: true, overwrite: 'auto' });
-      if (cut) gsap.fromTo(cut, { y: 0 }, { y: -16, duration: 4.6, ease: 'sine.inOut', repeat: -1, yoyo: true });
+      // Drift — always on
+      gsap.fromTo(bg, { scale: 1.06 },
+        { scale: 1.18, duration: 22, ease: 'sine.inOut', repeat: -1, yoyo: true, overwrite: 'auto' });
 
+      // Parallax — question pages only
+      const parallax = p.dataset.type === 'question';
       let raf = null, dx = 0, dy = 0;
+      function apply() {
+        raf = null;
+        gsap.to(bg, { x: dx * -26, y: dy * -18, duration: 1.1, ease: 'power2.out', overwrite: 'auto' });
+      }
       function onMove(e) {
         const r = p.getBoundingClientRect();
         dx = (e.clientX - r.left - r.width / 2) / (r.width / 2);
         dy = (e.clientY - r.top - r.height / 2) / (r.height / 2);
         if (!raf) raf = requestAnimationFrame(apply);
       }
-      function apply() {
-        raf = null;
-        if (bg)   gsap.to(bg,   { x: dx * -28, y: dy * -18, duration: 1.1, ease: 'power2.out', overwrite: 'auto' });
-        if (wrap) gsap.to(wrap, { x: dx * 34,  y: dy * 20,  duration: 0.8, ease: 'power2.out', overwrite: 'auto' });
-      }
-      p.addEventListener('mousemove', onMove);
+      if (parallax) p.addEventListener('mousemove', onMove);
 
       motionStop = function () {
-        p.removeEventListener('mousemove', onMove);
+        if (parallax) p.removeEventListener('mousemove', onMove);
         if (raf) cancelAnimationFrame(raf);
-        gsap.killTweensOf([bg, cut, wrap].filter(Boolean));
-        if (bg)   gsap.set(bg,   { x: 0, y: 0 });
-        if (cut)  gsap.set(cut,  { y: 0 });
-        if (wrap) gsap.set(wrap, { x: 0, y: 0 });
+        gsap.killTweensOf(bg);
+        gsap.set(bg, { x: 0, y: 0 });
         motionStop = null;
       };
     }
 
-    // Stop whatever page was moving, then start the active one if it's tagged.
+    // Stop the previous page's motion, then start the active page's.
     function syncMotion() {
       if (motionStop) motionStop();
       const cur = pages[index];
-      if (cur && cur.hasAttribute('data-motion')) startMotion(cur);
+      if (cur) startMotion(cur);
     }
 
     function afterSettle(i) {
@@ -465,10 +457,8 @@
       gsap.set(pages, { y: 0, yPercent: 100, scale: 1 });
       pages.forEach(function (p) {
         p.style.zIndex = '';
-        // Clear any leftover cut-out / background parallax offsets
-        var cut = p.querySelector('.j-cutout');       if (cut)  gsap.set(cut,  { y: 0 });
-        var wrap = p.querySelector('.j-cutout-wrap');  if (wrap) gsap.set(wrap, { x: 0, y: 0 });
-        var bgi = p.querySelector('.j-page-bg');       if (bgi)  gsap.set(bgi, { x: 0, y: 0 });
+        // Clear any leftover background drift / parallax offsets
+        var bgi = p.querySelector('.j-page-bg'); if (bgi) gsap.set(bgi, { x: 0, y: 0, scale: 1 });
         if (p.dataset.type === 'question') {
           delete p.dataset.answered;
           p.querySelectorAll('.j-pill').forEach(function (x) { x.classList.remove('selected'); });
