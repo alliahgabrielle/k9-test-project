@@ -21,17 +21,21 @@ function applyTheme(theme) {
       cls: 'grad-cedar',
       light: false
     };
-  ['grad-cedar', 'grad-bark', 'grad-seaglass', 'grad-mist', 'grad-drift']
-  .forEach(c => heroBg.classList.remove(c));
-  heroBg.classList.add(g.cls);
-  heroEl.classList.toggle('hero-light', g.light);
-  iconMoon.style.display = theme === 'dark' ? 'none' : 'block';
-  iconSun.style.display = theme === 'light' ? 'none' : 'block';
-  toggleBtn.style.color = theme === 'light' ? 'var(--deep-cedar)' : 'var(--mist-white)';
-  toggleBtn.style.borderColor = theme === 'light' ? 'rgba(45,58,46,0.35)' : 'rgba(184,212,206,0.5)';
+  if (heroBg) {
+    ['grad-cedar', 'grad-bark', 'grad-seaglass', 'grad-mist', 'grad-drift']
+      .forEach(c => heroBg.classList.remove(c));
+    heroBg.classList.add(g.cls);
+  }
+  if (heroEl) heroEl.classList.toggle('hero-light', g.light);
+  if (iconMoon) iconMoon.style.display = theme === 'dark' ? 'none' : 'block';
+  if (iconSun) iconSun.style.display = theme === 'light' ? 'none' : 'block';
+  if (toggleBtn) {
+    toggleBtn.style.color = theme === 'light' ? 'var(--deep-cedar)' : 'var(--mist-white)';
+    toggleBtn.style.borderColor = theme === 'light' ? 'rgba(45,58,46,0.35)' : 'rgba(184,212,206,0.5)';
+  }
 }
 
-toggleBtn.addEventListener('click', () => {
+if (toggleBtn) toggleBtn.addEventListener('click', () => {
   applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
 });
 
@@ -92,22 +96,24 @@ function triggerTransition(fromWhiteout) {
     } catch (e) {}
   }
 
-  intro.classList.add('whiteout');
+  if (intro) intro.classList.add('whiteout');
   setTimeout(() => {
     try {
-      introVideo.pause();
+      if (introVideo) introVideo.pause();
     } catch (e) {}
   }, 60);
-  burst.classList.add('active');
+  if (burst) burst.classList.add('active');
 
   setTimeout(() => {
-    intro.style.opacity = '0';
-    intro.style.transition = 'opacity 0.5s ease';
+    if (intro) {
+      intro.style.opacity = '0';
+      intro.style.transition = 'opacity 0.5s ease';
+    }
   }, 850);
 
   setTimeout(() => {
-    intro.style.display = 'none';
-    burst.style.display = 'none';
+    if (intro) intro.style.display = 'none';
+    if (burst) burst.style.display = 'none';
     showCrossroads();
   }, 2100);
 }
@@ -115,14 +121,15 @@ function triggerTransition(fromWhiteout) {
 // ── Crossroads ──
 function showCrossroads() {
   const cr = document.getElementById('crossroads');
+  if (!cr) return;
   cr.classList.add('visible');
   setTimeout(() => {
     const eyebrow = cr.querySelector('.crossroads-eyebrow');
     const heading = cr.querySelector('.crossroads-heading');
     if (eyebrow) eyebrow.classList.add('in');
     if (heading) heading.classList.add('in');
-    cr.querySelector('.crossroads-sub').classList.add('in');
-    cr.querySelector('.crossroads-paths').classList.add('in');
+    cr.querySelector('.crossroads-sub')?.classList.add('in');
+    cr.querySelector('.crossroads-paths')?.classList.add('in');
     const skip = cr.querySelector('.crossroads-skip');
     if (skip) skip.classList.add('in');
   }, 60);
@@ -172,20 +179,26 @@ function triggerHeroAnimations() {
 
 // ── Video timing ──
 const WHITEOUT_TIME = 7.8;
-introVideo.addEventListener('timeupdate', () => {
-  if (!transitionDone && introVideo.currentTime >= WHITEOUT_TIME) triggerTransition(true);
-});
-introVideo.addEventListener('ended', () => {
-  if (!transitionDone) triggerTransition(true);
-});
+if (introVideo) {
+  introVideo.addEventListener('timeupdate', () => {
+    if (!transitionDone && introVideo.currentTime >= WHITEOUT_TIME) triggerTransition(true);
+  });
+  introVideo.addEventListener('ended', () => {
+    if (!transitionDone) triggerTransition(true);
+  });
+}
+// Guaranteed escape hatch — the intro always advances after 9.5s, even if
+// the video can't play or a section failed to load.
 setTimeout(() => {
   if (!transitionDone) triggerTransition(false);
 }, 9500);
 
 // ── Nav scroll (fade on scroll within active page) ──
-document.getElementById('snap-container').addEventListener('scroll', () => {
-  const scrolled = document.getElementById('snap-container').scrollTop > 80;
-  document.getElementById('nav').classList.toggle('scrolled', scrolled);
+const snapEl = document.getElementById('snap-container');
+if (snapEl) snapEl.addEventListener('scroll', () => {
+  const scrolled = snapEl.scrollTop > 80;
+  const navEl = document.getElementById('nav');
+  if (navEl) navEl.classList.toggle('scrolled', scrolled);
 });
 
 // ── Nav sliding underline ──
