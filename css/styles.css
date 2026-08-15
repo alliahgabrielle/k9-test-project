@@ -478,8 +478,31 @@ nav#nav.scrolled {
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   flex-shrink: 0;
+}
+
+/* Social icon links (Facebook · Instagram) — theme-aware via currentColor */
+.nav-social {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--nav-link-color);
+  transition: background 200ms ease, color 200ms ease, transform 160ms ease;
+  flex-shrink: 0;
+}
+
+.nav-social:hover {
+  background: var(--nav-link-hover-bg);
+  color: var(--nav-link-hover);
+  transform: translateY(-1px);
+}
+
+.nav-social:active {
+  transform: scale(0.92);
 }
 
 /* Theme toggle */
