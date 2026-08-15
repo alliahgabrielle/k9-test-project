@@ -7,8 +7,8 @@
   <title>Impackful K9 — Calm is a skill.</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="/css/styles.css">
-  <link rel="stylesheet" href="/css/journey.css">
+  <link rel="stylesheet" href="/css/styles.css?v=20260815">
+  <link rel="stylesheet" href="/css/journey.css?v=20260815">
 </head>
 
 <body>
@@ -62,9 +62,10 @@
       { slot: 'slot-page-journey',   file: 'sections/page-journey.html' },
     ];
 
+    const CACHE_BUST = '?v=20260815';
     Promise.all(
       sections.map(({ slot, file }) =>
-        fetch(file)
+        fetch(file + CACHE_BUST)
           .then(r => {
             if (!r.ok) throw new Error(`Failed to load ${file}: ${r.status}`);
             return r.text();
@@ -81,7 +82,7 @@
     ).then(() => {
 
       // Inject footer into every page
-      fetch('sections/footer.html')
+      fetch('sections/footer.html' + CACHE_BUST)
         .then(r => r.text())
         .then(html => {
           document.querySelectorAll('.page').forEach(page => {
@@ -93,7 +94,7 @@
 
       // Boot main.js first
       const script = document.createElement('script');
-      script.src = '/js/main.js';
+      script.src = '/js/main.js' + CACHE_BUST;
       script.onload = () => {
         // Only call after main.js has fully loaded
         if (typeof initStatCounter === 'function') initStatCounter();
@@ -102,7 +103,7 @@
 
       // Load journey.js independently
       const journeyScript = document.createElement('script');
-      journeyScript.src = '/js/journey.js';
+      journeyScript.src = '/js/journey.js' + CACHE_BUST;
       document.body.appendChild(journeyScript);
 
     });

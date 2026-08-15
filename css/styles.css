@@ -411,7 +411,7 @@ nav#nav.scrolled {
   filter: drop-shadow(0 0 0 transparent);
   transition: filter 300ms ease;
 }
- cx 
+
 [data-theme="light"] .nav-logo img {
   /* darken slightly so the brown reads against mist white */
   filter: brightness(0.78) saturate(1.2);
