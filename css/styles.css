@@ -404,8 +404,8 @@ nav#nav.scrolled {
 }
 
 .nav-logo img {
-  width: 36px;
-  height: 36px;
+  width: 46px;
+  height: 46px;
   object-fit: contain;
   /* keeps light-brown logo visible on both dark and light backgrounds */
   filter: drop-shadow(0 0 0 transparent);
