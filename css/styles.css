@@ -507,8 +507,8 @@ nav#nav.scrolled {
 
 .social-float-link {
   pointer-events: auto;
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
