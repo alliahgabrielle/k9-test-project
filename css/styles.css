@@ -411,7 +411,7 @@ nav#nav.scrolled {
   filter: drop-shadow(0 0 0 transparent);
   transition: filter 300ms ease;
 }
- cx 
+
 [data-theme="light"] .nav-logo img {
   /* darken slightly so the brown reads against mist white */
   filter: brightness(0.78) saturate(1.2);
@@ -420,6 +420,87 @@ nav#nav.scrolled {
 [data-theme="dark"] .nav-logo img {
   /* lighten so brown reads against dark bg */
   filter: brightness(1.35) saturate(0.9);
+}
+
+/* ─── FLOATING FOLLOW BUTTON (FAB) ─── */
+/* Neutral class names on purpose (see sections/nav.html). One round heart
+   button in the corner; clicking it fans out the Facebook + Instagram icons. */
+.fab-follow {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 90;
+  width: 56px;
+  height: 56px;
+}
+
+.fab-toggle {
+  position: absolute;
+  inset: 0;
+  width: 56px;
+  height: 56px;
+  border: none;
+  border-radius: 50%;
+  background: var(--nav-cta-bg);
+  color: var(--nav-cta-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 22px var(--nav-cta-shadow);
+  transition: background 200ms ease, transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.fab-toggle:hover {
+  background: var(--nav-cta-hover);
+  transform: translateY(-2px);
+}
+
+.fab-ic-close { display: none; }
+.fab-follow[data-open="true"] .fab-ic-open { display: none; }
+.fab-follow[data-open="true"] .fab-ic-close { display: block; }
+
+.fab-item {
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--nav-border);
+  background: var(--nav-bg-pill);
+  color: var(--nav-link-color);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 4px 18px var(--nav-shadow);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateX(-50%) translateY(0) scale(0.5);
+  pointer-events: none;
+  transition: opacity 220ms ease,
+    transform 260ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    color 200ms ease, background 200ms ease;
+}
+
+.fab-item:hover {
+  color: var(--nav-link-hover);
+  background: var(--nav-link-hover-bg);
+}
+
+.fab-follow[data-open="true"] .fab-item {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.fab-follow[data-open="true"] .fab-item[data-go="ig"] {
+  transform: translateX(-50%) translateY(-62px) scale(1);
+}
+
+.fab-follow[data-open="true"] .fab-item[data-go="fb"] {
+  transform: translateX(-50%) translateY(-118px) scale(1);
 }
 
 /* Links */
