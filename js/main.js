@@ -66,14 +66,72 @@ document.querySelectorAll('.nav-links a[data-page]').forEach(link => {
   });
 });
 
-// ── Contact form ──
+// ── Contact form → Web3Forms (emails each submission; no backend needed) ──
 function handleContact(e) {
   e.preventDefault();
-  const btn = e.target.querySelector('.contact-submit');
-  btn.textContent = 'Sent ✓';
-  btn.style.background = '#5B6B4A';
-  btn.style.color = '#F0EDE8';
-  btn.disabled = true;
+  const form = e.target;
+  const btn = form.querySelector('.contact-submit');
+  const status = form.querySelector('#contact-status');
+  const consent = form.querySelector('#consent-check');
+  const consentBox = form.querySelector('#consent-box');
+
+  // The form is novalidate, so validate required fields + consent here.
+  let firstInvalid = null;
+  form.querySelectorAll('input[required], select[required], textarea[required]').forEach((el) => {
+    if (el === consent) return;
+    const empty = !String(el.value).trim();
+    el.classList.toggle('field-invalid', empty);
+    if (empty && !firstInvalid) firstInvalid = el;
+  });
+  const needConsent = !!(consent && !consent.checked);
+  if (consentBox) consentBox.classList.toggle('field-invalid', needConsent);
+  if (needConsent && !firstInvalid) firstInvalid = consent;
+
+  if (firstInvalid) {
+    setContactStatus(status, needConsent
+      ? 'Please fill in every required field and tick the consent box.'
+      : 'Please fill in every required field.', true);
+    if (typeof firstInvalid.focus === 'function') firstInvalid.focus();
+    return;
+  }
+
+  const original = btn ? btn.textContent : 'Send Message';
+  if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+  setContactStatus(status, '', false, true);
+
+  fetch('https://api.web3forms.com/submit', { method: 'POST', body: new FormData(form) })
+    .then((r) => r.json())
+    .then((data) => {
+      if (!data || !data.success) throw new Error((data && data.message) || 'Submission failed');
+      if (btn) {
+        btn.textContent = 'Sent ✓';
+        btn.style.background = '#5B6B4A';
+        btn.style.color = '#F0EDE8';
+      }
+      setContactStatus(status, 'Thank you — your message is on its way. Jenn will be in touch soon.', false);
+      form.reset();
+      if (consentBox) consentBox.classList.remove('checked');
+      form.querySelectorAll('.field-invalid').forEach((el) => el.classList.remove('field-invalid'));
+    })
+    .catch((err) => {
+      if (window.console) console.error('[Impackful K9] contact send failed', err);
+      if (btn) { btn.disabled = false; btn.textContent = original; }
+      setContactStatus(status, 'Sorry — something went wrong. Please email info@impackfulk9.com or try again in a moment.', true);
+    });
+}
+
+function setContactStatus(el, msg, isError, hide) {
+  if (!el) return;
+  if (hide) { el.hidden = true; return; }
+  el.textContent = msg;
+  el.hidden = false;
+  el.style.color = isError ? '#b23b3b' : 'var(--sea-glass)';
+}
+
+// Reserved hook for future per-service message hints; a safe no-op so the
+// inline onchange handler never throws.
+function handleServiceChange(select) {
+  void select;
 }
 
 // ── Intro / transition ──
@@ -279,53 +337,3 @@ function navigateToSection(page, sectionId) {
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   }, 400);
 }
-
-// ── Floating follow button (FAB) ──
-// The markup is deliberately generic (neutral classes, <button> with no href,
-// no platform URLs) so ad-blockers / Brave Shields don't recognise it as a
-// social widget and strip it. The heart button toggles the fan-out; the real
-// labels + destinations are applied here, and clicking an icon opens the
-// profile in a new tab (a normal top-level navigation blockers don't touch).
-(function initFollowFab() {
-  const fab = document.querySelector('.fab-follow');
-  if (!fab) return;
-  const toggle = fab.querySelector('.fab-toggle');
-  const items = fab.querySelectorAll('.fab-item');
-  const NET = {
-    fb: { label: 'Facebook',  url: 'https://www.' + 'face' + 'book.com/impackfulk9' },
-    ig: { label: 'Instagram', url: 'https://www.' + 'insta' + 'gram.com/impackfulk9' }
-  };
-
-  function setOpen(open) {
-    fab.dataset.open = open ? 'true' : 'false';
-    if (toggle) toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    items.forEach((it) => { it.tabIndex = open ? 0 : -1; });
-  }
-  setOpen(false);
-
-  if (toggle) {
-    toggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      setOpen(fab.dataset.open !== 'true');
-    });
-  }
-
-  items.forEach((btn) => {
-    const net = NET[btn.dataset.go];
-    if (!net) return;
-    btn.setAttribute('aria-label', net.label);
-    btn.setAttribute('title', net.label);
-    btn.addEventListener('click', () => {
-      window.open(net.url, '_blank', 'noopener');
-      setOpen(false);
-    });
-  });
-
-  // Close when clicking elsewhere or pressing Escape.
-  document.addEventListener('click', (e) => {
-    if (fab.dataset.open === 'true' && !fab.contains(e.target)) setOpen(false);
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') setOpen(false);
-  });
-})();

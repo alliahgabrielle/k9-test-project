@@ -363,6 +363,21 @@
     line-height: 1.6;
     transition: color 300ms ease;
   }
+
+  /* Validation + submit status */
+  .contact-input.field-invalid {
+    border-bottom-color: #b23b3b;
+  }
+
+  .consent-box.field-invalid {
+    border-color: #b23b3b;
+  }
+
+  .contact-status {
+    font-size: 12px;
+    line-height: 1.55;
+    margin-top: 4px;
+  }
 </style>
 
 <div class="page" id="page-contact">
@@ -384,73 +399,82 @@
 
       <!-- RIGHT -->
       <div class="contact-right">
-        <form class="contact-form" onsubmit="handleContact(event)">
+        <form class="contact-form" id="contact-form" onsubmit="handleContact(event)" novalidate>
+
+          <!-- Web3Forms delivery — emails each submission to Jenn. No backend
+               needed (works on Vercel). This access key is public by design. -->
+          <input type="hidden" name="access_key" value="d69d3f4d-44be-49f7-b7c2-90961e7a9183">
+          <input type="hidden" name="subject" value="New contact message — Impackful K9">
+          <input type="hidden" name="from_name" value="Impackful K9 Website">
+          <!-- honeypot: hidden from people, bots tend to fill it -->
+          <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
 
           <div class="contact-row">
             <div class="contact-field">
               <label class="contact-label">Your Name <span class="contact-required">*</span></label>
-              <input class="contact-input" type="text" placeholder="e.g. Sarah Mitchell" required>
+              <input class="contact-input" name="name" type="text" placeholder="e.g. Sarah Mitchell" required>
             </div>
             <div class="contact-field">
               <label class="contact-label">Your Dog's Name <span class="contact-required">*</span></label>
-              <input class="contact-input" type="text" placeholder="e.g. Max" required>
+              <input class="contact-input" name="dog_name" type="text" placeholder="e.g. Max" required>
             </div>
           </div>
 
           <div class="contact-row">
             <div class="contact-field">
               <label class="contact-label">Email <span class="contact-required">*</span></label>
-              <input class="contact-input" type="email" placeholder="your@email.com" required>
+              <input class="contact-input" name="email" type="email" placeholder="your@email.com" required>
             </div>
             <div class="contact-field">
               <label class="contact-label">Phone <span class="contact-required">*</span></label>
-              <input class="contact-input" type="tel" placeholder="e.g. 604-555-0123" required>
+              <input class="contact-input" name="phone" type="tel" placeholder="e.g. 604-555-0123" required>
             </div>
           </div>
 
           <div class="contact-row">
             <div class="contact-field">
               <label class="contact-label">Dog's Breed <span class="contact-required">*</span></label>
-              <input class="contact-input" type="text" placeholder="e.g. Belgian Malinois" required>
+              <input class="contact-input" name="dog_breed" type="text" placeholder="e.g. Belgian Malinois" required>
             </div>
             <div class="contact-field">
               <label class="contact-label">Dog's Age <span class="contact-required">*</span></label>
-              <input class="contact-input" type="text" placeholder="e.g. 2 years" required>
+              <input class="contact-input" name="dog_age" type="text" placeholder="e.g. 2 years" required>
             </div>
           </div>
 
           <div class="contact-field">
             <label class="contact-label">How can we help? <span class="contact-required">*</span></label>
-            <select class="contact-input contact-select" required onchange="handleServiceChange(this)">
+            <select class="contact-input contact-select" name="service" required onchange="handleServiceChange(this)">
               <option value="" disabled selected>Select a service...</option>
-              <option value="focused-foundations">Focused Foundations</option>
-              <option value="mindful-meetups">Mindful Meetups</option>
-              <option value="reactivity-remedy">Reactivity Remedy</option>
-              <option value="mindful-reset">The Mindful Reset</option>
-              <option value="learning-library">The Learning Library (Online)</option>
-              <option value="mindful-dog-mentorship">Mindful Dog Trainer Mentorship</option>
-              <option value="general">General Inquiry</option>
-              <option value="other">Other</option>
+              <option value="Focused Foundations">Focused Foundations</option>
+              <option value="Mindful Meetups">Mindful Meetups</option>
+              <option value="Reactivity Remedy">Reactivity Remedy</option>
+              <option value="The Mindful Reset">The Mindful Reset</option>
+              <option value="The Learning Library (Online)">The Learning Library (Online)</option>
+              <option value="Mindful Dog Trainer Mentorship">Mindful Dog Trainer Mentorship</option>
+              <option value="General Inquiry">General Inquiry</option>
+              <option value="Other">Other</option>
             </select>
           </div>
 
           <div class="contact-field" id="message-field">
             <label class="contact-label" id="message-label">Tell us more <span class="contact-required">*</span></label>
-            <textarea class="contact-input" id="contact-message" placeholder="Tell us what you're working on with your dog..." required></textarea>
+            <textarea class="contact-input" id="contact-message" name="message" placeholder="Tell us what you're working on with your dog..." required></textarea>
           </div>
 
           <div class="contact-field">
             <label class="contact-label">How did you hear about us? <span class="contact-required">*</span></label>
-            <input class="contact-input" type="text" placeholder="e.g. Instagram, word of mouth, Google..." required>
+            <input class="contact-input" name="heard_about" type="text" placeholder="e.g. Instagram, word of mouth, Google..." required>
           </div>
 
           <div class="contact-consent" id="consent-row">
             <div class="consent-box" id="consent-box"></div>
-            <input type="checkbox" id="consent-check" required style="display:none">
+            <input type="checkbox" id="consent-check" name="consent" value="Yes — consented to be contacted" required style="display:none">
             <span class="consent-text">By clicking this checkbox, you consent for us to contact you by mail, phone, text, or email.</span>
           </div>
 
           <button type="submit" class="contact-submit">Send Message</button>
+          <p class="contact-status" id="contact-status" role="status" aria-live="polite" hidden></p>
 
         </form>
       </div>

@@ -430,10 +430,35 @@
           return;
         }
 
-        // Collected name + email + the 5 answers, ready to send to Jenn's team.
-        // TODO: POST this payload to the email / CRM endpoint when it exists.
-        const payload = { name: name, email: email, answers: Object.assign({}, answers) };
-        if (window.console) console.log('[Impackful K9] Journey submission', payload);
+        // Build a readable Question -> Answer summary straight from the deck,
+        // then email it (with the visitor's name + email) via Web3Forms.
+        // No backend needed — works on static hosting like Vercel.
+        var qaLines = [];
+        pages.forEach(function (p) {
+          if (p.dataset.type !== 'question') return;
+          var qEl = p.querySelector('.j-q-title');
+          var q = (qEl ? qEl.textContent : ('Question ' + p.dataset.q)).replace(/\s+/g, ' ').trim();
+          var sel = p.querySelector('.j-pill.selected');
+          var a = sel ? sel.textContent.replace(/\s+/g, ' ').trim() : '(no answer)';
+          qaLines.push(p.dataset.q + '. ' + q + '\n   -> ' + a);
+        });
+        var message = 'Name: ' + name + '\nEmail: ' + email +
+          '\n\nJourney answers:\n\n' + qaLines.join('\n\n');
+
+        fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            access_key: 'd69d3f4d-44be-49f7-b7c2-90961e7a9183',
+            subject: 'New Journey quiz submission — Impackful K9',
+            from_name: 'Impackful K9 Journey',
+            name: name,
+            email: email,
+            message: message
+          })
+        }).catch(function (err) {
+          if (window.console) console.error('[Impackful K9] Journey send failed', err);
+        });
 
         form.setAttribute('hidden', '');
         form.style.display = 'none';
