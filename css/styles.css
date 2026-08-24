@@ -44,6 +44,7 @@
   --page-bg: #F0EDE8;
   --text-primary: #2D3A2E;
   --sea-glass: #5B6B4A;
+  --green-sea: #B8D4CE;
   --text-muted: rgba(45, 58, 46, 0.65);
   --text-body: rgba(45, 58, 46, 0.85);
   --border-line: rgba(45, 58, 46, 0.15);
@@ -70,6 +71,7 @@
 [data-theme="dark"] {
   --page-bg: #0d1a0e;
   --text-primary: #F0EDE8;
+  --green-sea: #5B6B4A;
   --text-muted: rgba(196, 181, 162, 0.65);
   --text-body: rgba(240, 237, 232, 0.85);
   --border-line: rgba(240, 237, 232, 0.1);
@@ -1360,19 +1362,6 @@ section:nth-of-type(7) {
   border-radius: 16px;
 }
 
-.path-card::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--sea-glass);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
 .path-card:hover::before {
   transform: scaleX(1);
 }
@@ -1471,66 +1460,6 @@ section:nth-of-type(7) {
   border-right: 1.5px solid var(--sea-glass);
   border-top: 1.5px solid var(--sea-glass);
   transform: rotate(45deg);
-}
-
-/* Divider between cards */
-.crossroads-divider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.crossroads-divider::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 1px;
-  background: var(--border-line);
-}
-
-.crossroads-or {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  background: var(--page-bg);
-  padding: 6px 0;
-  position: relative;
-  z-index: 1;
-  writing-mode: vertical-lr;
-  transition: background 300ms ease, color 300ms ease;
-}
-
-/* Skip button */
-.crossroads-skip {
-  margin-top: 40px;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 8px 16px;
-  opacity: 0;
-  transition: opacity 500ms ease 0.4s, color 200ms ease;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.crossroads-skip.in {
-  opacity: 1;
-}
-
-.crossroads-skip:hover {
-  color: var(--text-primary);
 }
 
 /* ─── COMING SOON OVERLAY ─── */
