@@ -599,6 +599,12 @@
   max-width: 48ch;
 }
 
+/* Light mode: the overlay lightens, so cream text washes out — switch to a
+   dark readable tone (matching the library CTA sub-text). */
+[data-theme="light"] .prog-bottom-sub {
+  color: var(--text-body);
+}
+
 /* ─── RESPONSIVE ─── */
 @media (max-width: 900px) {
   .prog-hero {
