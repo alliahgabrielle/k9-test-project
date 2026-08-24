@@ -171,12 +171,12 @@
       if (index < 0) {
         progressWrap.classList.remove('visible');
         stepWrap.classList.remove('visible');
-        gsap.to(progressFill, { scaleX: 0, duration: 0.4, ease: 'power2.out' });
+        progressFill.style.height = '0%';
         return;
       }
       progressWrap.classList.add('visible');
       stepWrap.classList.add('visible');
-      gsap.to(progressFill, { scaleX: (index + 1) / total, duration: 0.6, ease: 'power3.out' });
+      progressFill.style.height = ((index + 1) / total * 100) + '%';
       stepNow.textContent = String(index + 2).padStart(2, '0'); // page number 02–18
     }
 
@@ -466,7 +466,7 @@
           success.removeAttribute('hidden');
           gsap.fromTo(success, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' });
         }
-        gsap.to(progressFill, { scaleX: 1, duration: 0.5, ease: 'power3.out' });
+        progressFill.style.height = '100%';
       });
     }
 
