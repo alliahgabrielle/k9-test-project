@@ -305,7 +305,7 @@ function initStatCounter() {
   const start = parseInt(el.getAttribute('data-start') || '2000');
   const end = parseInt(el.getAttribute('data-end') || '3000');
   const duration = parseInt(el.getAttribute('data-duration') || '2000');
-  const step = Math.ceil((end - start) / (duration / 16));
+  const step = 1;
 
   let current = start;
   el.textContent = current.toLocaleString() + '+';
@@ -320,7 +320,7 @@ function initStatCounter() {
             clearInterval(timer);
           }
           el.textContent = current.toLocaleString() + '+';
-        }, 16);
+        }, 100);
         observer.disconnect();
       }
     });
