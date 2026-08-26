@@ -553,11 +553,13 @@
   position: absolute;
   inset: 0;
   z-index: 1;
+  /* Matched to the library end-CTA overlay so the copy reads the same way:
+     a wide, mostly-opaque scrim (15%–85%) rather than a narrow 40%–60% band. */
   background: linear-gradient(
     to bottom,
     var(--page-bg) 0%,
-    rgba(13, 26, 14, 0.85) 40%,
-    rgba(13, 26, 14, 0.85) 60%,
+    rgba(13, 26, 14, 0.82) 15%,
+    rgba(13, 26, 14, 0.82) 85%,
     var(--page-bg) 100%
   );
 }
@@ -566,8 +568,8 @@
   background: linear-gradient(
     to bottom,
     var(--page-bg) 0%,
-    rgba(240, 237, 232, 0.55) 40%,
-    rgba(240, 237, 232, 0.55) 60%,
+    rgba(240, 237, 232, 0.88) 15%,
+    rgba(240, 237, 232, 0.88) 85%,
     var(--page-bg) 100%
   );
 }
