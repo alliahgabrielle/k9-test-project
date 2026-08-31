@@ -505,7 +505,7 @@ nav#nav.scrolled {
 #nav.menu-open .nav-toggle .nav-ic-close { display: block; }
 
 /* ─── MOBILE NAV (dropdown menu) ─── */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   nav#nav { width: calc(100% - 28px); }
   .nav-inner { position: relative; }
   .nav-toggle { display: flex; }
@@ -1776,9 +1776,8 @@ footer {
     padding: 20px 24px;
   }
 
-  .nav-links {
-    display: none;
-  }
+  /* .nav-links visibility on mobile is governed by the hamburger dropdown
+     rules above (~line 508); it is no longer hidden outright here. */
 
   #hero {
     padding: 0 32px 60px;
