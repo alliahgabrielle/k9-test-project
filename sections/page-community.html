@@ -563,7 +563,175 @@
   }
 
   .comm-cta {
+    flex-direction: column;
+    gap: 40px;
     padding: 80px 24px;
+  }
+
+  .dest-img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* ─── RESPONSIVE · PHONE ─── */
+@media (max-width: 600px) {
+  /* ── HERO ── */
+  .comm-hero {
+    padding-top: 96px;
+  }
+
+  .comm-hero-top {
+    padding: 0 20px 48px;
+  }
+
+  .comm-hero-left,
+  .comm-hero-right {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .comm-hero-headline {
+    font-size: clamp(38px, 11vw, 48px);
+    overflow-wrap: break-word;
+  }
+
+  .comm-hero-desc {
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
+
+  /* ── PHOTO GRID ── */
+  .comm-photo-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    grid-auto-rows: 200px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .comm-photo-item {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  /* ── ABOUT ── */
+  .comm-about-inner {
+    padding: 56px 20px;
+    gap: 32px;
+  }
+
+  .comm-about-left,
+  .comm-about-right {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .comm-about-body {
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
+
+  .comm-about-statement {
+    font-size: 20px;
+    line-height: 1.4;
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
+
+  /* ── EXPERIENCES ── */
+  .comm-experiences-header {
+    padding: 56px 20px 40px;
+  }
+
+  .comm-section-headline {
+    font-size: clamp(26px, 8vw, 32px);
+    overflow-wrap: break-word;
+  }
+
+  .comm-exp-item {
+    padding: 36px 20px;
+    min-width: 0;
+  }
+
+  .comm-exp-title {
+    overflow-wrap: break-word;
+  }
+
+  .comm-exp-desc {
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
+
+  /* ── STORIES ── */
+  .comm-stories {
+    padding: 56px 20px;
+  }
+
+  .comm-stories-sub {
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
+
+  .comm-stories-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .comm-story-card {
+    padding: 32px 24px;
+    min-width: 0;
+    min-height: 300px;
+  }
+
+  .comm-story-quote {
+    font-size: 17px;
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
+
+  .comm-story-attr {
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
+
+  /* ── STATS (defensive) ── */
+  .comm-stats-inner {
+    padding: 48px 20px;
+    gap: 24px;
+  }
+
+  /* ── LOCATIONS (defensive) ── */
+  .comm-locations-inner {
+    padding: 48px 20px;
+  }
+
+  /* ── CTA ── */
+  .comm-cta {
+    flex-direction: column;
+    gap: 40px;
+    padding: 64px 20px;
+  }
+
+  .comm-cta-inner {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .comm-cta-headline {
+    font-size: clamp(30px, 9vw, 40px);
+    overflow-wrap: break-word;
+  }
+
+  .comm-cta-sub {
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
+
+  .dest-img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
   }
 }
 </style>

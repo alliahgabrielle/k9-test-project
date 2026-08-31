@@ -635,14 +635,126 @@
     min-height: 320px;
   }
 
+  .prog-hero .dest-img {
+    max-width: 100%;
+    height: auto;
+    min-width: 0;
+    margin-top: 32px;
+  }
+
   .prog-online-inner {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     padding: 64px 24px;
     align-items: flex-start;
   }
 
+  .prog-online-text {
+    padding: 0;
+  }
+
   .prog-bottom-cta {
     padding: 80px 24px;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Hero — stop the headline and intro from clipping off-screen */
+  .prog-hero-inner {
+    max-width: 100%;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .prog-hero-headline {
+    font-size: clamp(32px, 9vw, 44px);
+    overflow-wrap: break-word;
+  }
+
+  .prog-hero-sub {
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
+
+  .prog-hero .dest-img {
+    max-width: 100%;
+    min-width: 0;
+    height: auto;
+  }
+
+  /* Where do I start — single column, tighter cards */
+  .prog-start {
+    padding: 56px 24px;
+  }
+
+  .prog-paths {
+    grid-template-columns: 1fr;
+  }
+
+  .prog-path-card {
+    padding: 32px 24px;
+    min-height: 300px;
+  }
+
+  .prog-path-title,
+  .prog-path-desc {
+    overflow-wrap: break-word;
+  }
+
+  /* Program sections — keep single column, break long words */
+  .prog-section-inner,
+  .prog-section-right,
+  .prog-section-left {
+    grid-template-columns: 1fr;
+  }
+
+  .prog-section-text {
+    padding: 48px 24px;
+  }
+
+  .prog-section-headline,
+  .prog-body,
+  .prog-transform-text,
+  .prog-sub-headline,
+  .prog-sub-body {
+    overflow-wrap: break-word;
+  }
+
+  /* Online teaser — stack columns, shrink visual */
+  .prog-online-inner {
+    grid-template-columns: 1fr;
+    padding: 48px 24px;
+  }
+
+  .prog-online-text {
+    padding: 0;
+  }
+
+  .prog-online-headline,
+  .prog-online-body {
+    overflow-wrap: break-word;
+  }
+
+  .prog-online-visual {
+    height: 260px;
+  }
+
+  .prog-online-visual-content {
+    bottom: 24px;
+    left: 24px;
+  }
+
+  /* Bottom CTA */
+  .prog-bottom-cta {
+    padding: 64px 24px;
+  }
+
+  .prog-bottom-headline,
+  .prog-bottom-sub {
+    overflow-wrap: break-word;
+  }
+
+  .prog-bottom-sub {
+    max-width: 100%;
   }
 }
 </style>

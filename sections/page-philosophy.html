@@ -794,6 +794,104 @@
     display: none;
   }
 }
+
+/* ─── PHONE ─── */
+@media (max-width: 600px) {
+  /* Let headings and long words wrap instead of spilling off the right edge */
+  #page-philosophy h1,
+  #page-philosophy h2,
+  #page-philosophy h3,
+  #page-philosophy p,
+  #page-philosophy span {
+    overflow-wrap: break-word;
+  }
+
+  /* Images never overflow their container */
+  #page-philosophy img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Let flex/grid children shrink below their content width */
+  .about-hero-inner,
+  .about-story-text,
+  .about-story-visual,
+  .about-different-text,
+  .about-different-visual,
+  .about-beliefs-header-left,
+  .about-beliefs-header-right,
+  .about-belief,
+  .about-stat,
+  .about-collage-item,
+  .about-cta-inner {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  /* Scale oversized headlines down to fit a phone */
+  .about-hero {
+    padding: 96px 24px 0;
+  }
+
+  .about-hero-headline {
+    font-size: clamp(32px, 10vw, 44px);
+  }
+
+  .about-hero-sub {
+    font-size: 15px;
+    max-width: 100%;
+  }
+
+  .about-section-headline {
+    font-size: clamp(26px, 7.5vw, 34px);
+  }
+
+  .about-cta-headline {
+    font-size: clamp(26px, 7.5vw, 34px);
+  }
+
+  .about-cta-sub {
+    max-width: 100%;
+  }
+
+  /* Stack the photo collage into a single column */
+  .about-collage {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    gap: 8px;
+  }
+
+  .about-collage-item:nth-child(1),
+  .about-collage-item:nth-child(2),
+  .about-collage-item:nth-child(3),
+  .about-collage-item:nth-child(4),
+  .about-collage-item:nth-child(5) {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .about-collage-img {
+    min-height: 220px;
+  }
+
+  .about-collage-card {
+    padding: 40px 24px;
+  }
+
+  /* Trim the last of the oversized horizontal padding to ~24px */
+  .about-story-text,
+  .about-different-text {
+    padding: 48px 24px;
+  }
+
+  .about-belief {
+    padding: 32px 24px;
+  }
+
+  .about-cta {
+    padding: 64px 24px;
+  }
+}
 </style>
 <!-- ── PAGE: ABOUT ── -->
 <div class="page" id="page-philosophy">

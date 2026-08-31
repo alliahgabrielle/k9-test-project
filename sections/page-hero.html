@@ -1,4 +1,71 @@
 <style>
+  /* ═══════════════════════════════════════════
+     RESPONSIVE — HERO (phone + tablet)
+     Desktop is untouched: every rule below lives
+     inside a max-width media query and is scoped
+     to #hero so it only affects this section.
+     ═══════════════════════════════════════════ */
+
+  /* ── TABLET (≤ 900px) ── */
+  @media (max-width: 900px) {
+    #hero {
+      padding: 0 40px 56px;
+    }
+
+    /* Let the text column shrink instead of pushing past the edge */
+    #hero .hero-content {
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    #hero .hero-headline {
+      font-size: clamp(30px, 5.2vw, 42px);
+      overflow-wrap: break-word;
+    }
+
+    #hero .hero-sub {
+      max-width: 100%;
+      overflow-wrap: break-word;
+    }
+
+    #hero .hero-image,
+    #hero .mobile-hero {
+      max-width: 100%;
+    }
+  }
+
+  /* ── PHONE (≤ 600px) ── */
+  @media (max-width: 600px) {
+    #hero {
+      padding: 0 24px 48px;
+    }
+
+    #hero .hero-content {
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    #hero .hero-headline {
+      font-size: clamp(26px, 8vw, 34px);
+      letter-spacing: 0.04em;
+      overflow-wrap: break-word;
+    }
+
+    #hero .hero-sub {
+      font-size: 16px;
+      max-width: 100%;
+      overflow-wrap: break-word;
+    }
+
+    #hero .eyebrow {
+      overflow-wrap: break-word;
+    }
+
+    #hero .hero-image,
+    #hero .mobile-hero {
+      max-width: 100%;
+    }
+  }
 </style>
 
 <!-- ── PAGE: HERO ── -->
