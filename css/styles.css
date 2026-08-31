@@ -1417,16 +1417,26 @@ section:nth-of-type(7) {
   transform: translateY(0);
 }
 
-/* Crossroads on phones — stack the two paths so PATH 02 doesn't overflow */
+/* Crossroads on phones — stack the two paths, and let the screen scroll when
+   the stacked content is taller than the viewport. #crossroads is a fixed,
+   vertically-centered overlay, so without this the overflow spills above and
+   below the screen with no way to reach it (the page feels "stuck"). */
 @media (max-width: 700px) {
   #crossroads {
-    padding: 0 24px;
+    justify-content: flex-start;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 48px 24px;
   }
 
+  /* Auto margins center the group when there's spare height but collapse to 0
+     when content overflows — keeping the top reachable and the screen scrollable. */
+  #crossroads .crossroads-logo { margin-top: auto; }
   .crossroads-paths {
     grid-template-columns: 1fr;
     max-width: 420px;
     gap: 14px;
+    margin-bottom: auto;
   }
 
   .path-card {
