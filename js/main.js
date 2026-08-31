@@ -337,3 +337,34 @@ function navigateToSection(page, sectionId) {
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   }, 400);
 }
+
+// ── Mobile nav (hamburger dropdown) ──
+(function initNavToggle() {
+  const nav = document.getElementById('nav');
+  const toggle = document.getElementById('nav-toggle');
+  if (!nav || !toggle) return;
+
+  function setOpen(open) {
+    nav.classList.toggle('menu-open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  }
+
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setOpen(!nav.classList.contains('menu-open'));
+  });
+
+  // Close the menu once a destination is chosen.
+  nav.querySelectorAll('.nav-links a').forEach((a) => {
+    a.addEventListener('click', () => setOpen(false));
+  });
+
+  // Close on outside tap or Escape.
+  document.addEventListener('click', (e) => {
+    if (nav.classList.contains('menu-open') && !nav.contains(e.target)) setOpen(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') setOpen(false);
+  });
+})();

@@ -484,6 +484,73 @@ nav#nav.scrolled {
   flex-shrink: 0;
 }
 
+/* Hamburger toggle — shown on mobile only */
+.nav-toggle {
+  display: none;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--nav-border);
+  color: var(--nav-link-color);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: color 200ms ease, border-color 200ms ease;
+}
+
+.nav-toggle .nav-ic-close { display: none; }
+#nav.menu-open .nav-toggle .nav-ic-open { display: none; }
+#nav.menu-open .nav-toggle .nav-ic-close { display: block; }
+
+/* ─── MOBILE NAV (dropdown menu) ─── */
+@media (max-width: 768px) {
+  nav#nav { width: calc(100% - 28px); }
+  .nav-inner { position: relative; }
+  .nav-toggle { display: flex; }
+
+  /* the links collapse into a dropdown panel beneath the pill */
+  .nav-links {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    margin: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    padding: 10px;
+    border-radius: 22px;
+    background: var(--nav-bg-pill);
+    border: 1px solid var(--nav-border);
+    box-shadow: 0 10px 30px var(--nav-shadow);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 220ms ease, transform 220ms ease, visibility 220ms;
+  }
+
+  nav#nav.menu-open .nav-links {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .nav-links::after { display: none; }
+
+  .nav-links a {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 15px;
+  }
+
+  .nav-links a.active { background: var(--nav-link-hover-bg); }
+}
+
 /* Theme toggle */
 .theme-toggle {
   width: 34px;
@@ -1350,6 +1417,23 @@ section:nth-of-type(7) {
   transform: translateY(0);
 }
 
+/* Crossroads on phones — stack the two paths so PATH 02 doesn't overflow */
+@media (max-width: 700px) {
+  #crossroads {
+    padding: 0 24px;
+  }
+
+  .crossroads-paths {
+    grid-template-columns: 1fr;
+    max-width: 420px;
+    gap: 14px;
+  }
+
+  .path-card {
+    padding: 26px 24px;
+  }
+}
+
 .path-card {
   position: relative;
   display: flex;
@@ -2166,6 +2250,23 @@ footer {
   .dest-top,
   .mm-top {
     padding: 80px 24px 60px;
+  }
+
+  /* Stack the text + image instead of a flex row (the image's intrinsic
+     width was forcing horizontal overflow on phones). */
+  .dest-top {
+    flex-direction: column;
+  }
+
+  .dest-top > div {
+    width: 100% !important;
+    min-width: 0;
+  }
+
+  .dest-img {
+    width: 100%;
+    height: auto;
+    min-width: 0;
   }
 
   .dest-bottom {
