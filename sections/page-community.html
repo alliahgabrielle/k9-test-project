@@ -534,6 +534,9 @@
 
   .comm-exp-grid {
     grid-template-columns: 1fr;
+    /* background-attachment: fixed is ignored/broken on iOS Safari, leaving
+       mis-cropped grey slices behind each card. Pin it to the element instead. */
+    background-attachment: scroll;
   }
 
   .comm-exp-item {
