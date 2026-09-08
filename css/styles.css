@@ -2276,6 +2276,8 @@ footer {
     width: 100%;
     height: auto;
     min-width: 0;
+    /* 90px 20px reads as a blob on a full-width phone image — scale it down. */
+    border-radius: 30px 10px;
   }
 
   .dest-bottom {
@@ -2297,6 +2299,18 @@ footer {
     padding: 0 4px 12px;
   }
 
+  /* Flip-card backs are locked to the tile's 3/4 aspect box; the longer
+     descriptions overflowed and clipped top/bottom on small phones. Shrink
+     the padding and text so every description fits inside the card. */
+  .dest-tile-back {
+    padding: 14px 12px;
+  }
+
+  .dest-tile-back-text {
+    font-size: 12.5px;
+    line-height: 1.42;
+  }
+
   .wtf-wrap {
     grid-template-columns: 1fr;
   }
@@ -2314,14 +2328,30 @@ footer {
     gap: 20px;
   }
 
+  /* mm-top-content and mm-top-row are flex rows on desktop; grid-template-columns
+     does nothing on them, so on mobile switch to real column stacking. */
+  .mm-top-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
   .mm-top-row {
-    grid-template-columns: 1fr;
-    gap: 36px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 28px;
+    padding-top: 32px;
+    margin-top: 16px;
   }
 
   .mm-headline {
-    font-size: clamp(48px, 14vw, 80px) !important;
+    font-size: clamp(40px, 12vw, 72px) !important;
     text-align: left !important;
+    width: 100%;
+  }
+
+  .mm-intro-block {
+    width: 100%;
   }
 
   .mm-pillars {

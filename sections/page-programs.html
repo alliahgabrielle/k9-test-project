@@ -627,12 +627,21 @@
     padding: 64px 24px;
   }
 
+  /* Every stacked section reads text → image. Left-variant sections have the
+     image first in the DOM, which put two images back-to-back at section
+     boundaries; push the image after the text so the rhythm is consistent. */
   .prog-section-left .prog-section-visual {
-    order: -1;
+    order: 1;
   }
 
   .prog-section-visual {
     min-height: 320px;
+  }
+
+  /* The inline one-sided radii (e.g. 16px 0 0 16px) are meant for the image
+     hugging one edge in a two-column row; full-width they look lopsided. */
+  .prog-visual-img {
+    border-radius: 16px !important;
   }
 
   .prog-hero .dest-img {
